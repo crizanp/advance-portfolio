@@ -14,7 +14,8 @@ import PuffLoader from "react-spinners/PuffLoader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLink, faTimes, faQuoteLeft, faCopy } from "@fortawesome/free-solid-svg-icons";
 import QuoteCardModal from "./QuoteCardModal";
-import React from "react"; // Add missing React import
+import React from "react";
+
 const FloatingBubbles = () => {
   const colors = ["#4C51BF", "#ED64A6", "#9F7AEA"];
   return (
@@ -157,10 +158,6 @@ const customParseOptions = (headingList, handleGenerateCard) => ({
 
 export default function PostModal({ slug, isOpen, onClose }) {
   const [post, setPost] = useState(null);
-  const [categories, setCategories] = useState([]);
-  const [tags, setTags] = useState([]);
-  const [latestPosts, setLatestPosts] = useState([]);
-  const [similarPosts, setSimilarPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [tableOfContents, setTableOfContents] = useState([]);
@@ -177,35 +174,18 @@ export default function PostModal({ slug, isOpen, onClose }) {
       try {
         setLoading(true);
         
-        // Fetch all posts
-        const postsResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`);
-        if (!postsResponse.ok) throw new Error("Failed to fetch posts");
-        const allPosts = await postsResponse.json();
+        const postResponse = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/posts/slug/${slug}`
+          );
+          if (!postResponse.ok) throw new Error("Post not found");
+          const currentPost = await postResponse.json();
+          
+          setPost(currentPost);
+    
 
-        // Find current post
-        const currentPost = allPosts.find(p => p.slug === slug);
-        if (!currentPost) throw new Error("Post not found");
-        setPost(currentPost);
-
-        // Set latest and similar posts
-        setLatestPosts(allPosts.slice(0, 5));
-        setSimilarPosts(allPosts.filter(p => 
-          p.category === currentPost.category && p.slug !== currentPost.slug
-        ).slice(0, 2));
-
-        // Generate TOC
         const headingList = [];
         parse(currentPost.content, customParseOptions(headingList, handleGenerateCard));
         setTableOfContents(headingList);
-
-        // Fetch categories and tags
-        const categoriesResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`);
-        const categoriesData = await categoriesResponse.json();
-        setCategories(categoriesData);
-
-        const tagsSet = new Set();
-        allPosts.forEach(post => post.tags?.forEach(tag => tagsSet.add(tag)));
-        setTags(Array.from(tagsSet));
 
       } catch (err) {
         setError(err.message);
@@ -269,8 +249,8 @@ export default function PostModal({ slug, isOpen, onClose }) {
             </div>
           </div>
         ) : post && (
-          <div className="lg:flex lg:space-x-5">
-            <main className="lg:w-3/4">
+          <div>
+            <main>
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-5 text-center">
                 {post.title}
               </h1>
@@ -309,74 +289,7 @@ export default function PostModal({ slug, isOpen, onClose }) {
               <article className="prose lg:prose-xl dark:prose-invert mx-auto">
                 {parse(post.content, customParseOptions([], handleGenerateCard))}
               </article>
-
-              {similarPosts.length > 0 && (
-                <section className="mt-16">
-                  <h2 className="text-3xl font-bold mb-5">Similar Posts</h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    {similarPosts.map(similarPost => (
-                      <Link key={similarPost._id} href={`/blog/${similarPost.slug}`}>
-                        <div className="bg-gray-800 p-5 rounded-lg shadow-lg hover:bg-gray-700 transition-all duration-200">
-                          <h3 className="text-xl font-semibold">{similarPost.title}</h3>
-                          <p className="text-gray-400">{formatDate(similarPost.createdAt)}</p>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
-                </section>
-              )}
             </main>
-
-            <aside className="lg:w-1/4 lg:sticky lg:top-10 lg:self-start mt-10 lg:mt-0">
-              <div className="bg-gray-800 p-5 rounded-lg shadow-lg space-y-8">
-                <section>
-                  <h2 className="text-xl font-semibold mb-3 text-white">Categories</h2>
-                  <ul className="space-y-2">
-                    {categories.map(category => (
-                      <li key={category._id}>
-                        <Link
-                          href={`/category/${category.name.toLowerCase().replace(/\s+/g, "-")}`}
-                          className="block bg-gray-700 px-3 py-2 rounded-md hover:bg-gray-600 transition-all duration-200"
-                        >
-                          {category.name}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-
-                <section>
-                  <h2 className="text-xl font-semibold mb-3 text-white">Tags</h2>
-                  <div className="flex flex-wrap gap-2">
-                    {tags.map((tag, index) => (
-                      <Link
-                        key={index}
-                        href={`/tags/${tag.toLowerCase().replace(/\s+/g, "-")}`}
-                        className="bg-gray-700 text-gray-400 px-2 py-1 rounded-md text-sm hover:text-white transition-all duration-200"
-                      >
-                        {tag}
-                      </Link>
-                    ))}
-                  </div>
-                </section>
-
-                <section>
-                  <h2 className="text-xl font-semibold mb-3 text-white">Latest Posts</h2>
-                  <ul className="space-y-2">
-                    {latestPosts.map(post => (
-                      <li key={post._id}>
-                        <Link
-                          href={`/blog/${post.slug}`}
-                          className="block bg-gray-700 px-3 py-2 rounded-md hover:bg-gray-600 transition-all duration-200"
-                        >
-                          {post.title}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
-                </section>
-              </div>
-            </aside>
           </div>
         )}
 
