@@ -74,7 +74,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
         // Use axios to fetch data
         const response = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}/posts/category/${encodedCategory}`
+          `${process.env.NEXT_PUBLIC_API_URL}/categories/${encodedCategory}/titles`
         );
 
         // Cast the data to the expected type
@@ -199,9 +199,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           <h2 className="text-3xl font-semibold mb-4 text-white neon-glow">
             {post.title}
           </h2>
-          <p className="text-gray-300 mb-6">
-            {stripHtmlTags(post.content).slice(0, 100)}...
-          </p>
+          
           <p className="text-blue-300 font-bold neon-glow">Read More</p>
         </div>
       </motion.div>
