@@ -214,22 +214,23 @@ export default function PostModal({ slug, isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-900">
-      <FloatingBubbles />
-      
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="relative min-h-screen p-4 sm:p-6 lg:p-10"
+    <div className="w-full max-w-full sm:max-w-[75%] fixed inset-0 z-50 overflow-y-auto bg-gray-900">
+    <FloatingBubbles />
+    
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="bg-gray-800 rounded-lg shadow-xl p-6 sm:p-10 relative mx-auto my-20" // Added margin for spacing
+    >
+      {/* Close Button - Now properly positioned inside modal */}
+      <button
+        onClick={onClose}
+        className="absolute -top-10 right-0 text-gray-400 hover:text-white z-50"
+        aria-label="Close"
       >
-        <button
-          onClick={onClose}
-          className="fixed top-4 right-4 text-gray-400 hover:text-white z-50"
-          aria-label="Close"
-        >
-          <FontAwesomeIcon icon={faTimes} size="2x" />
-        </button>
+        <FontAwesomeIcon icon={faTimes} size="2x" />
+      </button>
 
         {loading ? (
           <div className="flex items-center justify-center min-h-screen">
