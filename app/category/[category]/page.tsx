@@ -5,6 +5,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import PuffLoader from "react-spinners/PuffLoader";
 import axios from "axios"; // Import axios
+import PostModal from "../../components/PostModal"; // Add this import
 
 // Component to render floating bubbles with low opacity and different colors
 const FloatingBubbles = () => {
@@ -63,6 +64,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const [error, setError] = useState<string | null>(null);
   const [tags, setTags] = useState<string[]>([]);
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
+  const [selectedPostSlug, setSelectedPostSlug] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchPosts() {
@@ -171,45 +173,51 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
       {/* Display Posts */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {filteredPosts.length > 0 ? (
-          filteredPosts.map((post) => (
-            <Link href={`/blog/${post.slug}`} key={post._id}>
-              <motion.div
-                className={`relative p-6 rounded-lg shadow-lg hover:shadow-2xl transition ${
-                  category.toLowerCase() === "reading"
-                    ? "bg-cover bg-center bg-no-repeat"
-                    : "bg-gray-800"
-                }`}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.3 }}
-                style={
-                  category.toLowerCase() === "reading"
-                    ? {
-                        backgroundImage: `url(${post.imageUrl || "/path-to-default-image.jpg"})`,
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                      }
-                    : {}
-                }
-              >
-                <div className="bg-black bg-opacity-90 p-4 rounded-lg">
-                  <h2 className="text-3xl font-semibold mb-4 text-white neon-glow">
-                    {post.title}
-                  </h2>
-                  <p className="text-gray-300 mb-6">
-                    {stripHtmlTags(post.content).slice(0, 100)}...
-                  </p>
-                  <p className="text-blue-300 font-bold neon-glow">Read More</p>
-                </div>
-              </motion.div>
-            </Link>
-          ))
-        ) : (
-          <p className="text-center col-span-2">No posts found in this category.</p>
-        )}
-      </div>
-    </main>
+      {filteredPosts.length > 0 ? (
+    filteredPosts.map((post) => (
+      <motion.div
+        key={post._id}
+        className={`relative p-6 rounded-lg shadow-lg hover:shadow-2xl transition cursor-pointer ${
+          category.toLowerCase() === "reading"
+            ? "bg-cover bg-center bg-no-repeat"
+            : "bg-gray-800"
+        }`}
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        whileHover={{ scale: 1.05 }}
+        transition={{ duration: 0.3 }}
+        style={
+          category.toLowerCase() === "reading"
+            ? {
+                backgroundImage: `url(${post.imageUrl || "/default-image.jpg"})`,
+              }
+            : {}
+        }
+        onClick={() => setSelectedPostSlug(post.slug)}
+        >
+        <div className="bg-black bg-opacity-90 p-4 rounded-lg">
+          <h2 className="text-3xl font-semibold mb-4 text-white neon-glow">
+            {post.title}
+          </h2>
+          <p className="text-gray-300 mb-6">
+            {stripHtmlTags(post.content).slice(0, 100)}...
+          </p>
+          <p className="text-blue-300 font-bold neon-glow">Read More</p>
+        </div>
+      </motion.div>
+    ))
+  ) : (
+    <p className="text-center col-span-2">No posts found in this category.</p>
+  )}
+
+  {/* Add the modal at the end of the return */}
+  <PostModal 
+  slug={selectedPostSlug} 
+  isOpen={!!selectedPostSlug} 
+  onClose={() => setSelectedPostSlug(null)} 
+/>
+    </div>
+</main>
+
   );
 }

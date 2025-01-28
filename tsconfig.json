@@ -24,6 +24,9 @@
     ],
     "target": "ES2015"  // Add this line
   },
+  "paths": {
+      "@/*": ["./*"]
+    },
   "include": [
     "next-env.d.ts",
     ".next/types/**/*.ts",
