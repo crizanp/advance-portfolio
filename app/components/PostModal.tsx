@@ -61,7 +61,7 @@ const CopyableQuote = ({ quoteContent, children, handleGenerateCard }) => {
   };
 
   return (
-    <div className="relative bg-gray-800 p-4 rounded-lg my-5 shadow-lg">
+    <div className="relative bg-white rounded-lg my-5 shadow-lg">
       <FontAwesomeIcon
         icon={faQuoteLeft}
         className="text-blue-400 text-2xl absolute -top-3 left-3"
@@ -71,9 +71,8 @@ const CopyableQuote = ({ quoteContent, children, handleGenerateCard }) => {
       </blockquote>
       <div className="flex justify-center mt-3">
         <button
-          className={`text-center text-xs px-3 mr-1 py-2 rounded-md font-semibold shadow-sm transition-colors duration-200 ${
-            copied ? "bg-blue-300 text-gray-800 hover:bg-blue-500" : "bg-gray-700 text-white hover:bg-gray-600"
-          }`}
+          className={`text-center text-xs px-3 mr-1 py-2 rounded-md font-semibold shadow-sm transition-colors duration-200 ${copied ? "bg-blue-300 text-gray-800 hover:bg-blue-500" : "bg-gray-700 text-white hover:bg-gray-600"
+            }`}
           onClick={handleCopyQuote}
         >
           {copied ? "Copied!" : "Copy Quote"}
@@ -102,12 +101,11 @@ const customParseOptions = (headingList, handleGenerateCard) => ({
 
       return React.createElement(
         domNode.name,
-        { 
-          id: headingId, 
-          className: `font-bold my-2 ${
-            domNode.name === "h1" ? "text-4xl" : 
+        {
+          id: headingId,
+          className: `font-bold my-2 ${domNode.name === "h1" ? "text-4xl" :
             domNode.name === "h2" ? "text-3xl" : "text-2xl"
-          }`
+            }`
         },
         domToReact(domNode.children)
       );
@@ -127,9 +125,8 @@ const customParseOptions = (headingList, handleGenerateCard) => ({
               <code dangerouslySetInnerHTML={{ __html: highlightedCode }} />
             </pre>
             <button
-              className={`absolute top-1.5 right-2 text-xs px-2 py-2 rounded-md font-semibold shadow-sm transition-colors duration-200 ${
-                copied ? "bg-blue-300 text-gray-800 hover:bg-blue-500" : "bg-gray-600 text-white hover:bg-gray-700"
-              }`}
+              className={`absolute top-1.5 right-2 text-xs px-2 py-2 rounded-md font-semibold shadow-sm transition-colors duration-200 ${copied ? "bg-blue-300 text-gray-800 hover:bg-blue-500" : "bg-gray-600 text-white hover:bg-gray-700"
+                }`}
               onClick={() => {
                 navigator.clipboard.writeText(codeContent);
                 setCopied(true);
@@ -173,15 +170,15 @@ export default function PostModal({ slug, isOpen, onClose }) {
     const fetchData = async () => {
       try {
         setLoading(true);
-        
+
         const postResponse = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/posts/slug/${slug}`
-          );
-          if (!postResponse.ok) throw new Error("Post not found");
-          const currentPost = await postResponse.json();
-          
-          setPost(currentPost);
-    
+          `${process.env.NEXT_PUBLIC_API_URL}/posts/slug/${slug}`
+        );
+        if (!postResponse.ok) throw new Error("Post not found");
+        const currentPost = await postResponse.json();
+
+        setPost(currentPost);
+
 
         const headingList = [];
         parse(currentPost.content, customParseOptions(headingList, handleGenerateCard));
@@ -206,119 +203,120 @@ export default function PostModal({ slug, isOpen, onClose }) {
   const formatDate = (dateString) => {
     if (!dateString) return "Date not available";
     const date = new Date(dateString);
-    return isNaN(date.getTime()) 
-      ? "Invalid Date" 
+    return isNaN(date.getTime())
+      ? "Invalid Date"
       : date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="w-full max-w-full sm:max-w-[75%] fixed inset-0 z-50 overflow-y-auto bg-gray-900">
-    <FloatingBubbles />
-    
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="bg-gray-800 rounded-lg shadow-xl p-6 sm:p-10 relative mx-auto my-20" // Added margin for spacing
-    >
-      {/* Close Button - Now properly positioned inside modal */}
-      <button
-        onClick={onClose}
-        className="absolute -top-10 right-0 text-gray-400 hover:text-white z-50"
-        aria-label="Close"
-      >
-        <FontAwesomeIcon icon={faTimes} size="2x" />
-      </button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-75 overflow-y-auto">
+      <div className="w-full max-w-full sm:max-w-[75%] max-h-[100vh] overflow-y-auto bg-white  rounded-lg shadow-lg">
 
-        {loading ? (
-          <div className="flex items-center justify-center min-h-screen">
-            <PuffLoader color="#36D7B7" size={150} />
-          </div>
-        ) : error ? (
-          <div className="flex flex-col items-center justify-center min-h-screen text-white">
-            <h1 className="text-5xl mb-4">OOPS!</h1>
-            <h2 className="text-gray-400 text-xl mb-4">{error}</h2>
-            <div className="flex gap-4">
-              <button
-                onClick={onClose}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-              >
-                Go Back
-              </button>
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="bg-white rounded-lg shadow-xl p-6 sm:p-10 relative mx-auto " // Added margin for spacing
+        >
+          {/* Close Button - Now properly positioned inside modal */}
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 text-white bg-gray-900 p-2 rounded-full hover:bg-gray-700 focus:outline-none"
+          >
+            <FontAwesomeIcon icon={faTimes} size="lg" />
+          </button>
+
+
+          {loading ? (
+            <div className="flex items-center justify-center min-h-screen">
+              <PuffLoader color="#36D7B7" size={150} />
             </div>
-          </div>
-        ) : post && (
-          <div>
-            <main>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-5 text-center">
-                {post.title}
-              </h1>
-              <p className="text-gray-400 mb-5 text-center">{formatDate(post.createdAt)}</p>
-
-              {post.imageUrl && (
-                <div className="mb-10 text-center">
-                  <img
-                    src={post.imageUrl}
-                    alt={post.title}
-                    className="max-w-xs md:max-w-md mx-auto rounded-lg shadow-md cursor-pointer"
-                    onClick={() => {
-                      setSelectedImage(post.imageUrl);
-                      setIsImageModalOpen(true);
-                    }}
-                  />
-                </div>
-              )}
-
-              {tableOfContents.length > 0 && (
-                <div className="mb-10 bg-gray-800 p-5 rounded-lg shadow-lg">
-                  <h2 className="text-2xl font-bold text-white mb-4">Table of Contents</h2>
-                  <ul className="space-y-2 list-disc list-inside">
-                    {tableOfContents.map((heading, index) => (
-                      <li key={index} className="flex items-center">
-                        <FontAwesomeIcon icon={faLink} className="text-blue-400 mr-2" />
-                        <a href={`#${heading.id}`} className="text-blue-500 hover:text-blue-700">
-                          {heading.text}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              <article className="prose lg:prose-xl dark:prose-invert mx-auto">
-                {parse(post.content, customParseOptions([], handleGenerateCard))}
-              </article>
-            </main>
-          </div>
-        )}
-
-        {isImageModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
-            <div className="relative max-w-4xl">
-              <img
-                src={selectedImage}
-                alt="Enlarged content"
-                className="max-w-full max-h-screen rounded-lg"
-              />
-              <button
-                className="absolute top-4 right-4 text-white bg-gray-900 p-2 rounded hover:bg-gray-800"
-                onClick={() => setIsImageModalOpen(false)}
-              >
-                <FontAwesomeIcon icon={faTimes} size="2x" />
-              </button>
+          ) : error ? (
+            <div className="flex flex-col items-center justify-center min-h-screen text-white">
+              <h1 className="text-5xl mb-4">OOPS!</h1>
+              <h2 className="text-gray-400 text-xl mb-4">{error}</h2>
+              <div className="flex gap-4">
+                <button
+                  onClick={onClose}
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                >
+                  Go Back
+                </button>
+              </div>
             </div>
-          </div>
-        )}
+          ) : post && (
+            <div>
+              <main>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-5 text-center">
+                  {post.title}
+                </h1>
+                <p className="text-gray-400 mb-5 text-center">{formatDate(post.createdAt)}</p>
 
-        <QuoteCardModal
-          quote={selectedQuote}
-          author={selectedAuthor}
-          isOpen={isQuoteModalOpen}
-          onClose={() => setIsQuoteModalOpen(false)}
-        />
-      </motion.div>
+                {post.imageUrl && (
+                  <div className="mb-10 text-center">
+                    <img
+                      src={post.imageUrl}
+                      alt={post.title}
+                      className="max-w-xs md:max-w-md mx-auto rounded-lg shadow-md cursor-pointer"
+                      onClick={() => {
+                        setSelectedImage(post.imageUrl);
+                        setIsImageModalOpen(true);
+                      }}
+                    />
+                  </div>
+                )}
+
+                {tableOfContents.length > 0 && (
+                  <div className="mb-10 bg-white p-5 rounded-lg shadow-lg">
+                    <h2 className="text-2xl font-bold text-white mb-4">Table of Contents</h2>
+                    <ul className="space-y-2 list-disc list-inside">
+                      {tableOfContents.map((heading, index) => (
+                        <li key={index} className="flex items-center">
+                          <FontAwesomeIcon icon={faLink} className="text-blue-400 mr-2" />
+                          <a href={`#${heading.id}`} className="text-blue-500 hover:text-blue-700">
+                            {heading.text}
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                <article className="prose lg:prose-xl dark:prose-invert mx-auto">
+                  {parse(post.content, customParseOptions([], handleGenerateCard))}
+                </article>
+              </main>
+            </div>
+          )}
+
+          {isImageModalOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
+              <div className="relative max-w-4xl">
+                <img
+                  src={selectedImage}
+                  alt="Enlarged content"
+                  className="max-w-full max-h-screen rounded-lg"
+                />
+                <button
+                  className="absolute top-4 right-4 text-white bg-gray-900 p-2 rounded hover:bg-white"
+                  onClick={() => setIsImageModalOpen(false)}
+                >
+                  <FontAwesomeIcon icon={faTimes} size="2x" />
+                </button>
+              </div>
+            </div>
+          )}
+
+          <QuoteCardModal
+            quote={selectedQuote}
+            author={selectedAuthor}
+            isOpen={isQuoteModalOpen}
+            onClose={() => setIsQuoteModalOpen(false)}
+          />
+        </motion.div>
+      </div>
     </div>
   );
 }
