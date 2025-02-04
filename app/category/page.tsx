@@ -22,6 +22,15 @@ export default function CategoriesPage() {
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAd, setShowAd] = useState(true);
+  const [isMobile, setIsMobile] = useState(false); // State to track mobile view
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 768); // Check if window width is <= 768px
+    checkMobile(); // Check on component mount
+
+    window.addEventListener("resize", checkMobile); // Listen to window resize events
+    return () => window.removeEventListener("resize", checkMobile); // Clean up on component unmount
+  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -48,10 +57,10 @@ export default function CategoriesPage() {
 
   return (
     <main className="min-h-screen bg-white">
-      {/* Advertising Banner */}
-      {showAd && (
+      {/* Advertising Banner (Only for non-mobile devices) */}
+      {!isMobile && showAd && (
         <motion.div
-          className="relative bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-6 rounded-lg mb-10 shadow-lg"
+          className="relative bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-6 m-2 rounded-lg mb-10 shadow-lg"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
@@ -62,11 +71,10 @@ export default function CategoriesPage() {
           >
             &times;
           </button>
-          <div className="text-center text-white">
-            <h2 className="text-3xl font-bold">Lets Collab!</h2>
+          <div className="text-center text-white m-3">
+            <h2 className="text-3xl font-bold text-white">Lets Collab!</h2>
             <p className="text-lg mt-2">
               Transform your digital presence with our expert services: Next-gen Web Development, Smart Automation Tools, AI-Powered Bots/Chatbots, Cross-Platform Mobile Apps, Professional Graphics Design, and Robust Web Infrastructure Solutions.
-
             </p>
             <Link href="https://ighdigital.ae/marketing-solutions/web-development/" className="inline-block mt-4 bg-white text-black font-semibold py-2 px-4 rounded-full hover:bg-gray-200">
               Learn More
@@ -83,7 +91,7 @@ export default function CategoriesPage() {
           <>
             {/* Categories Section */}
             <section className="mb-16">
-              <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+              <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-8 text-center">
                 Explore Categories
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

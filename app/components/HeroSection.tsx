@@ -16,7 +16,7 @@ const TitleSection = () => {
     'X Automation Developer',
     'AI Agent Developer',
     'Automation Developer',
-    'Content Writer',
+    'SEO Expert',
     'Blockchain Enthusiast',
     'Novel Reader',
   ];
