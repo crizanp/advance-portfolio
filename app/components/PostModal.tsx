@@ -230,7 +230,7 @@ export default function PostModal({ slug, isOpen, onClose }) {
             </div>
           ) : error ? (
             <div className="flex flex-col items-center justify-center min-h-[300px] p-6">
-              <h1 className="text-3xl mb-4 text-gray-800">OOPS!</h1>
+              <h1 className="text-3xl my-4 text-gray-800">OOPS!</h1>
               <h2 className="text-gray-600 text-lg mb-4">{error}</h2>
               <button
                 onClick={onClose}
@@ -242,7 +242,7 @@ export default function PostModal({ slug, isOpen, onClose }) {
           ) : post && (
             <div className="p-3 sm:p-8">
               <main className="max-w-3xl mx-auto">
-                <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-900 text-center">
+                <h1 className="text-3xl sm:text-4xl font-bold my-6 text-gray-900 text-center">
                   {post.title}
                 </h1>
                 <p className="text-gray-500 mb-6 text-center text-sm sm:text-base">
