@@ -2,18 +2,16 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import PuffLoader from "react-spinners/PuffLoader"; // Import the loader
+import PuffLoader from "react-spinners/PuffLoader";
 
-// Notes page to handle semester, subject, and post
 export default function NotesPage() {
-  const [semesters, setSemesters] = useState([]); // Store semesters
-  const [selectedSemester, setSelectedSemester] = useState(null); // Currently selected semester
-  const [subjects, setSubjects] = useState([]); // Store subjects for selected semester
-  const [loadingSemesters, setLoadingSemesters] = useState(true); // Loading state for semesters
-  const [loadingSubjects, setLoadingSubjects] = useState(true); // Loading state for subjects
+  const [semesters, setSemesters] = useState([]);
+  const [selectedSemester, setSelectedSemester] = useState(null);
+  const [subjects, setSubjects] = useState([]);
+  const [loadingSemesters, setLoadingSemesters] = useState(true);
+  const [loadingSubjects, setLoadingSubjects] = useState(true);
 
   useEffect(() => {
-    // Fetch all semesters when the component mounts
     async function fetchSemesters() {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/semesters`, {
@@ -24,27 +22,23 @@ export default function NotesPage() {
         });
 
         if (!res.ok) throw new Error("Failed to fetch semesters");
-
         const data = await res.json();
         setSemesters(data);
-        setSelectedSemester(data[0]?.name); // Set the first semester name as the default selected semester
+        setSelectedSemester(data[0]?.name);
       } catch (error) {
         console.error("Error fetching semesters:", error);
       } finally {
-        setLoadingSemesters(false); // Stop loading semesters
+        setLoadingSemesters(false);
       }
     }
-
     fetchSemesters();
   }, []);
 
-  // Function to fetch subjects for the selected semester
   useEffect(() => {
     if (!selectedSemester) return;
 
     async function fetchSubjects() {
-      setLoadingSubjects(true); // Set loading for subjects
-
+      setLoadingSubjects(true);
       try {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_API_URL}/semesters/${selectedSemester}/subjects`,
@@ -57,110 +51,145 @@ export default function NotesPage() {
         );
 
         if (!res.ok) throw new Error("Failed to fetch subjects");
-
         const data = await res.json();
         setSubjects(data);
       } catch (error) {
         console.error("Error fetching subjects:", error);
       } finally {
-        setLoadingSubjects(false); // Stop loading subjects
+        setLoadingSubjects(false);
       }
     }
-
     fetchSubjects();
   }, [selectedSemester]);
 
   if (loadingSemesters) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-black">
-        <PuffLoader color="#36D7B7" size={150} />
+      <div className="flex items-center justify-center min-h-screen bg-purple-50">
+        <PuffLoader color="#6D28D9" size={150} />
       </div>
     );
   }
 
   return (
-    <main className="p-4 sm:p-6 lg:p-10 bg-gradient-to-br from-black via-gray-800 to-black min-h-screen">
+    <main className="p-4 sm:p-6 lg:p-10 bg-gradient-to-br from-purple-50 to-white min-h-screen">
       {/* Introduction Section */}
-      <section className="mb-12 text-white text-center px-2 sm:px-4 lg:px-0">
-        <h1 className="text-3xl sm:text-4xl font-bold mb-6">
-          Welcome to Computer Engineering!
-        </h1>
-        <div className="mx-auto text-gray-200 space-y-4 leading-relaxed max-w-3xl">
-          <p>
-            Computer Engineering is more than just writing code—it's about
-            understanding how computers work from the ground up. Whether you're
-            learning about microprocessors or designing complex algorithms, each
-            topic builds the foundation for the technology-driven world we live
-            in today.
-          </p>
-          <p>
-            But here's the thing: success in Computer Engineering isn't just
-            about sticking to the syllabus. While the curriculum gives you a
-            solid foundation, it's important to go beyond what's taught in
-            class. Why? Because the world of tech evolves rapidly. New
-            frameworks, languages, and tools are constantly emerging, and
-            companies value those who can adapt and learn on the go.
-          </p>
-          <p>
-            So, how should you study? Dive deep into the subjects, but don't be
-            afraid to experiment. Take on side projects, contribute to open
-            source, or simply explore areas that spark your interest. This extra
-            learning will not only make you a better engineer but will also
-            prepare you for real-world challenges. The classroom is just the
-            beginning—your journey in tech is much bigger!
-          </p>
-        </div>
+      <section className="mb-12 text-center px-2 sm:px-4 lg:px-0">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="max-w-4xl mx-auto"
+        >
+          <h1 className="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+            Computer Engineering Resources
+          </h1>
+          <div className="space-y-6 text-gray-700 leading-relaxed text-lg">
+            <p className="bg-white p-6 rounded-xl shadow-sm border border-purple-50 hover:shadow-md transition-shadow">
+              Computer Engineering combines hardware and software expertise to create 
+              innovative solutions. Our curriculum is designed to provide both 
+              foundational knowledge and cutting-edge skills.
+            </p>
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white p-6 rounded-xl shadow-sm border border-purple-50 hover:shadow-md transition-shadow">
+                <h3 className="text-purple-700 font-semibold mb-3">Core Focus Areas</h3>
+                <p className="text-gray-600">
+                  Digital systems, computer architecture, software engineering, 
+                  and network systems form the backbone of our program.
+                </p>
+              </div>
+              <div className="bg-white p-6 rounded-xl shadow-sm border border-purple-50 hover:shadow-md transition-shadow">
+                <h3 className="text-purple-700 font-semibold mb-3">Beyond the Classroom</h3>
+                <p className="text-gray-600">
+                  Engage in research projects, internships, and hackathons to 
+                  apply theoretical knowledge in practical scenarios.
+                </p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </section>
 
       {/* Semester Tabs */}
-      <div className="flex flex-wrap justify-center mb-8 gap-4">
-        {semesters.length > 0 ? (
-          semesters.map((semester) => (
-            <button
-              key={semester._id}
-              onClick={() => setSelectedSemester(semester.name)}
-              className={`py-2 px-4 rounded-lg ${
-                selectedSemester === semester.name
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-700 text-gray-300"
-              } hover:bg-blue-500 transition-colors duration-300`}
-            >
-              {semester.name}
-            </button>
-          ))
-        ) : (
-          <p className="text-center text-white">No semesters found</p>
-        )}
-      </div>
-
-      {/* Subject Cards */}
-      {loadingSubjects ? (
-        <div className="flex items-center justify-center min-h-[300px]">
-          <PuffLoader color="#36D7B7" size={100} />
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {subjects.length > 0 ? (
-            subjects.map((subject) => (
-              <Link
-                key={subject._id}
-                href={`/notes/${selectedSemester}/subject/${subject.name.toLowerCase()}`}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        className="mb-8"
+      >
+        <div className="flex flex-wrap justify-center gap-3 mb-8">
+          {semesters.length > 0 ? (
+            semesters.map((semester) => (
+              <button
+                key={semester._id}
+                onClick={() => setSelectedSemester(semester.name)}
+                className={`px-5 py-2.5 rounded-full font-medium transition-all ${
+                  selectedSemester === semester.name
+                    ? "bg-purple-600 text-white shadow-purple-sm"
+                    : "bg-white text-purple-700 shadow-sm hover:shadow-md border border-purple-100"
+                }`}
               >
-                <motion.div
-                  className="cursor-pointer bg-gray-900 text-gray-300 p-6 rounded-lg shadow-lg hover:bg-blue-600 hover:text-white transition duration-300 ease-in-out"
-                  whileHover={{ scale: 1.05 }}
-                >
-                  <h2 className="text-xl font-bold text-center">{subject.name}</h2>
-                </motion.div>
-              </Link>
+                {semester.name}
+              </button>
             ))
           ) : (
-            <p className="text-center text-white col-span-1 sm:col-span-2 lg:col-span-3">
-              No subjects found
-            </p>
+            <p className="text-center text-purple-700">No semesters available</p>
           )}
         </div>
-      )}
+
+        {/* Subject Cards */}
+        {loadingSubjects ? (
+          <div className="flex items-center justify-center min-h-[300px]">
+            <PuffLoader color="#6D28D9" size={100} />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            {subjects.length > 0 ? (
+              subjects.map((subject) => (
+                <Link
+                  key={subject._id}
+                  href={`/notes/${selectedSemester}/subject/${subject.name.toLowerCase()}`}
+                >
+                  <motion.div
+                    className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md border border-purple-50 cursor-pointer transition-all"
+                    whileHover={{ y: -5 }}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                        <span className="text-purple-600 font-bold text-xl">
+                          {subject.name.charAt(0)}
+                        </span>
+                      </div>
+                      <h2 className="text-xl font-semibold text-gray-800">
+                        {subject.name}
+                      </h2>
+                    </div>
+                    <div className="mt-4 flex justify-between items-center text-sm text-purple-600">
+                      <span>View Resources</span>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </div>
+                  </motion.div>
+                </Link>
+              ))
+            ) : (
+              <p className="text-center text-purple-700 col-span-full py-8">
+                No subjects available for this semester
+              </p>
+            )}
+          </div>
+        )}
+      </motion.div>
     </main>
   );
 }

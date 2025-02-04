@@ -77,122 +77,120 @@ export default function CategoryPage({ params }: CategoryPageProps) {
     ? posts.filter((post) => post.tags?.includes(selectedTag))
     : posts;
 
-    if (loading) {
-      return (
-        <div className="flex items-center justify-center min-h-screen bg-white">
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: "spring", stiffness: 260, damping: 20 }}
-          >
-            <PuffLoader color="#8B5CF6" size={150} /> {/* Changed to purple-500 */}
-          </motion.div>
-        </div>
-      );
-    }
-  
-    if (error) {
-      return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-white text-gray-900 px-4">
-          <motion.div
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className="text-center space-y-6 max-w-2xl"
-          >
-            <h2 className="text-2xl md:text-4xl font-bold text-gray-800">
-              {`No Posts Found For "${category}"`}
-            </h2>
-            <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
-              <Link
-                href="/"
-                className="flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all"
-              >
-                <FiArrowLeft className="text-xl" />
-                Back to Home
-              </Link>
-              <Link
-                href="/category"
-                className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all text-center"
-              >
-                Explore Categories
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      );
-    }
-  
+  if (loading) {
     return (
-      <main className="relative min-h-screen bg-white text-gray-900 px-4 py-6 sm:py-8 md:py-12">
-        <div className="max-w-7xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-8 sm:mb-12"
-          >
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center relative mb-8">
+      <div className="flex items-center justify-center min-h-screen bg-white">
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ type: "spring", stiffness: 260, damping: 20 }}
+        >
+          <PuffLoader color="#8B5CF6" size={150} /> {/* Changed to purple-500 */}
+        </motion.div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-white text-gray-900 px-4">
+        <motion.div
+          initial={{ y: -20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          className="text-center space-y-6 max-w-2xl"
+        >
+          <h2 className="text-2xl md:text-4xl font-bold text-gray-800">
+            {`No Posts Found For "${category}"`}
+          </h2>
+          <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
             <Link
-  href="/#category"
-  onClick={() => scrollToHash('category')}
-  className="flex items-center gap-2 text-purple-600 hover:text-purple-700 transition-colors sm:absolute sm:left-0 mb-4 sm:mb-0"
->
-                <FiArrowLeft className="text-sm" />
-                <span className="text-sm font-medium">All Categories</span>
-              </Link>
-  
-              <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-purple-800 text-center">
-                {category
-                  .split("-")
-                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                  .join(" ")}
-              </h1>
-            </div>
-  
-            {category.toLowerCase() === "reading" && tags.length > 0 && (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                className="mb-8 sm:mb-12"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <FiTag className="text-xl text-purple-600" />
-                  <h3 className="text-lg font-semibold text-gray-700">
-                    Filter by Tags:
-                  </h3>
-                </div>
-                <div className="flex gap-2 overflow-x-auto pb-3">
+              href="/"
+              className="flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all"
+            >
+              <FiArrowLeft className="text-xl" />
+              Back to Home
+            </Link>
+            <Link
+              href="/category"
+              className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all text-center"
+            >
+              Explore Categories
+            </Link>
+          </div>
+        </motion.div>
+      </div>
+    );
+  }
+
+  return (
+    <main className="relative min-h-screen bg-white text-gray-900 px-4 py-6 sm:py-8 md:py-12">
+      <div className="max-w-7xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8 sm:mb-12"
+        >
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center relative mb-8">
+            <Link
+              href="/#category"
+              onClick={() => scrollToHash('category')}
+              className="flex items-center gap-2 text-purple-600 hover:text-purple-700 transition-colors sm:absolute sm:left-0 mb-4 sm:mb-0"
+            >
+              <FiArrowLeft className="text-sm" />
+              <span className="text-sm font-medium">All Categories</span>
+            </Link>
+
+            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-purple-800 text-center">
+              {category
+                .split("-")
+                .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                .join(" ")}
+            </h1>
+          </div>
+
+          {category.toLowerCase() === "reading" && tags.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="mb-8 sm:mb-12"
+            >
+              <div className="flex items-center gap-3 mb-4">
+                <FiTag className="text-xl text-purple-600" />
+                <h3 className="text-lg font-semibold text-gray-700">
+                  Filter by Tags:
+                </h3>
+              </div>
+              <div className="flex gap-2 overflow-x-auto pb-3">
+                <button
+                  onClick={() => setSelectedTag(null)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${!selectedTag
+                      ? "bg-purple-600 text-white"
+                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                >
+                  All
+                </button>
+                {tags.map((tag) => (
                   <button
-                    onClick={() => setSelectedTag(null)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${
-                      !selectedTag
+                    key={tag}
+                    onClick={() => setSelectedTag(tag)}
+                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${selectedTag === tag
                         ? "bg-purple-600 text-white"
                         : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
-                  >
-                    All
-                  </button>
-                  {tags.map((tag) => (
-                    <button
-                      key={tag}
-                      onClick={() => setSelectedTag(tag)}
-                      className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${
-                        selectedTag === tag
-                          ? "bg-purple-600 text-white"
-                          : "bg-gray-100 text-gray-700 hover:bg-gray-200"
                       }`}
-                    >
-                      {tag}
-                    </button>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-          </motion.div>
-  
-          <AnimatePresence>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-              {filteredPosts.map((post, index) => (
-                <motion.div
+                  >
+                    {tag}
+                  </button>
+                ))}
+              </div>
+            </motion.div>
+          )}
+        </motion.div>
+
+        <AnimatePresence>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+            {filteredPosts.map((post, index) => (
+              <motion.div
                 key={post._id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -202,32 +200,32 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                           shadow-purple-200/40 hover:shadow-purple-300/50"  /* Added purple shadows */
                 onClick={() => setSelectedPostSlug(post.slug)}
               >
-                  <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
-                    {post.title}
-                  </h2>
-                  {post.tags && (
-                    <div className="flex flex-wrap gap-2">
-                      {post.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2.5 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded-full"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </motion.div>
-              ))}
-            </div>
-          </AnimatePresence>
-        </div>
-  
-        <PostModal
-          slug={selectedPostSlug}
-          isOpen={!!selectedPostSlug}
-          onClose={() => setSelectedPostSlug(null)}
-        />
-      </main>
-    );
-  }
+                <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
+                  {post.title}
+                </h2>
+                {post.tags && (
+                  <div className="flex flex-wrap gap-2">
+                    {post.tags.map((tag) => (
+                      <span
+                        key={tag}
+                        className="px-2.5 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded-full"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+              </motion.div>
+            ))}
+          </div>
+        </AnimatePresence>
+      </div>
+
+      <PostModal
+        slug={selectedPostSlug}
+        isOpen={!!selectedPostSlug}
+        onClose={() => setSelectedPostSlug(null)}
+      />
+    </main>
+  );
+}

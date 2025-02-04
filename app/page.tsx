@@ -83,8 +83,8 @@ export default function HomePage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-black">
-        <PuffLoader color="#36D7B7" size={150} />
+      <div className="flex items-center justify-center min-h-screen bg-white">
+        <PuffLoader color="purple" size={150} />
       </div>
     );
   }

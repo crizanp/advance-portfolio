@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, notFound } from "next/navigation";
 import parse, { domToReact } from "html-react-parser";
 import Prism from "prismjs";
-import "prismjs/themes/prism-tomorrow.css";
+import "prismjs/themes/prism.css"; // Light theme for Prism
 import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-css";
 import "prismjs/components/prism-markup";
@@ -17,26 +17,7 @@ const FloatingBubbles = () => {
   const colors = ["#4C51BF", "#ED64A6", "#9F7AEA"];
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(3)].map((_, index) => (
-        <motion.div
-          key={index}
-          className="absolute rounded-full"
-          style={{
-            backgroundColor: colors[index % colors.length],
-            width: `${Math.random() * 80 + 40}px`,
-            height: `${Math.random() * 80 + 40}px`,
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            opacity: 0.2,
-          }}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{
-            opacity: [0.2, 0.4, 0.2],
-            scale: [0.5, 1, 0.5],
-            transition: { duration: Math.random() * 5 + 3, repeat: Infinity },
-          }}
-        />
-      ))}
+      
     </div>
   );
 };
@@ -72,7 +53,7 @@ export default function NotesDetailPage() {
 
       if (domNode.name === "blockquote") {
         return (
-          <blockquote className="border-l-4 border-blue-500 pl-4 italic text-gray-400 my-4">
+          <blockquote className="border-l-4 border-blue-500 pl-4 italic text-gray-600 my-4">
             {domToReact(domNode.children)}
           </blockquote>
         );
@@ -88,8 +69,8 @@ export default function NotesDetailPage() {
         );
 
         return (
-          <div className="relative bg-gray-900 p-4 rounded-md overflow-x-auto mb-5">
-            <pre className="text-gray-100">
+          <div className="relative bg-gray-100 p-4 rounded-md overflow-x-auto mb-5">
+            <pre className="text-gray-800">
               <code dangerouslySetInnerHTML={{ __html: highlightedCode }} />
             </pre>
           </div>
@@ -149,7 +130,7 @@ export default function NotesDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-900">
+      <div className="flex items-center justify-center min-h-screen bg-white">
         <PuffLoader color="#36D7B7" size={150} />
       </div>
     );
@@ -159,19 +140,19 @@ export default function NotesDetailPage() {
   if (!post) return notFound();
 
   return (
-    <div className="relative min-h-screen bg-gray-900 text-white p-4 sm:p-6 lg:p-10">
+    <div className="relative min-h-screen bg-gradient-to-br from-purple-50 to-white text-gray-900 p-4 sm:p-6 lg:p-10">
       <FloatingBubbles />
 
       {/* Breadcrumb Navigation */}
       <nav className="mb-6">
-        <ul className="flex flex-wrap text-white text-sm space-x-2">
+        <ul className="flex flex-wrap text-gray-900 text-sm space-x-2">
           {breadcrumbItems.map((item, index) => (
             <li key={index} className="flex items-center">
               <Link href={item.href} className="hover:underline">
                 {item.name.replace(/%20/g, " ")}
               </Link>
               {index < breadcrumbItems.length - 1 && (
-                <span className="mx-2 text-gray-400">/</span>
+                <span className="mx-2 text-gray-500">/</span>
               )}
             </li>
           ))}
@@ -184,13 +165,13 @@ export default function NotesDetailPage() {
       </h1>
 
       <main className="max-w-4xl mx-auto">
-        <p className="text-gray-400 mb-6 text-center">
+        <p className="text-gray-600 mb-6 text-center">
           {new Date(post.createdAt).toLocaleDateString()}
         </p>
 
         {tableOfContents.length > 0 && (
-          <div className="mb-10 bg-gray-800 p-5 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold text-white mb-4">Table of Contents</h2>
+          <div className="mb-10 bg-gray-100 p-5 rounded-lg shadow-lg">
+            <h2 className="text-2xl font-bold text-gray-900 mb-4">Table of Contents</h2>
             <ul className="space-y-2 list-disc list-inside">
               {tableOfContents.map((heading, index) => (
                 <li key={index} className="flex items-center">
@@ -204,7 +185,7 @@ export default function NotesDetailPage() {
           </div>
         )}
 
-        <article className="prose lg:prose-xl dark:prose-invert mx-auto">
+        <article className="prose lg:prose-xl mx-auto">
           {parse(post.content, customParseOptions([]))}
         </article>
       </main>
