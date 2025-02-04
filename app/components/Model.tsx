@@ -24,7 +24,7 @@ const Modal = ({ show, onClose, children }: ModalProps) => {
   if (isMobile) {
     return (
       <div
-        className="fixed inset-0 z-[1000] flex items-center justify-center bg-black bg-opacity-50"
+        className="fixed inset-0 z-54 flex items-center justify-center bg-black bg-opacity-50"
       >
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
@@ -48,7 +48,7 @@ const Modal = ({ show, onClose, children }: ModalProps) => {
 
   return (
     <div
-      className="fixed inset-0 z-[1000] flex items-center justify-center bg-black bg-opacity-50"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
@@ -61,7 +61,7 @@ const Modal = ({ show, onClose, children }: ModalProps) => {
           {/* Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-3 right-3 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 z-[1100]"
+            className="absolute top-4 right-3 bg-red-500 text-white rounded-full p-2 hover:bg-red-600 z-[1100]"
           >
             ✕
           </button>

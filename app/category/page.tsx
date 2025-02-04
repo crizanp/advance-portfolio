@@ -3,21 +3,12 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import axios from "axios"; // Import axios
-import Spinner from "../components/Spinner"; // Import Spinner component
+import axios from "axios";
+import Spinner from "../components/Spinner";
 
 const engineeringNotes = {
   category: "Computer Engineering Notes",
-  subcategories: [
-    "1st Sem",
-    "2nd Sem",
-    "3rd Sem",
-    "4th Sem",
-    "5th Sem",
-    "6th Sem",
-    "7th Sem",
-    "8th Sem",
-  ],
+  subcategories: Array.from({ length: 8 }, (_, i) => `${i + 1}st Sem`),
 };
 
 const readingList = [
@@ -29,185 +20,149 @@ const readingList = [
 export default function CategoriesPage() {
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
-  const [loading, setLoading] = useState(true); // One loading state for entire content
+  const [loading, setLoading] = useState(true);
   const [showAd, setShowAd] = useState(true);
 
   useEffect(() => {
-    async function fetchData() {
+    const fetchData = async () => {
       try {
-        const [categoriesRes, postsRes] = await Promise.all([
+        const [categoriesRes, tagsRes] = await Promise.all([
           axios.get(`${process.env.NEXT_PUBLIC_API_URL}/categories`),
-          axios.get(`${process.env.NEXT_PUBLIC_API_URL}/posts`),
+          axios.get(`${process.env.NEXT_PUBLIC_API_URL}/posts/tags`),
         ]);
-
-        const categoriesData = categoriesRes.data;
-        const postsData = postsRes.data;
-
-        const tagsSet = new Set();
-        postsData.forEach((post) => {
-          if (Array.isArray(post.tags)) {
-            post.tags.forEach((tag) => tagsSet.add(tag));
-          }
-        });
-
-        setCategories(categoriesData);
-        setTags(Array.from(tagsSet));
+        
+        setCategories(categoriesRes.data);
+        setTags(tagsRes.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-        setLoading(false); // Stop loading when both categories and tags are fetched
+        setLoading(false);
       }
-    }
+    };
 
     fetchData();
 
-    const timer = setTimeout(() => {
-      setShowAd(false);
-    }, 60000);
-
+    const timer = setTimeout(() => setShowAd(false), 60000);
     return () => clearTimeout(timer);
   }, []);
 
   return (
-    <main className="p-2 sm:p-4 md:p-6 lg:p-8 xl:p-10 2xl:p-12 bg-gradient-to-br from-black via-gray-800 to-black min-h-screen">
-      {/* Spinner to show during loading */}
-      <Spinner loading={loading} />
-
-      {/* Only render the content when loading is false */}
-      {!loading && (
-        <>
-          {/* Advertising Section */}
-          {showAd && (
-            <motion.div
-              className="relative bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-6 rounded-lg mb-10 shadow-lg"
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
+    <main className="min-h-screen bg-white">
+      {/* Advertising Banner */}
+      {showAd && (
+        <motion.div
+          className="relative bg-gradient-to-r from-purple-600 to-indigo-600 p-4 text-white"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          <div className="max-w-6xl mx-auto flex justify-between items-center">
+            <div>
+              <h2 className="text-xl font-bold">Professional Web Development Services</h2>
+              <p className="mt-1 text-sm">Custom solutions for your digital needs</p>
+            </div>
+            <Link
+              href="https://ighdigital.ae/marketing-solutions/web-development/"
+              className="ml-4 px-4 py-2 bg-white text-purple-600 rounded-full font-semibold hover:bg-gray-100 transition-colors"
             >
-              <button
-                onClick={() => setShowAd(false)}
-                className="absolute top-2 right-2 text-white text-xl font-bold hover:text-gray-300"
-              >
-                &times;
-              </button>
-              <div className="text-center text-white">
-                <h2 className="text-3xl font-bold">Professional Web Development</h2>
-                <p className="text-lg mt-2">
-                  Need a cutting-edge website or telegram bot for your business or services? We offer custom website development services tailored to your needs.
-                </p>
-                <Link href="https://ighdigital.ae/marketing-solutions/web-development/" className="inline-block mt-4 bg-white text-black font-semibold py-2 px-4 rounded-full hover:bg-gray-200">
-                  Learn More
-                </Link>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Dynamic Categories Section */}
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="md:col-span-3">
-              <h2 className="text-4xl font-bold text-center mb-12 text-white">
-                Explore by Categories
-              </h2>
-              <motion.div
-                className="grid grid-cols-1 md:grid-cols-3 gap-6"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1 }}
-              >
-                {categories.length > 0 ? (
-                  categories.map((category, index) => (
-                    <Link href={`/category/${category.name.toLowerCase().replace(/\s+/g, "-")}`} key={index}>
-                      <motion.div
-                        className="cursor-pointer bg-gray-900 text-gray-300 p-6 rounded-lg shadow-lg hover:bg-blue-600 hover:text-white transition duration-300 ease-in-out"
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        <h2 className="text-xl font-bold text-center">{category.name}</h2>
-                      </motion.div>
-                    </Link>
-                  ))
-                ) : (
-                  <p className="text-center text-white">No categories found</p>
-                )}
-              </motion.div>
-            </div>
-
-            {/* Tags Section */}
-            <div className="md:col-span-1">
-              <motion.div
-                className="bg-gray-800 p-6 rounded-lg shadow-lg"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5 }}
-              >
-                <h2 className="text-2xl font-semibold text-white mb-4 text-center">
-                  Tags
-                </h2>
-                <div className="flex flex-wrap gap-2">
-                  {tags.length > 0 ? (
-                    tags.map((tag, tagIndex) => (
-                      <motion.div
-                        key={tagIndex}
-                        className="bg-blue-600 text-gray-300 py-2 px-4 rounded-full cursor-pointer hover:bg-blue-700 hover:text-white transition duration-300"
-                        whileHover={{ scale: 1.05 }}
-                      >
-                        <Link
-                          key={tagIndex}
-                          href={`/tags/${tag.toLowerCase().replace(/\s+/g, "-")}`}
-                          className="bg-blue-600 text-gray-300 py-2 px-4 rounded-full hover:bg-blue-700 hover:text-white transition duration-300"
-                        >
-                          {tag}
-                        </Link>
-                      </motion.div>
-                    ))
-                  ) : (
-                    <p className="text-center text-white">No tags found</p>
-                  )}
-                </div>
-              </motion.div>
-            </div>
+              Get Started
+            </Link>
+            <button
+              onClick={() => setShowAd(false)}
+              className="ml-4 text-gray-200 hover:text-white"
+            >
+              ×
+            </button>
           </div>
+        </motion.div>
+      )}
 
-          {/* Reading List Section */}
-          <motion.div
-            className="bg-gray-200 p-6 rounded-lg my-10 shadow-lg"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <div className="text-center text-gray-900">
-              <h2 className="text-3xl font-bold mb-6">Browse My Latest Reading</h2>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                {readingList.map((book, index) => (
-                  <motion.div
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <Spinner loading={loading} />
+
+        {!loading && (
+          <>
+            {/* Categories Section */}
+            <section className="mb-16">
+              <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
+                Explore Categories
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {categories.map((category, index) => (
+                  <Link 
+                    href={`/category/${category.name.toLowerCase().replace(/\s+/g, "-")}`} 
                     key={index}
-                    className="bg-gray-900 text-gray-300 p-6 rounded-lg shadow-lg flex flex-col justify-between hover:bg-gray-800 hover:shadow-xl transition duration-300 ease-in-out"
-                    whileHover={{ scale: 1.05 }}
                   >
-                    <div>
-                      <h3 className="text-2xl font-bold mb-4 text-center">{book.title}</h3>
-                      <p className="text-sm text-center">
-                        Dive into the world of <strong>{book.title}</strong> and explore its story.
-                      </p>
-                    </div>
-                    <div className="text-center mt-6">
-                      <Link
-                        href={`/blog/${book.slug}`}
-                        className="inline-block bg-blue-600 text-white py-2 px-4 rounded-full hover:bg-blue-700 transition duration-300"
-                      >
-                        Read More
-                      </Link>
-                    </div>
-                  </motion.div>
+                    <motion.div
+                      className="group bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-shadow border border-gray-200 hover:border-purple-200"
+                      whileHover={{ y: -5 }}
+                    >
+                      <div className="flex items-center space-x-4">
+                        <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                          <span className="text-purple-600 font-bold text-lg">
+                            {category.name[0]}
+                          </span>
+                        </div>
+                        <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">
+                          {category.name}
+                        </h3>
+                      </div>
+                    </motion.div>
+                  </Link>
                 ))}
               </div>
+            </section>
 
-              <Link href="/services" className="inline-block mt-6 bg-blue-600 text-white font-semibold py-2 px-6 rounded-full hover:bg-blue-700">
-                See All
-              </Link>
+            {/* Tags & Reading List Section */}
+            <div className="grid lg:grid-cols-4 gap-8">
+              {/* Tags Section */}
+              <div className="lg:col-span-1">
+                <div className="sticky top-24 bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-4">Popular Tags</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {tags.map((tag, index) => (
+                      <Link
+                        key={index}
+                        href={`/tags/${tag.toLowerCase().replace(/\s+/g, "-")}`}
+                        className="px-3 py-1.5 bg-purple-100 text-purple-700 rounded-full text-sm hover:bg-purple-200 transition-colors"
+                      >
+                        {tag}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Reading List Section */}
+              <div className="lg:col-span-3">
+                <section className="bg-purple-50 p-8 rounded-xl">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Featured Reading List</h2>
+                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {readingList.map((book, index) => (
+                      <motion.div
+                        key={index}
+                        className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+                        whileHover={{ scale: 1.02 }}
+                      >
+                        <h3 className="font-semibold text-lg mb-2">{book.title}</h3>
+                        <p className="text-gray-600 text-sm mb-4">
+                          Explore key insights from this popular read
+                        </p>
+                        <Link
+                          href={`/blog/${book.slug}`}
+                          className="text-purple-600 hover:text-purple-700 font-medium text-sm"
+                        >
+                          Read Summary →
+                        </Link>
+                      </motion.div>
+                    ))}
+                  </div>
+                </section>
+              </div>
             </div>
-          </motion.div>
-        </>
-      )}
+          </>
+        )}
+      </div>
     </main>
   );
 }

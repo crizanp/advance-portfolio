@@ -10,6 +10,7 @@ import { FaLinkedin, FaGithub, FaBookOpen } from "react-icons/fa";
 import Modal from "./components/Model";
 import CVTemplate from "./components/CVTemplate";
 import { RiPagesLine } from "react-icons/ri";
+import TitleSection from "./components/HeroSection";
 
 const getLatestPosts = () => posts.slice(0, 2);
 const books = [
@@ -39,8 +40,7 @@ const categories = [
   { name: "Telegram Bots", icon: "🤖", link: "/category/telegram-api" },
   { name: "Reading", icon: "📚", link: "/category/reading" },
   { name: "Research", icon: "🎨", link: "/category/research" },
-  { name: "Blog", icon: "📝", link: "/category/blog" },
-  { name: "Cheat Sheet", icon: "🔍", link: "/category/cheat-sheet" },
+
 ];
 const projects = [
   {
@@ -66,13 +66,13 @@ export default function HomePage() {
   const [latestPosts, setLatestPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCV, setShowCV] = useState(false);
- 
-    useEffect(() => {
-      if (window.location.hash) {
-        const hash = window.location.hash.substring(1);
-        scrollToHash(hash);
-      }
-    }, []);
+
+  useEffect(() => {
+    if (window.location.hash) {
+      const hash = window.location.hash.substring(1);
+      scrollToHash(hash);
+    }
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {
@@ -88,7 +88,7 @@ export default function HomePage() {
       </div>
     );
   }
- 
+
   const metaTitle = "Welcome to My Space - Portfolio, Blog, and Projects";
   const metaDescription =
     "Explore projects, blogs, and insights shared by a passionate developer. Discover tutorials, latest projects, and more.";
@@ -126,50 +126,7 @@ export default function HomePage() {
         <div className="absolute top-1/3 left-0 w-64 h-64 bg-purple-200 rounded-full opacity-30 mix-blend-multiply blur-lg"></div>        {/* Hero Section */}
 
         {/* Hero Secton */}
-        <section className="text-center py-20 relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-6">
-              Creative Developer
-            </h1>
-            <p className="text-xl text-purple-700 max-w-2xl mx-auto mb-8">
-              Turning ideas into digital experiences through code and creativity
-            </p>
-
-            <div className="flex justify-center gap-4">
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Link
-                  href="/projects"
-                  className="px-8 py-3 bg-purple-600 text-white rounded-lg shadow-lg hover:bg-purple-700 transition-colors flex items-center gap-2"
-                >
-                  <RiPagesLine className="text-xl" />
-                  View Work
-                </Link>
-              </motion.div>
-
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <button
-                  onClick={() => setShowCV(true)}
-                  className="px-8 py-3 border-2 border-purple-600 text-purple-600 rounded-lg hover:bg-purple-50 transition-colors"
-                >
-                  View CV
-                </button>
-              </motion.div>
-            </div>
-
-            <div className="mt-8 flex justify-center gap-4">
-              <a href="https://linkedin.com" target="_blank" rel="noopener" className="p-2 text-purple-600 hover:text-purple-700 transition-colors">
-                <FaLinkedin className="text-3xl" />
-              </a>
-              <a href="https://github.com" target="_blank" rel="noopener" className="p-2 text-purple-600 hover:text-purple-700 transition-colors">
-                <FaGithub className="text-3xl" />
-              </a>
-            </div>
-          </motion.div>
-        </section>
+        <TitleSection/>
         <section className="py-16 md:py-20" id="category">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             {/* Categories Grid */}

@@ -8,125 +8,139 @@ const CVTemplate = () => {
             <div className="resume-left">
                 <div className="profile-section">
                     <img
-                        src="https://media.licdn.com/dms/image/v2/D4D03AQEeFYmQ-5aDxw/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1716426183631?e=1738195200&v=beta&t=Q50WazXmRxwoCLyp6M2Ed_gVbIa0YbAZqctzloDW--g"
+                        src="https://avatars.githubusercontent.com/u/137764965?v=4"
                         alt="Srijan Pokhrel"
                     />
                 </div>
                 <div className="contact-section py-4">
                     <h3>Contact</h3>
                     <ul>
-                        <li>📧 srijanpokhrel1@gmail.com</li>
-                        <li>🔗 linkedin.com/in/srijanpokhrel</li>
-                        <li>🔗 github.com/crizanp</li>
+                        <li><span className="icon">📧</span> srijanpokhrel1@gmail.com</li>
+                        <li><span className="icon">🔗</span> linkedin.com/in/srijanpokhrel</li>
+                        <li><span className="icon">🔗</span> github.com/crizanp</li>
                     </ul>
                 </div>
                 <div className="skills-section py-4">
-                    <h3>Skills</h3>
+                    <h3>Technical Expertise</h3>
                     <ul>
-                        <li>
-                            React.js <span className="skill-bar"><span style={{ width: "90%" }}></span></span>
-                        </li>
-                        <li>
-                            PHP <span className="skill-bar"><span style={{ width: "85%" }}></span></span>
-                        </li>
-                        <li>
-                            JavaScript <span className="skill-bar"><span style={{ width: "95%" }}></span></span>
-                        </li>
-                        <li>
-                            WordPress <span className="skill-bar"><span style={{ width: "80%" }}></span></span>
-                        </li>
-                        <li>
-                            Magento <span className="skill-bar"><span style={{ width: "70%" }}></span></span>
-                        </li>
-                        <li>
-                            Shopify <span className="skill-bar"><span style={{ width: "75%" }}></span></span>
-                        </li>
+                        {[
+                            { skill: 'Next.js', level: '95%' },
+                            { skill: 'MERN Stack', level: '92%' },
+                            { skill: 'Telegram Bots', level: '90%' },
+                            { skill: 'Discord Bots', level: '85%' },
+                            { skill: 'Automation Tools', level: '88%' },
+                            { skill: 'WebSockets', level: '80%' }
+                        ].map((item, index) => (
+                            <li key={index}>
+                                {item.skill}
+                                <span className="skill-bar">
+                                    <span style={{ width: item.level }}></span>
+                                </span>
+                            </li>
+                        ))}
                     </ul>
                 </div>
-                <div className="languages-section py-4">
-                    <h3>Languages</h3>
-                    <ul className="language-dots">
-                        <li>English <span className="dots"><span></span><span></span><span></span><span></span></span></li>
-                        <li>Nepali <span className="dots"><span></span><span></span><span></span><span></span></span></li>
-                        <li>Hindi <span className="dots"><span></span><span></span><span></span></span></li>
-                    </ul>
+                <div className="tools-section py-4">
+                    <h3>Tools & Technologies</h3>
+                    <div className="tools-grid">
+                        {['Puppeteer', 'Selenium', 'Redis', 'REST API', 'GraphQL', 'Docker', 'AWS', 'CI/CD'].map((tool, index) => (
+                            <span key={index} className="tool-tag">{tool}</span>
+                        ))}
+                    </div>
                 </div>
             </div>
 
             {/* Right Content */}
             <div className="resume-right">
-                <h1>Srijan Pokhrel</h1>
-                <h2>Full Stack Web Developer</h2>
+                <header>
+                    <h1>Srijan Pokhrel</h1>
+                    <h2>Full Stack & Automation Developer</h2>
+                </header>
 
                 <div className="summary-section">
-                    <h3>Summary</h3>
+                    <h3>Professional Summary</h3>
                     <p>
-                        Experienced Senior Web Developer skilled in React.js, PHP, and
-                        JavaScript. I create seamless digital solutions for CMS platforms
-                        like WordPress, Magento, and Shopify. With 5+ years of experience, I
-                        am dedicated to delivering innovative and high-performing web
-                        applications.
+                        Full Stack Developer specializing in Next.js and MERN stack applications with expertise in messaging platform development. 
+                        Proven experience in building scalable Telegram Mini Apps, high-performance bots for Telegram/Discord, and automation solutions. 
+                        Passionate about creating efficient systems with modern web technologies and cloud infrastructure.
                     </p>
                 </div>
 
                 <div className="experience-section">
-                    <h3>Experience</h3>
-                    <ul>
-                        <li>
-                            <strong>Senior Web Developer</strong>
-                            <p>IGH Digital, UAE (2021 - Present)</p>
-                            <p>
-                                - Developed scalable web applications using React.js, PHP, and
-                                WordPress.
-                                <br />
-                                - Improved website performance and user experience.
-                            </p>
-                        </li>
-                        <li>
-                            <strong>Lead Developer</strong>
-                            <p>NXtech Digital (2017 - 2021)</p>
-                            <p>
-                                - Led a team to create and maintain high-performing CMS
-                                websites.
-                                <br />
-                                - Enhanced customer ROI through optimized technical solutions.
-                            </p>
-                        </li>
-                    </ul>
+                    <h3>Professional Experience</h3>
+                    <div className="timeline">
+                        {[
+                            {
+                                title: "Senior Full Stack Developer",
+                                company: "IGH Digital, UAE",
+                                period: "2021 - Present",
+                                points: [
+                                    "Developed Next.js applications with TypeScript achieving 98% Lighthouse scores",
+                                    "Created Telegram Mini Apps with WebView integration handling 50k+ monthly users",
+                                    "Built automated social media management tools using Puppeteer and Redis",
+                                    "Designed Discord bot architecture handling 1M+ daily interactions"
+                                ]
+                            },
+                            {
+                                title: "Lead Bot Developer",
+                                company: "NXtech Digital",
+                                period: "2017 - 2021",
+                                points: [
+                                    "Led development of enterprise-grade Telegram bots with payment integration",
+                                    "Implemented CI/CD pipelines for automated bot deployments",
+                                    "Created multi-tenant Discord bots with role-based access systems",
+                                    "Optimized bot performance using WebSockets and Redis caching"
+                                ]
+                            }
+                        ].map((exp, index) => (
+                            <div key={index} className="timeline-item">
+                                <h4>{exp.title}</h4>
+                                <p className="company">{exp.company} • {exp.period}</p>
+                                <ul>
+                                    {exp.points.map((point, i) => (
+                                        <li key={i}>{point}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))}
+                    </div>
                 </div>
 
                 <div className="projects-section">
-                    <h3>Projects</h3>
-                    <ul>
-                        <li>
-                            <strong>E-Commerce Website</strong>
-                            <p>
-                                Built a Shopify-based platform for an online store, integrating
-                                payment gateways and improving the shopping experience.
-                            </p>
-                        </li>
-                        <li>
-                            <strong>Custom CMS Platform</strong>
-                            <p>
-                                Designed and developed a WordPress site for a marketing agency
-                                with interactive features and a responsive design.
-                            </p>
-                        </li>
-                    </ul>
+                    <h3>Key Projects</h3>
+                    <div className="project-grid">
+                        {[
+                            {
+                                title: "Telegram E-Commerce Bot",
+                                description: "Built a Telegram Mini App marketplace with Next.js backend and TON blockchain payments processing $250k+ monthly transactions"
+                            },
+                            {
+                                title: "Discord Community Manager",
+                                description: "Developed AI-powered Discord bot with automated moderation, analytics, and role management for 500+ servers"
+                            },
+                            {
+                                title: "Web Automation Framework",
+                                description: "Created enterprise-grade automation system using Puppeteer Cluster and Redis for mass data processing"
+                            }
+                        ].map((project, index) => (
+                            <div key={index} className="project-card">
+                                <h4>{project.title}</h4>
+                                <p>{project.description}</p>
+                            </div>
+                        ))}
+                    </div>
                 </div>
 
                 <div className="education-section">
-                    <h3>Education</h3>
-                    <ul>
-                        <li>
-                            <strong>Bachelor's Degree in Computer Engineering</strong>
-                            <p>Technical University (2017 - 2022)</p>
-                            <p>
-                                Built a strong foundation in programming, system design, and
-                                software development.
-                            </p>
-                        </li>
-                    </ul>
+                    <h3>Education & Certifications</h3>
+                    <div className="education-item">
+                        <h4>BSc in Computer Engineering</h4>
+                        <p className="institution">Tribhuwan University • 2018 - 2023</p>
+                        <ul>
+                            <li>Focus: Data Mining and ML</li>
+                            <li>Final Year Project: "ML-Powered Nepali Currency Recognition System for Seamless Mobile Integration"</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

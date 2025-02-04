@@ -8,13 +8,13 @@
   }
   
   .modal-content::-webkit-scrollbar-thumb {
-    background-color: #007acc; /* Theme color */
+    background-color: #4b3db6; /* Theme color */
     border-radius: 6px; /* Rounded scrollbar */
     border: 2px solid #f0f0f0; /* Add some spacing */
   }
   
   .modal-content::-webkit-scrollbar-thumb:hover {
-    background-color: #005f99; /* Slightly darker color on hover */
+    background-color: #3927bd; /* Slightly darker color on hover */
   }
   
   .resume-container {
@@ -30,8 +30,7 @@
   /* Left Sidebar */
   .resume-left {
     width: 40%;
-    background: #003f63;
-    color: #fff;
+    background: #6c5ce7;
     padding: 20px;
     text-align: left;
   }
@@ -87,7 +86,7 @@
   .skill-bar span {
     display: block;
     height: 100%;
-    background: #007acc;
+    background: #4b3db6;
     border-radius: 2px;
   }
   
@@ -108,7 +107,7 @@
   .language-dots .dots span {
     width: 8px;
     height: 8px;
-    background: #007acc;
+    background: #4b3db6;
     border-radius: 50%;
   }
   
@@ -120,12 +119,13 @@
   .resume-right {
     width: 70%;
     padding: 20px;
+    color:rgb(25, 24, 24);
   }
   
   .resume-right h1 {
     font-size: 28px;
     margin-bottom: 5px;
-    color: #003f63;
+    color: #6c5ce7;
   }
   
   .resume-right h2 {
@@ -140,7 +140,7 @@
   .education-section h3 {
     font-size: 18px;
     margin-bottom: 10px;
-    border-bottom: 2px solid #003f63;
+    border-bottom: 2px solid #6c5ce7;
     padding-bottom: 5px;
   }
   
@@ -175,4 +175,87 @@
     margin: 5px 0;
     line-height: 1.4;
   }
-  
+  /* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+.resume-container {
+    font-family: 'Poppins', sans-serif;
+    line-height: 1.6;
+    color: #2d3748;
+}
+
+h1, h2, h3, h4 {
+    color: #2b6cb0;
+    margin-bottom: 0.5rem;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+}
+
+h2 {
+    font-size: 1.5rem;
+    color: #4a5568;
+}
+
+.resume-left {
+    background: #f7fafc;
+    border-right: 3px solid #e2e8f0;
+}
+
+.skill-bar {
+    background: #e2e8f0;
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.skill-bar span {
+    background: #2b6cb0;
+    display: block;
+    height: 100%;
+    border-radius: 4px;
+}
+
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+}
+
+.tool-tag {
+    background: #e2e8f0;
+    padding: 0.3rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+.project-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.timeline-item {
+    border-left: 2px solid #2b6cb0;
+    padding-left: 1rem;
+    margin-left: 1rem;
+    position: relative;
+}
+
+.timeline-item:before {
+    content: '';
+    position: absolute;
+    left: -7px;
+    top: 0;
+    width: 12px;
+    height: 12px;
+    background: #2b6cb0;
+    border-radius: 50%;
+}
