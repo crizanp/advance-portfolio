@@ -6,74 +6,43 @@ import Link from 'next/link';
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
-    <nav className="bg-black shadow-md sticky top-0 z-50 border-b-2 border-gray-700"> {/* Sticky and border */}
+    <nav className="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-100 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
+          {/* Logo */}
           <div className="flex items-center">
-            {/* Logo */}
-            <Link href="/" className="text-white text-3xl font-bold">
-              {/* <img src='/images/Logo.png' className="h-13"/> */}
-              <code><>Crizan Pokhrel</></code>
+            <Link 
+              href="/" 
+              className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent
+                         hover:from-purple-700 hover:to-blue-600 transition-all"
+            >
+              <span className="font-playfair tracking-tight">Crizan Pokhrel</span>
             </Link>
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex space-x-4 items-center">
-            <Link href="/category" className="text-white hover:bg-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-              Categories
-            </Link>
-            <Link href="/category/telegram-api" className="text-white hover:bg-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-              Telegram Bot
-            </Link>
-            <Link href="/category/reading" className="text-white hover:bg-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-              Readings
-            </Link>
-            {/* <Link href="/blog" className="text-white hover:bg-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-              Blog
-            </Link> */}
-            <Link href="/about" className="text-white hover:bg-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-              About
-            </Link>
-            
-            <Link href="/contact" className="text-white hover:bg-gray-900 px-3 py-2 rounded-md text-sm font-medium">
-              Contact
-            </Link>
+          <div className="hidden md:flex space-x-2 items-center">
+            <NavLink href="/category">Categories</NavLink>
+            <NavLink href="/category/telegram-api">Telegram Bot</NavLink>
+            <NavLink href="/category/reading">Readings</NavLink>
+            <NavLink href="/about">About</NavLink>
+            <NavLink href="/contact">Contact</NavLink>
           </div>
 
-          {/* Mobile Hamburger Menu */}
+          {/* Mobile Menu Button */}
           <div className="flex items-center md:hidden">
             <button
-              type="button"
-              className="text-white hover:bg-gray-900 focus:outline-none focus:bg-gray-600 p-2 rounded-md"
               onClick={toggleMenu}
+              className="text-gray-600 hover:text-purple-600 p-2 rounded-lg transition-colors"
             >
-              <svg
-                className="h-6 w-6"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {isOpen ? (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M6 18L18 6M6 6l12 12"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 ) : (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 6h16M4 12h16m-7 6h7"
-                  />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 )}
               </svg>
             </button>
@@ -81,28 +50,41 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu Dropdown */}
       {isOpen && (
-        <div className="md:hidden">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <Link href="/category" className="text-white hover:bg-gray-900 block px-3 py-2 rounded-md text-base font-medium">
-              Categories
-            </Link>
-            <Link href="/category/telegram-api" className="text-white hover:bg-gray-900 block px-3 py-2 rounded-md text-base font-medium">
-              Telegram Bot
-            </Link>
-            <Link href="/category/reading" className="text-white hover:bg-gray-900 block px-3 py-2 rounded-md text-base font-medium">
-              Reading
-            </Link>
-            <Link href="/about" className="text-white hover:bg-gray-900 block px-3 py-2 rounded-md text-base font-medium">
-              About
-            </Link>
-            <Link href="/contact" className="text-white hover:bg-gray-900 block px-3 py-2 rounded-md text-base font-medium">
-              Contact
-            </Link>
+        <div className="md:hidden bg-white border-t border-gray-100">
+          <div className="px-4 py-3 space-y-1">
+            <MobileNavLink href="/category">Categories</MobileNavLink>
+            <MobileNavLink href="/category/telegram-api">Telegram Bot</MobileNavLink>
+            <MobileNavLink href="/category/reading">Readings</MobileNavLink>
+            <MobileNavLink href="/about">About</MobileNavLink>
+            <MobileNavLink href="/contact">Contact</MobileNavLink>
           </div>
         </div>
       )}
     </nav>
   );
 }
+
+// Reusable NavLink component
+const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
+  <Link
+    href={href}
+    className="text-gray-600 hover:text-purple-600 px-4 py-2 rounded-md text-sm font-medium 
+               transition-colors hover:bg-gray-50 relative group"
+  >
+    {children}
+    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-purple-600 transition-all group-hover:w-full"></span>
+  </Link>
+);
+
+// Mobile NavLink component
+const MobileNavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
+  <Link
+    href={href}
+    className="block text-gray-600 hover:text-purple-600 px-3 py-2 rounded-md font-medium
+               transition-colors hover:bg-gray-50"
+  >
+    {children}
+  </Link>
+);

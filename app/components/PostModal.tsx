@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import parse, { domToReact } from "html-react-parser";
 import Prism from "prismjs";
-import "prismjs/themes/prism-tomorrow.css";
+import "prismjs/themes/prism-coy.css";
 import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-css";
 import "prismjs/components/prism-markup";
@@ -17,7 +17,7 @@ import QuoteCardModal from "./QuoteCardModal";
 import React from "react";
 
 const FloatingBubbles = () => {
-  const colors = ["#4C51BF", "#ED64A6", "#9F7AEA"];
+  const colors = ["#93C5FD", "#F9A8D4", "#C4B5FD"];
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {[...Array(3)].map((_, index) => (
@@ -61,24 +61,24 @@ const CopyableQuote = ({ quoteContent, children, handleGenerateCard }) => {
   };
 
   return (
-    <div className="relative bg-white rounded-lg my-5 shadow-lg">
+    <div className="relative bg-gray-50 rounded-lg my-5 shadow-md border border-gray-200">
       <FontAwesomeIcon
         icon={faQuoteLeft}
-        className="text-blue-400 text-2xl absolute -top-3 left-3"
+        className="text-blue-500 text-2xl absolute -top-3 left-3 bg-white p-1 rounded-full"
       />
-      <blockquote className="text-lg italic text-gray-200 pl-10">
+      <blockquote className="text-lg italic text-gray-800 pl-10 pr-5 py-4">
         {children}
       </blockquote>
-      <div className="flex justify-center mt-3">
+      <div className="flex justify-center mt-3 pb-2">
         <button
-          className={`text-center text-xs px-3 mr-1 py-2 rounded-md font-semibold shadow-sm transition-colors duration-200 ${copied ? "bg-blue-300 text-gray-800 hover:bg-blue-500" : "bg-gray-700 text-white hover:bg-gray-600"
+          className={`text-center text-xs px-3 mr-1 py-2 rounded-md font-semibold shadow-sm transition-colors duration-200 ${copied ? "bg-blue-100 text-blue-800" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
             }`}
           onClick={handleCopyQuote}
         >
           {copied ? "Copied!" : "Copy Quote"}
         </button>
         <button
-          className="text-center text-xs px-3 py-2 ml-1 rounded-md font-semibold shadow-sm transition-colors duration-200 bg-blue-500 text-white"
+          className="text-center text-xs px-3 py-2 ml-1 rounded-md font-semibold shadow-sm transition-colors duration-200 bg-blue-500 text-white hover:bg-blue-600"
           onClick={() => handleGenerateCard(quoteContent, "Author Name")}
         >
           Make Card
@@ -103,8 +103,8 @@ const customParseOptions = (headingList, handleGenerateCard) => ({
         domNode.name,
         {
           id: headingId,
-          className: `font-bold my-2 ${domNode.name === "h1" ? "text-4xl" :
-            domNode.name === "h2" ? "text-3xl" : "text-2xl"
+          className: `font-bold my-4 text-gray-800 ${domNode.name === "h1" ? "text-3xl sm:text-4xl" :
+            domNode.name === "h2" ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"
             }`
         },
         domToReact(domNode.children)
@@ -120,12 +120,12 @@ const customParseOptions = (headingList, handleGenerateCard) => ({
         const [copied, setCopied] = useState(false);
 
         return (
-          <div className="relative bg-[#282c34] p-5 rounded-lg mb-6 shadow-lg overflow-x-auto">
-            <pre className="text-sm font-mono text-gray-200 leading-relaxed whitespace-pre-wrap">
+          <div className="relative bg-gray-50 p-4 rounded-lg mb-6 shadow-sm border border-gray-200 overflow-x-auto">
+            <pre className="text-sm font-mono text-gray-700 leading-relaxed whitespace-pre-wrap">
               <code dangerouslySetInnerHTML={{ __html: highlightedCode }} />
             </pre>
             <button
-              className={`absolute top-1.5 right-2 text-xs px-2 py-2 rounded-md font-semibold shadow-sm transition-colors duration-200 ${copied ? "bg-blue-300 text-gray-800 hover:bg-blue-500" : "bg-gray-600 text-white hover:bg-gray-700"
+              className={`absolute top-2 right-2 text-xs px-2 py-1 rounded-md font-semibold shadow-sm transition-colors duration-200 ${copied ? "bg-blue-100 text-blue-800" : "bg-gray-200 text-gray-700 hover:bg-gray-300"
                 }`}
               onClick={() => {
                 navigator.clipboard.writeText(codeContent);
@@ -133,7 +133,7 @@ const customParseOptions = (headingList, handleGenerateCard) => ({
                 setTimeout(() => setCopied(false), 2000);
               }}
             >
-              {copied ? "Copied!" : "Copy Code"}
+              {copied ? "Copied!" : "Copy"}
             </button>
           </div>
         );
@@ -179,7 +179,6 @@ export default function PostModal({ slug, isOpen, onClose }) {
 
         setPost(currentPost);
 
-
         const headingList = [];
         parse(currentPost.content, customParseOptions(headingList, handleGenerateCard));
         setTableOfContents(headingList);
@@ -211,55 +210,51 @@ export default function PostModal({ slug, isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-75 overflow-y-auto">
-      <div className="w-full max-w-full sm:max-w-[75%] max-h-[100vh] overflow-y-auto bg-white  rounded-lg shadow-lg">
-
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 overflow-y-hidden">
+      <div className="w-full  bg-white  shadow-xl overflow-y-auto max-h-[100vh] my-8 custom-scroll">
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="bg-white rounded-lg shadow-xl p-6 sm:p-10 relative mx-auto " // Added margin for spacing
+          className="relative"
         >
-          {/* Close Button - Now properly positioned inside modal */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 text-white bg-gray-900 p-2 rounded-full hover:bg-gray-700 focus:outline-none"
+            className="fixed top-1 right-4 z-50 bg-white text-gray-600 hover:text-gray-800 px-3 py-1 rounded-md shadow-sm hover:shadow-md transition-all text-sm font-medium border border-gray-200"
           >
-            <FontAwesomeIcon icon={faTimes} size="lg" />
+            Close
           </button>
-
-
           {loading ? (
-            <div className="flex items-center justify-center min-h-screen">
-              <PuffLoader color="#36D7B7" size={150} />
+            <div className="flex items-center justify-center min-h-[300px]">
+              <PuffLoader color="#3B82F6" size={100} />
             </div>
           ) : error ? (
-            <div className="flex flex-col items-center justify-center min-h-screen text-white">
-              <h1 className="text-5xl mb-4">OOPS!</h1>
-              <h2 className="text-gray-400 text-xl mb-4">{error}</h2>
-              <div className="flex gap-4">
-                <button
-                  onClick={onClose}
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                >
-                  Go Back
-                </button>
-              </div>
+            <div className="flex flex-col items-center justify-center min-h-[300px] p-6">
+              <h1 className="text-3xl mb-4 text-gray-800">OOPS!</h1>
+              <h2 className="text-gray-600 text-lg mb-4">{error}</h2>
+              <button
+                onClick={onClose}
+                className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-6 py-2 rounded-lg"
+              >
+                Go Back
+              </button>
             </div>
           ) : post && (
-            <div>
-              <main>
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-5 text-center">
+            <div className="p-3 sm:p-8">
+              <main className="max-w-3xl mx-auto">
+                <h1 className="text-3xl sm:text-4xl font-bold mb-4 text-gray-900 text-center">
                   {post.title}
                 </h1>
-                <p className="text-gray-400 mb-5 text-center">{formatDate(post.createdAt)}</p>
+                <p className="text-gray-500 mb-6 text-center text-sm sm:text-base">
+                  {formatDate(post.createdAt)}
+                </p>
 
                 {post.imageUrl && (
-                  <div className="mb-10 text-center">
+                  <div className="mb-8 mx-auto max-w-full px-4">
                     <img
                       src={post.imageUrl}
                       alt={post.title}
-                      className="max-w-xs md:max-w-md mx-auto rounded-lg shadow-md cursor-pointer"
+                      className="w-full h-auto rounded-lg shadow-sm cursor-zoom-in border border-gray-200"
                       onClick={() => {
                         setSelectedImage(post.imageUrl);
                         setIsImageModalOpen(true);
@@ -269,13 +264,19 @@ export default function PostModal({ slug, isOpen, onClose }) {
                 )}
 
                 {tableOfContents.length > 0 && (
-                  <div className="mb-10 bg-white p-5 rounded-lg shadow-lg">
-                    <h2 className="text-2xl font-bold text-white mb-4">Table of Contents</h2>
-                    <ul className="space-y-2 list-disc list-inside">
+                  <div className="mb-8 bg-gray-50 p-4 rounded-lg border border-gray-200">
+                    <h2 className="text-xl font-semibold text-gray-800 mb-3">Table of Contents</h2>
+                    <ul className="space-y-2">
                       {tableOfContents.map((heading, index) => (
                         <li key={index} className="flex items-center">
-                          <FontAwesomeIcon icon={faLink} className="text-blue-400 mr-2" />
-                          <a href={`#${heading.id}`} className="text-blue-500 hover:text-blue-700">
+                          <FontAwesomeIcon
+                            icon={faLink}
+                            className="text-blue-500 mr-2 text-sm"
+                          />
+                          <a
+                            href={`#${heading.id}`}
+                            className="text-gray-700 hover:text-blue-600 text-sm sm:text-base"
+                          >
                             {heading.text}
                           </a>
                         </li>
@@ -284,7 +285,7 @@ export default function PostModal({ slug, isOpen, onClose }) {
                   </div>
                 )}
 
-                <article className="prose lg:prose-xl dark:prose-invert mx-auto">
+                <article className="prose prose-gray max-w-none">
                   {parse(post.content, customParseOptions([], handleGenerateCard))}
                 </article>
               </main>
@@ -292,15 +293,17 @@ export default function PostModal({ slug, isOpen, onClose }) {
           )}
 
           {isImageModalOpen && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75">
-              <div className="relative max-w-4xl">
-                <img
-                  src={selectedImage}
-                  alt="Enlarged content"
-                  className="max-w-full max-h-screen rounded-lg"
-                />
+            <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/90 p-4">
+              <div className="relative max-w-4xl w-full">
+                <div className="bg-white p-2 rounded-lg shadow-xl">
+                  <img
+                    src={selectedImage}
+                    alt="Enlarged content"
+                    className="max-w-full max-h-[90vh] object-contain rounded"
+                  />
+                </div>
                 <button
-                  className="absolute top-4 right-4 text-white bg-gray-900 p-2 rounded hover:bg-white"
+                  className="absolute top-4 right-4 text-white hover:text-gray-200"
                   onClick={() => setIsImageModalOpen(false)}
                 >
                   <FontAwesomeIcon icon={faTimes} size="2x" />

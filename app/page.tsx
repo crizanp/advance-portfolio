@@ -1,4 +1,3 @@
-// app/page.tsx or app/home/page.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -7,18 +6,73 @@ import Link from "next/link";
 import { posts } from "../lib/data";
 import { motion } from "framer-motion";
 import PuffLoader from "react-spinners/PuffLoader";
-import { FaLinkedin } from "react-icons/fa";
+import { FaLinkedin, FaGithub, FaBookOpen } from "react-icons/fa";
 import Modal from "./components/Model";
 import CVTemplate from "./components/CVTemplate";
+import { RiPagesLine } from "react-icons/ri";
 
-// Helper function to get the two latest posts
 const getLatestPosts = () => posts.slice(0, 2);
-
+const books = [
+  {
+    title: "It Ends With Us - Colleen Hoover",
+    description: "A poignant tale of love, resilience, and the complexities of relationships that will stay with you.",
+    link: "/blog/powerful-quotes-from-it-ends-with-us-by-colleen-hoover"
+  },
+  {
+    title: "I Too Had a Love Story - Ravinder Singh",
+    description: "A touching story capturing the innocence of first love and the pain of loss.",
+    link: "/blog/i-too-had-a-love-story"
+  },
+  {
+    title: "Verity - Colleen Hoover",
+    description: "A psychological thriller exploring blurred lines between truth and fiction.",
+    link: "/blog/verity"
+  },
+  {
+    title: "It Starts With Us - Colleen Hoover",
+    description: "Continues Lily Bloom's emotional journey after her difficult decision to leave Ryle.",
+    link: "/blog/60-powerful-quotes-from-it-starts-with-us-by-colleen-hoover"
+  }
+];
+const categories = [
+  { name: "Web Development", icon: "💻", link: "/category/web-development" },
+  { name: "Telegram Bots", icon: "🤖", link: "/category/telegram-api" },
+  { name: "Reading", icon: "📚", link: "/category/reading" },
+  { name: "Research", icon: "🎨", link: "/category/research" },
+  { name: "Blog", icon: "📝", link: "/category/blog" },
+  { name: "Cheat Sheet", icon: "🔍", link: "/category/cheat-sheet" },
+];
+const projects = [
+  {
+    title: "NDSNEPAL",
+    description: "A social media marketing company providing services for Facebook, Instagram, TikTok, Telegram, YouTube, and more.",
+    image: "/images/1.png",
+    link: "https://ndsnepal.com"
+  },
+  {
+    title: "Creative Science Project",
+    description: "Guiding and helping you understand science practical lessons from junior classes. DIY your projects and toys while learning the science behind them.",
+    image: "/images/2.png",
+    link: "https://creativescienceproject.com"
+  }
+];
+const scrollToHash = (hash: string) => {
+  const element = document.getElementById(hash);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
+};
 export default function HomePage() {
   const [latestPosts, setLatestPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCV, setShowCV] = useState(false);
-
+ 
+    useEffect(() => {
+      if (window.location.hash) {
+        const hash = window.location.hash.substring(1);
+        scrollToHash(hash);
+      }
+    }, []);
 
   useEffect(() => {
     setTimeout(() => {
@@ -34,7 +88,7 @@ export default function HomePage() {
       </div>
     );
   }
-
+ 
   const metaTitle = "Welcome to My Space - Portfolio, Blog, and Projects";
   const metaDescription =
     "Explore projects, blogs, and insights shared by a passionate developer. Discover tutorials, latest projects, and more.";
@@ -66,258 +120,284 @@ export default function HomePage() {
           })}
         </script>
       </Head>
-      <main className="p-2 pb-8 sm:p-4 md:p-6 lg:p-8 xl:p-10 2xl:p-12 bg-gradient-to-br from-black via-gray-800 to-black min-h-screen relative">
-        {/* Hero Section */}
-        <section className="text-center py-20">
-          <motion.h1
-            className="text-6xl font-bold text-white mb-5"
-            initial={{ opacity: 0, y: -50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-          >
-            Welcome to My Space
-          </motion.h1>
-          <motion.p
-            className="text-xl text-gray-400"
+      <main className="p-2 pb-8 sm:p-4 md:p-6 lg:p-8 xl:p-10 2xl:p-12 bg-gradient-to-br from-white to-purple-50 min-h-screen relative overflow-hidden">
+        {/* Floating Decorations */}
+        <div className="absolute -top-20 -right-20 w-96 h-96 bg-purple-100 rounded-full opacity-40 mix-blend-multiply blur-xl"></div>
+        <div className="absolute top-1/3 left-0 w-64 h-64 bg-purple-200 rounded-full opacity-30 mix-blend-multiply blur-lg"></div>        {/* Hero Section */}
+
+        {/* Hero Secton */}
+        <section className="text-center py-20 relative z-10">
+          <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.5 }}
+            transition={{ duration: 0.8 }}
           >
-            A space for projects, blogs, and ideas, where I share code, creativity,
-            and personal insights.
-          </motion.p>
-          <motion.div
-            className="mt-10"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 1 }}
-          >
-            <Link
-              href="/about"
-              className="text-white font-semibold px-8 py-4 bg-blue-600 hover:bg-blue-700 rounded-lg"
-            >
-              Learn More About Me
-            </Link>
-          </motion.div>
+            <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-6">
+              Creative Developer
+            </h1>
+            <p className="text-xl text-purple-700 max-w-2xl mx-auto mb-8">
+              Turning ideas into digital experiences through code and creativity
+            </p>
 
-          {/* LinkedIn Connect Button */}
-          <motion.div
-            className="mt-8"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, delay: 1.2 }}
-          >
-            <a
-              href="https://www.linkedin.com/in/srijanpokhrel" // Replace with your LinkedIn profile link
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center text-white font-semibold px-3 py-1 "
-            >
-              {/* <FaLinkedin className="mr-2 h-6 w-6" /> */}
-              Connect me on LinkedIn
-            </a>
-            <span className="text-white">|</span>
-            <a
-              href="#"
-              onClick={() => setShowCV(true)}
-              className="inline-flex items-center text-white font-semibold px-3 py-1"
-            >
-              View My CV
-            </a>
-
-            <Modal show={showCV} onClose={() => setShowCV(false)}>
-              <div className="modal-content" style={{ maxHeight: "80vh", overflowY: "auto" }}>
-                <CVTemplate />
-              </div>
-            </Modal>
-
-
-          </motion.div>
-        </section>
-
-        {/* Latest Posts Section */}
-        <section className="mt-20">
-          <h2 className="text-4xl text-white font-bold mb-10 text-center">
-            Latest Blog Posts
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {latestPosts.map((post) => (
-              <motion.div
-                key={post.id}
-                className="bg-gray-900 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300"
-                whileHover={{ scale: 1.05 }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.7, delay: 0.2 }}
-              >
-                <h3 className="text-2xl font-bold text-white mb-3">
-                  {post.title}
-                </h3>
-                <p className="text-gray-400 mb-5">{post.content.slice(0, 100)}...</p>
+            <div className="flex justify-center gap-4">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link
-                  href={`/blog/${post.slug}`}
-                  className="text-blue-500 hover:underline"
+                  href="/projects"
+                  className="px-8 py-3 bg-purple-600 text-white rounded-lg shadow-lg hover:bg-purple-700 transition-colors flex items-center gap-2"
                 >
-                  Learn More
+                  <RiPagesLine className="text-xl" />
+                  View Work
                 </Link>
               </motion.div>
-            ))}
+
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <button
+                  onClick={() => setShowCV(true)}
+                  className="px-8 py-3 border-2 border-purple-600 text-purple-600 rounded-lg hover:bg-purple-50 transition-colors"
+                >
+                  View CV
+                </button>
+              </motion.div>
+            </div>
+
+            <div className="mt-8 flex justify-center gap-4">
+              <a href="https://linkedin.com" target="_blank" rel="noopener" className="p-2 text-purple-600 hover:text-purple-700 transition-colors">
+                <FaLinkedin className="text-3xl" />
+              </a>
+              <a href="https://github.com" target="_blank" rel="noopener" className="p-2 text-purple-600 hover:text-purple-700 transition-colors">
+                <FaGithub className="text-3xl" />
+              </a>
+            </div>
+          </motion.div>
+        </section>
+        <section className="py-16 md:py-20" id="category">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            {/* Categories Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {categories.map((category, index) => (
+                <motion.div
+                  key={category.name}
+                  className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all
+                   border border-purple-50 hover:border-purple-100 cursor-pointer
+                   flex flex-col items-center text-center"
+                  whileHover={{ scale: 1.05 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <div className="text-4xl mb-4 text-purple-600">{category.icon}</div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2 hover:text-purple-700 transition-colors">
+                    {category.name}
+                  </h3>
+                  <Link
+                    href={category.link}
+                    className="text-purple-600 hover:text-purple-800 font-medium
+                      flex items-center gap-2 transition-colors"
+                  >
+                    Explore
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 mt-0.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
+                    </svg>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </section>
+        {/* Latest Blog */}
+        <section className="py-16 md:py-20 ">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mb-12 md:mb-16 text-center"
+            >
+              <h2 className="text-3xl md:text-4xl font-bold text-purple-900 mb-4">
+                Latest Blog Posts
+              </h2>
+              <div className="w-20 h-1 bg-purple-600 mx-auto rounded-full" />
+            </motion.div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+              {latestPosts.map((post, index) => (
+                <motion.div
+                  key={post.id}
+                  className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all
+                   cursor-pointer
+                   flex flex-col justify-between"
+                  whileHover={{ scale: 1.02 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3 hover:text-purple-700 transition-colors">
+                      {post.title}
+                    </h3>
+                    <p className="text-gray-600 mb-5 text-sm md:text-base leading-relaxed">
+                      {post.content.slice(0, 100)}...
+                    </p>
+                  </div>
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="text-purple-600 hover:text-purple-800 font-medium
+                      flex items-center gap-2 transition-colors"
+                  >
+                    Read More
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 mt-0.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
+                    </svg>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* My Latest Work Section */}
-        <section className="mt-20">
-          <h2 className="text-4xl text-white font-bold mb-10 text-center">
-            My Latest Work
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10">
-            {/* Project 1 */}
+        {/* Latest Work */}
+        <section className="py-16 md:py-20">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
-              className="bg-gray-900 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300"
-              whileHover={{ scale: 1.05 }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mb-12 md:mb-16 text-center"
             >
-              <img
-                src="/images/1.png"
-                alt="Project 1"
-                className="rounded mb-5"
-              />
-              <h3 className="text-2xl font-bold text-white mb-3">NDSNEPAL</h3>
-              <p className="text-gray-400 mb-5">
-                NDSNEPAL is a social media marketing company that provides services
-                for Facebook, Instagram, Tiktok, Telegram, Youtube, and many more.
-              </p>
-              <Link
-                href="https://ndsnepal.com"
-                className="text-blue-500 hover:underline"
-              >
-                View Project
-              </Link>
+              <h2 className="text-3xl md:text-4xl font-bold text-purple-900 mb-4">
+                My Past Work
+              </h2>
+              <div className="w-20 h-1 bg-purple-600 mx-auto rounded-full" />
             </motion.div>
 
-            {/* Project 2 */}
-            <motion.div
-              className="bg-gray-900 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300"
-              whileHover={{ scale: 1.05 }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-            >
-              <img
-                src="/images/2.png" // Replace with your actual image paths
-                alt="Project 2"
-                className="rounded mb-5"
-              />
-              <h3 className="text-2xl font-bold text-white mb-3">
-                Creative Science Project
-              </h3>
-              <p className="text-gray-400 mb-5">
-                At Creative Science Project we guide and help you understand the
-                science practical lessons from junior classes. DIY your projects
-                and toys learning the science behind them.
-              </p>
-              <Link
-                href="https://creativescienceproject.com"
-                className="text-blue-500 hover:underline"
-              >
-                View Project
-              </Link>
-            </motion.div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {projects.map((project, index) => (
+                <motion.div
+                  key={project.title}
+                  className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all
+                    cursor-pointer"
+                  whileHover={{ scale: 1.02 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="rounded-lg mb-5 w-full h-48 object-cover"
+                  />
+                  <h3 className="text-xl font-bold text-gray-900 mb-3 hover:text-purple-700 transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="text-gray-600 mb-5 text-sm md:text-base leading-relaxed">
+                    {project.description}
+                  </p>
+                  <Link
+                    href={project.link}
+                    className="text-purple-600 hover:text-purple-800 font-medium
+                      flex items-center gap-2 transition-colors"
+                  >
+                    View Project
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 mt-0.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
+                    </svg>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </section>
 
-        {/* Latest Reading Post Section - Static */}
-        <section className="mt-20">
-          <h2 className="text-4xl text-white font-bold mb-10 text-center">
-            My Latest Reading
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-            {/* Book 1 */}
+        {/* Latest Reading*/}
+        <section className="py-10 md:py-14  relative">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
-              className="bg-gray-900 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300"
-              whileHover={{ scale: 1.05 }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mb-12 md:mb-16 text-center"
             >
-              <h3 className="text-2xl font-bold text-white mb-3">
-                It Ends With Us - Colleen Hoover
-              </h3>
-              <p className="text-gray-400 mb-5">
-                A poignant tale of love, resilience, and the complexities of
-                relationships. A heart-wrenching story that will stay with you.
-              </p>
-              <Link
-                href="/blog/powerful-quotes-from-it-ends-with-us-by-colleen-hoover"
-                className="text-blue-500 hover:underline"
-              >
-                Read More
-              </Link>
+              <h2 className="text-3xl md:text-4xl font-bold text-purple-900 mb-4">
+                My Latest Readings
+              </h2>
+              <div className="w-20 h-1 bg-purple-600 mx-auto rounded-full" />
             </motion.div>
 
-            {/* Book 2 */}
-            <motion.div
-              className="bg-gray-900 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300"
-              whileHover={{ scale: 1.05 }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-            >
-              <h3 className="text-2xl font-bold text-white mb-3">
-                I Too Had a Love Story - Ravinder Singh
-              </h3>
-              <p className="text-gray-400 mb-5">
-                A touching love story that captures the innocence of first love
-                and the pain of loss, leaving readers deeply moved.
-              </p>
-              <Link
-                href="/blog/i-too-had-a-love-story"
-                className="text-blue-500 hover:underline"
-              >
-                Read More
-              </Link>
-            </motion.div>
-
-            {/* Book 3 */}
-            <motion.div
-              className="bg-gray-900 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300"
-              whileHover={{ scale: 1.05 }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.4 }}
-            >
-              <h3 className="text-2xl font-bold text-white mb-3">
-                Verity - Colleen Hoover
-              </h3>
-              <p className="text-gray-400 mb-5">
-                A thrilling psychological rollercoaster that explores the blurred
-                lines between truth and fiction.
-              </p>
-              <Link href="/blog/verity" className="text-blue-500 hover:underline">
-                Read More
-              </Link>
-            </motion.div>
-
-            {/* Book 4 */}
-            <motion.div
-              className="bg-gray-900 p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300"
-              whileHover={{ scale: 1.05 }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.7, delay: 0.5 }}
-            >
-              <h3 className="text-2xl font-bold text-white mb-3">
-                It Starts With Us - Colleen-Hoover
-              </h3>
-              <p className="text-gray-400 mb-5">
-                t Starts with Us by Colleen Hoover picks up where It Ends with Us leaves off, continuing the emotional journey of Lily Bloom as she navigates her life after making the difficult decision to end her relationship with Ryle.
-              </p>
-              <Link href="/blog/60-powerful-quotes-from-it-starts-with-us-by-colleen-hoover" className="text-blue-500 hover:underline">
-                Read More
-              </Link>
-            </motion.div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+              {books.map((book, index) => (
+                <motion.div
+                  key={book.title}
+                  className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all
+                    cursor-pointer
+                   relative overflow-hidden group"
+                  whileHover={{ scale: 1.02 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-purple-700 transition-colors">
+                    {book.title}
+                  </h3>
+                  <p className="text-gray-600 mb-5 text-sm md:text-base leading-relaxed">
+                    {book.description}
+                  </p>
+                  <Link
+                    href={book.link}
+                    className="text-purple-600 hover:text-purple-800 font-medium
+                      flex items-center gap-2 transition-colors"
+                  >
+                    Read More
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 mt-0.5"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
+                    </svg>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </section>
 
