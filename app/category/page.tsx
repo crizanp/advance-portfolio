@@ -30,7 +30,7 @@ export default function CategoriesPage() {
           axios.get(`${process.env.NEXT_PUBLIC_API_URL}/categories`),
           axios.get(`${process.env.NEXT_PUBLIC_API_URL}/posts/tags`),
         ]);
-        
+
         setCategories(categoriesRes.data);
         setTags(tagsRes.data);
       } catch (error) {
@@ -51,27 +51,26 @@ export default function CategoriesPage() {
       {/* Advertising Banner */}
       {showAd && (
         <motion.div
-          className="relative bg-gradient-to-r from-purple-600 to-indigo-600 p-4 text-white"
+          className="relative bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-6 rounded-lg mb-10 shadow-lg"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
         >
-          <div className="max-w-6xl mx-auto flex justify-between items-center">
-            <div>
-              <h2 className="text-xl font-bold">Professional Web Development Services</h2>
-              <p className="mt-1 text-sm">Custom solutions for your digital needs</p>
-            </div>
-            <Link
-              href="https://ighdigital.ae/marketing-solutions/web-development/"
-              className="ml-4 px-4 py-2 bg-white text-purple-600 rounded-full font-semibold hover:bg-gray-100 transition-colors"
-            >
-              Get Started
+          <button
+            onClick={() => setShowAd(false)}
+            className="absolute top-2 right-2 text-white text-xl font-bold hover:text-gray-300"
+          >
+            &times;
+          </button>
+          <div className="text-center text-white">
+            <h2 className="text-3xl font-bold">Lets Collab!</h2>
+            <p className="text-lg mt-2">
+              Transform your digital presence with our expert services: Next-gen Web Development, Smart Automation Tools, AI-Powered Bots/Chatbots, Cross-Platform Mobile Apps, Professional Graphics Design, and Robust Web Infrastructure Solutions.
+
+            </p>
+            <Link href="https://ighdigital.ae/marketing-solutions/web-development/" className="inline-block mt-4 bg-white text-black font-semibold py-2 px-4 rounded-full hover:bg-gray-200">
+              Learn More
             </Link>
-            <button
-              onClick={() => setShowAd(false)}
-              className="ml-4 text-gray-200 hover:text-white"
-            >
-              ×
-            </button>
           </div>
         </motion.div>
       )}
@@ -89,8 +88,8 @@ export default function CategoriesPage() {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {categories.map((category, index) => (
-                  <Link 
-                    href={`/category/${category.name.toLowerCase().replace(/\s+/g, "-")}`} 
+                  <Link
+                    href={`/category/${category.name.toLowerCase().replace(/\s+/g, "-")}`}
                     key={index}
                   >
                     <motion.div
@@ -144,7 +143,7 @@ export default function CategoriesPage() {
                         className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
                         whileHover={{ scale: 1.02 }}
                       >
-                        <h3 className="font-semibold text-lg mb-2">{book.title}</h3>
+                        <h3 className="font-semibold text-lg mb-2 text-gray-800">{book.title}</h3>
                         <p className="text-gray-600 text-sm mb-4">
                           Explore key insights from this popular read
                         </p>
