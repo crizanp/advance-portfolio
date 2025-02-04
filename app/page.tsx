@@ -47,13 +47,13 @@ const projects = [
     title: "NDSNEPAL",
     description: "A social media marketing company providing services for Facebook, Instagram, TikTok, Telegram, YouTube, and more.",
     image: "/images/1.png",
-    link: "https://ndsnepal.com"
+    link: "/projects"
   },
   {
     title: "Creative Science Project",
     description: "Guiding and helping you understand science practical lessons from junior classes. DIY your projects and toys while learning the science behind them.",
     image: "/images/2.png",
-    link: "https://creativescienceproject.com"
+    link: "/projects"
   }
 ];
 const scrollToHash = (hash: string) => {

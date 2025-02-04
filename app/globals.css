@@ -21,9 +21,7 @@ body {
   transition: none !important; /* Disable global transition */
   transform: none !important; /* Disable global transform */
 }
-p{
-  color: rgb(36, 35, 35);
-}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

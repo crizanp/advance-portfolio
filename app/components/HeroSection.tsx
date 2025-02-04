@@ -78,10 +78,10 @@ const TitleSection = () => {
         </div>
 
         <div className="mt-8 flex justify-center gap-4">
-          <a href="https://linkedin.com" target="_blank" rel="noopener" className="p-2 text-purple-600 hover:text-purple-700 transition-colors">
+          <a href="https://www.linkedin.com/in/srijanpokhrel/" target="_blank" rel="noopener" className="p-2 text-purple-600 hover:text-purple-700 transition-colors">
             <FaLinkedin className="text-3xl" />
           </a>
-          <a href="https://github.com" target="_blank" rel="noopener" className="p-2 text-purple-600 hover:text-purple-700 transition-colors">
+          <a href="https://github.com/crizanp" target="_blank" rel="noopener" className="p-2 text-purple-600 hover:text-purple-700 transition-colors">
             <FaGithub className="text-3xl" />
           </a>
         </div>
