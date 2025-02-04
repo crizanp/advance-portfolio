@@ -3,27 +3,27 @@ import { FaFacebook, FaInstagram, FaLinkedin, FaGithub } from 'react-icons/fa';
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-gray-400 py-10">
+    <footer className="bg-white text-gray-800 py-10 border-t-4 border-purple-600">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
           {/* Footer Links */}
           <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 text-center md:text-left">
-            <Link href="/about" className="hover:text-white">
+            <Link href="/about" className="hover:text-purple-600">
               About
             </Link>
-            <Link href="/projects" className="hover:text-white">
+            <Link href="/projects" className="hover:text-purple-600">
               Projects
             </Link>
-            <Link href="/blog" className="hover:text-white">
+            <Link href="/blog" className="hover:text-purple-600">
               Blog
             </Link>
-            <Link href="/notes" className="hover:text-white">
+            <Link href="/notes" className="hover:text-purple-600">
               Engineering Notes
             </Link>
-            <Link href="/translation" className="hover:text-white">
+            <Link href="/translation" className="hover:text-purple-600">
               Nepali Unicode
             </Link>
-            <Link href="/contact" className="hover:text-white">
+            <Link href="/contact" className="hover:text-purple-600">
               Contact
             </Link>
           </div>
@@ -34,7 +34,7 @@ export default function Footer() {
               href="https://facebook.com/srijanpokhrel.11"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white"
+              className="text-gray-600 hover:text-blue-600"
             >
               <FaFacebook className="h-6 w-6" />
             </a>
@@ -42,7 +42,7 @@ export default function Footer() {
               href="https://www.instagram.com/srijan_pokhrel/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white"
+              className="text-gray-600 hover:text-pink-600"
             >
               <FaInstagram className="h-6 w-6" />
             </a>
@@ -50,7 +50,7 @@ export default function Footer() {
               href="https://www.linkedin.com/in/srijanpokhrel/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white"
+              className="text-gray-600 hover:text-blue-700"
             >
               <FaLinkedin className="h-6 w-6" />
             </a>
@@ -58,7 +58,7 @@ export default function Footer() {
               href="https://github.com/crizanp"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-gray-400 hover:text-white"
+              className="text-gray-600 hover:text-black"
             >
               <FaGithub className="h-6 w-6" />
             </a>
