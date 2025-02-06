@@ -9,13 +9,10 @@ import Modal from './Model';
 const TitleSection = () => {
   const titles = [
     'Creative Developer',
-    'MERN Developer',
     'Next.js Developer',
     'Telegram Bot Developer',
     'Discord Bot Developer',
-    'X Automation Developer',
     'AI Agent Developer',
-    'Automation Developer',
     'SEO Expert',
     'Blockchain Enthusiast',
     'Novel Reader',

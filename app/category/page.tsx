@@ -117,6 +117,21 @@ export default function CategoriesPage() {
                     </motion.div>
                   </Link>
                 ))}
+                <Link href="/notes">
+          <motion.div
+            className="group bg-white p-6 rounded-xl shadow-sm hover:shadow-lg transition-shadow border border-gray-200 hover:border-purple-200"
+            whileHover={{ y: -5 }}
+          >
+            <div className="flex items-center space-x-4">
+              <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                <span className="text-purple-600 font-bold text-lg">R</span>
+              </div>
+              <h3 className="text-lg font-semibold text-gray-900 group-hover:text-purple-600 transition-colors">
+                Resources
+              </h3>
+            </div>
+          </motion.div>
+        </Link>
               </div>
             </section>
 
