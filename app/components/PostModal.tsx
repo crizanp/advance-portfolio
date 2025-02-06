@@ -15,7 +15,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLink, faTimes, faQuoteLeft, faCopy } from "@fortawesome/free-solid-svg-icons";
 import QuoteCardModal from "./QuoteCardModal";
 import React from "react";
-
+import { FaFacebook, FaTwitter, FaLinkedin, FaLink } from "react-icons/fa";
+import { FiShare2 } from "react-icons/fi";
 const FloatingBubbles = () => {
   const colors = ["#93C5FD", "#F9A8D4", "#C4B5FD"];
   return (
@@ -248,7 +249,91 @@ export default function PostModal({ slug, isOpen, onClose }) {
                 <p className="text-gray-500 mb-6 text-center text-sm sm:text-base">
                   {formatDate(post.createdAt)}
                 </p>
+                <div className="relative">
+                  {/* Desktop Share Buttons (Left sticky) */}
+                  <motion.div
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    className="hidden md:block fixed left-4 top-1/2 -translate-y-1/2 z-10"
+                  >
+                    <div className="flex flex-col gap-4 items-center bg-white p-3 rounded-2xl shadow-lg">
+                      <span className="text-sm font-medium text-purple-600 flex items-center gap-1">
+                        <FiShare2 /> Share
+                      </span>
+                      <div className="flex flex-col gap-3">
+                        <a
+                          href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${window.location.origin}/blog/${post.slug}`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-700 transition-colors"
+                        >
+                          <FaFacebook size={24} />
+                        </a>
+                        <a
+                          href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`${window.location.origin}/blog/${post.slug}`)}&text=${encodeURIComponent(post.title)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-400 hover:text-blue-500 transition-colors"
+                        >
+                          <FaTwitter size={24} />
+                        </a>
+                        <a
+                          href={`https://www.linkedin.com/shareArticle?url=${encodeURIComponent(`${window.location.origin}/blog/${post.slug}`)}&title=${encodeURIComponent(post.title)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-700 hover:text-blue-800 transition-colors"
+                        >
+                          <FaLinkedin size={24} />
+                        </a>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(`${window.location.origin}/blog/${post.slug}`);
+                            // Add toast notification here if needed
+                          }}
+                          className="text-gray-600 hover:text-gray-700 transition-colors"
+                        >
+                          <FaLink size={20} />
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
 
+                  {/* Mobile Share Buttons (Above image) */}
+                  <div className="md:hidden mb-4">
+                    <div className="flex items-center gap-4 bg-white p-3 rounded-lg shadow-md">
+                      <span className="text-sm font-medium text-purple-600 flex items-center gap-1">
+                        <FiShare2 /> Share
+                      </span>
+                      <div className="flex gap-3">
+                        <a
+                          href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${window.location.origin}/blog/${post.slug}`)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-700 transition-colors"
+                        >
+                          <FaFacebook size={24} />
+                        </a>
+                        <a
+                          href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`${window.location.origin}/blog/${post.slug}`)}&text=${encodeURIComponent(post.title)}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-400 hover:text-blue-500 transition-colors"
+                        >
+                          <FaTwitter size={24} />
+                        </a>
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(`${window.location.origin}/blog/${post.slug}`);
+                            // Add toast notification here if needed
+                          }}
+                          className="text-gray-600 hover:text-gray-700 transition-colors"
+                        >
+                          <FaLink size={20} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 {post.imageUrl && (
                   <div className="mb-8 mx-auto max-w-full px-4">
                     <img
