@@ -1,13 +1,9 @@
 "use client"
-
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import dynamic from 'next/dynamic';
+import { useRouter } from 'next/navigation';
+import Modal from './editModal'; // Import the Modal component
 
-// Your modal component should be included or imported here
-import Modal from './Modal'; // Example import, adjust to your actual modal file path
-
-function ViewAllQuizzes() {
+export default function ViewAllQuizzes() {
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
@@ -121,9 +117,3 @@ function ViewAllQuizzes() {
     </div>
   );
 }
-
-// Wrap ViewAllQuizzes with dynamic import and disable SSR
-export default dynamic(
-  () => Promise.resolve(ViewAllQuizzes),
-  { ssr: false }
-);

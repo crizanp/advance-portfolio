@@ -1,30 +1,22 @@
-"use client";
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
 import 'katex/dist/katex.min.css';
 
+// Dynamically import ReactQuill to disable SSR
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
-import { Quill } from 'react-quill';
-import katex from 'katex';
 
-// Enable LaTeX support
-useEffect(() => {
-  window.katex = katex;
-}, []);
-// Define Quill toolbar options
+// Define toolbar options for ReactQuill
 const toolbarOptions = [
-  [{ header: [1, 2, 3, false] }],
-  ['bold', 'italic', 'underline', 'strike'],
-  [{ script: 'sub' }, { script: 'super' }],
+  [{ header: '1' }, { header: '2' }, { font: [] }],
   [{ list: 'ordered' }, { list: 'bullet' }],
-  [{ indent: '-1' }, { indent: '+1' }],
+  ['bold', 'italic', 'underline', 'strike'],
   [{ align: [] }],
+  ['link', 'blockquote', 'code-block'],
+  [{ script: 'sub' }, { script: 'super' }],
   [{ color: [] }, { background: [] }],
-  ['blockquote', 'code-block'],
-  ['formula'],
-  ['clean'],
+  ['clean'], // for clearing the content
 ];
 
 const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
@@ -36,10 +28,16 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
     explanation: '',
     difficulty: 3,
   });
-  
+
   const [types, setTypes] = useState([]);
   const [loadingTypes, setLoadingTypes] = useState(true);
-  const [difficultyError, setDifficultyError] = useState("");
+  const [difficultyError, setDifficultyError] = useState('');
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   useEffect(() => {
     const fetchQuestionTypes = async () => {
       try {
@@ -47,9 +45,9 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
         const data = await response.json();
         const formattedTypes = data.map((type) => type.name);
         setTypes(formattedTypes);
-        setFormData((prev) => ({ ...prev, questionType: formattedTypes[0] || "" }));
+        setFormData((prev) => ({ ...prev, questionType: formattedTypes[0] || '' }));
       } catch (error) {
-        console.error("Error fetching question types:", error);
+        console.error('Error fetching question types:', error);
       } finally {
         setLoadingTypes(false);
       }
@@ -57,6 +55,7 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
 
     fetchQuestionTypes();
   }, []);
+
   useEffect(() => {
     if (quiz) {
       setFormData({
@@ -83,16 +82,16 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
   };
 
   const handleEditorChange = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const addOption = () => {
-    setFormData(prev => ({ ...prev, options: [...prev.options, ''] }));
+    setFormData((prev) => ({ ...prev, options: [...prev.options, ''] }));
   };
 
   const removeOption = (index) => {
     const updatedOptions = formData.options.filter((_, i) => i !== index);
-    setFormData(prev => ({ ...prev, options: updatedOptions }));
+    setFormData((prev) => ({ ...prev, options: updatedOptions }));
   };
 
   const handleSave = () => {
@@ -100,13 +99,13 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
       setDifficultyError('Difficulty must be between 1 and 5.');
       return;
     }
-    
+
     const updatedData = {
       ...formData,
-      options: formData.options.map(text => ({ text })),
-      difficulty: Number(formData.difficulty)
+      options: formData.options.map((text) => ({ text })),
+      difficulty: Number(formData.difficulty),
     };
-    
+
     updateQuiz(quiz._id, updatedData);
     closeModal();
   };
@@ -122,7 +121,7 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
         className="bg-white rounded-xl p-6 w-full max-w-3xl shadow-lg overflow-y-auto max-h-[90vh]"
       >
         <h2 className="text-2xl font-bold mb-6 text-center text-purple-600">Edit Quiz Question</h2>
-        
+
         <form className="space-y-6">
           {/* Difficulty Level */}
           <div>
@@ -140,8 +139,8 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
             {difficultyError && <p className="text-red-500 text-sm mt-1">{difficultyError}</p>}
           </div>
 
-         {/* Question Type */}
-         <div>
+          {/* Question Type */}
+          <div>
             <label className="block mb-2 text-lg">Question Type</label>
             <select
               name="questionType"
@@ -158,18 +157,19 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
             </select>
           </div>
 
-
           {/* Question Text Editor */}
           <div>
             <label className="block mb-2 text-lg">Question Text</label>
             <div className="resize-y overflow-auto" style={{ minHeight: '150px' }}>
-              <ReactQuill
-                value={formData.questionText}
-                onChange={(value) => handleEditorChange('questionText', value)}
-                modules={{ toolbar: toolbarOptions }}
-                className="bg-white rounded-lg"
-                theme="snow"
-              />
+              {isClient && (
+                <ReactQuill
+                  value={formData.questionText}
+                  onChange={(value) => handleEditorChange('questionText', value)}
+                  modules={{ toolbar: toolbarOptions }}
+                  className="bg-white rounded-lg"
+                  theme="snow"
+                />
+              )}
             </div>
           </div>
 
@@ -223,13 +223,15 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
           <div>
             <label className="block mb-2 text-lg">Explanation</label>
             <div className="resize-y overflow-auto" style={{ minHeight: '150px' }}>
-              <ReactQuill
-                value={formData.explanation}
-                onChange={(value) => handleEditorChange('explanation', value)}
-                modules={{ toolbar: toolbarOptions }}
-                className="bg-white rounded-lg"
-                theme="snow"
-              />
+              {isClient && (
+                <ReactQuill
+                  value={formData.explanation}
+                  onChange={(value) => handleEditorChange('explanation', value)}
+                  modules={{ toolbar: toolbarOptions }}
+                  className="bg-white rounded-lg"
+                  theme="snow"
+                />
+              )}
             </div>
           </div>
 

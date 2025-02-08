@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import QuizModal from '../../components/Quiz';
 import Link from 'next/link'; // Import Link from Next.js
 import QuestionTypeModal from '../../components/QuestionTypeModal';
-import dynamic from 'next/dynamic';
 
 export default function AdminPage() {
   const [showModal, setShowModal] = useState(false);
@@ -56,7 +55,7 @@ export default function AdminPage() {
       </button>
       
       {/* Link to the ViewAllQuizzes page */}
-      <Link href="/admin/quiz/ViewAllQuizzes" legacyBehavior>
+      <Link href="/admin/quiz/ViewAllQuizzes">
         <button className="bg-purple-600 text-white px-4 mx-4 py-2 rounded">
           View All Quizzes
         </button>
