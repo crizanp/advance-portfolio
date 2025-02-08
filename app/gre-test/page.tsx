@@ -90,10 +90,6 @@ export default function HomePage() {
             <p className="text-sm text-gray-700 max-w-2xl mx-auto mb-8">
             Join over 250,000 students who boosted their GRE scores with our advanced platform. Challenge yourself with timed exercises and get instant feedback to track your progress across all sections.
 
-
-
-
-
 </p>
 
             <div className="grid md:grid-cols-3 gap-8 mt-12">

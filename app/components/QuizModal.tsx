@@ -37,7 +37,7 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
 
         if (selectedDifficulty !== null && questions.length > 0 && !showResults) {
             // Set initial time based on difficulty
-            const initialTime = selectedDifficulty <= 3 ? 600 : 100; // 10 or 15 minutes in seconds
+            const initialTime = selectedDifficulty <= 3 ? 600 : 900; // 10 or 15 minutes in seconds
             setTimeLeft(initialTime);
 
             timer = setInterval(() => {
