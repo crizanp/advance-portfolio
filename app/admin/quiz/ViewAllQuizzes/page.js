@@ -1,4 +1,5 @@
 "use client"
+
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Modal from './editModal'; // Import the Modal component
@@ -7,10 +8,13 @@ export default function ViewAllQuizzes() {
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for controlling modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false); // State to check if on client-side
   const router = useRouter();
 
   useEffect(() => {
+    setIsClient(true); // Mark client-side rendering
+
     const fetchQuizzes = async () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/quizzes`);
@@ -23,12 +27,14 @@ export default function ViewAllQuizzes() {
       }
     };
 
-    fetchQuizzes();
-  }, []);
+    if (isClient) {
+      fetchQuizzes();
+    }
+  }, [isClient]); // Only run this effect on the client
 
   const handleEdit = (quiz) => {
     setSelectedQuiz(quiz);
-    setIsModalOpen(true); // Open modal for editing
+    setIsModalOpen(true);
   };
 
   const handleDelete = async (quizId) => {
@@ -108,12 +114,14 @@ export default function ViewAllQuizzes() {
       </ul>
 
       {/* Modal component */}
-      <Modal
-        isOpen={isModalOpen}
-        closeModal={() => setIsModalOpen(false)}
-        quiz={selectedQuiz}
-        updateQuiz={updateQuiz}
-      />
+      {isClient && (
+        <Modal
+          isOpen={isModalOpen}
+          closeModal={() => setIsModalOpen(false)}
+          quiz={selectedQuiz}
+          updateQuiz={updateQuiz}
+        />
+      )}
     </div>
   );
 }
