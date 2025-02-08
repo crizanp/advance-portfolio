@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
@@ -27,12 +27,12 @@ const toolbarOptions = [
   ["clean"],
 ];
 
-export default function QuizModal({ onClose, onSubmit }) {
+export default function QuizModal({ onClose, onSubmit, quizData }) {
   const [formData, setFormData] = useState({
     questionType: "",
     questionText: "",
     options: ["", ""],
-    correctAnswer: "",
+    correctAnswers: [],
     explanation: "",
     difficulty: 3,
   });
@@ -46,20 +46,25 @@ export default function QuizModal({ onClose, onSubmit }) {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/question-types`);
         const data = await response.json();
-
-        // Ensure we extract the `name` field correctly
         const formattedTypes = data.map((type) => type.name);
-
         setTypes(formattedTypes);
-        setFormData((prev) => ({ ...prev, questionType: formattedTypes[0] || "" })); // Default to first option
+        setFormData((prev) => ({ ...prev, questionType: formattedTypes[0] || "" }));
       } catch (error) {
         console.error("Error fetching question types:", error);
       } finally {
         setLoadingTypes(false);
       }
     };
+
     fetchQuestionTypes();
   }, []);
+
+  // Pre-fill form when editing
+  useEffect(() => {
+    if (quizData) {
+      setFormData(quizData);
+    }
+  }, [quizData]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -76,6 +81,17 @@ export default function QuizModal({ onClose, onSubmit }) {
     newOptions[index] = value;
     setFormData({ ...formData, options: newOptions });
   };
+
+  const toggleCorrectAnswer = (index) => {
+    const selectedOption = formData.options[index];
+
+    const updatedCorrectAnswers = formData.correctAnswers.includes(selectedOption)
+      ? formData.correctAnswers.filter((ans) => ans !== selectedOption)
+      : [...formData.correctAnswers, selectedOption];
+
+    setFormData({ ...formData, correctAnswers: updatedCorrectAnswers });
+  };
+
 
   const addOption = () => {
     setFormData({ ...formData, options: [...formData.options, ""] });
@@ -100,10 +116,12 @@ export default function QuizModal({ onClose, onSubmit }) {
         transition={{ duration: 0.3 }}
         className="bg-white rounded-xl p-6 w-full max-w-3xl overflow-auto shadow-lg"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center text-purple-600">Add New Quiz Question</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center text-purple-600">
+          {quizData ? "Edit Quiz Question" : "Add New Quiz Question"}
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-6 max-h-[80vh] overflow-y-auto">
-          
-          {/* Question Type (Dynamically Loaded) */}
+
+          {/* Question Type */}
           <div>
             <label className="block mb-2 text-lg">Question Type</label>
             <select
@@ -132,18 +150,26 @@ export default function QuizModal({ onClose, onSubmit }) {
             />
           </div>
 
-          {/* Options */}
+          {/* Options & Correct Answers */}
           <div className="my-9">
             <label className="block mb-2 text-lg">Options</label>
             {formData.options.map((option, index) => (
-              <input
-                key={index}
-                type="text"
-                value={option}
-                onChange={(e) => handleOptionChange(index, e.target.value)}
-                className="w-full p-3 border-2 border-gray-300 rounded-lg mb-2 focus:ring-2 focus:ring-purple-500 focus:outline-none"
-                required
-              />
+              <div key={index} className="flex items-center gap-3">
+                <input
+                  type="text"
+                  value={option}
+                  onChange={(e) => handleOptionChange(index, e.target.value)}
+                  className="w-full p-3 border-2 border-gray-300 rounded-lg mb-2 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                  required
+                />
+                <input
+                  type="checkbox"
+                  checked={formData.correctAnswers.includes(option)} // Match by value, not index
+                  onChange={() => toggleCorrectAnswer(index)}
+                  className="w-5 h-5"
+                />
+
+              </div>
             ))}
             <button
               type="button"
@@ -152,18 +178,6 @@ export default function QuizModal({ onClose, onSubmit }) {
             >
               Add Option
             </button>
-          </div>
-
-          {/* Correct Answer */}
-          <div>
-            <label className="block mb-2 text-lg">Correct Answer</label>
-            <input
-              type="text"
-              value={formData.correctAnswer}
-              onChange={(e) => setFormData({ ...formData, correctAnswer: e.target.value })}
-              className="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
-              required
-            />
           </div>
 
           {/* Explanation */}
@@ -178,7 +192,7 @@ export default function QuizModal({ onClose, onSubmit }) {
             />
           </div>
 
-          {/* Difficulty Level */}
+          {/* Difficulty */}
           <div>
             <label className="block mb-2 text-lg">Difficulty (1-5)</label>
             <input

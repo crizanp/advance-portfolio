@@ -6,7 +6,7 @@ type Question = {
     _id: string;
     questionText: string;
     options: { text: string }[];
-    correctAnswer: string;
+    correctAnswers: string[];
     explanation: string;
     difficulty: number;
 };
@@ -20,24 +20,25 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
     const [selectedDifficulty, setSelectedDifficulty] = useState<number | null>(null);
     const [questions, setQuestions] = useState<Question[]>([]);
     const [currentQuestion, setCurrentQuestion] = useState(0);
-    const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
+    const [selectedAnswers, setSelectedAnswers] = useState<string[]>([]);
     const [score, setScore] = useState(0);
     const [showResults, setShowResults] = useState(false);
     const [loading, setLoading] = useState(true);
     const [showWarning, setShowWarning] = useState(false);
     const [timeLeft, setTimeLeft] = useState<number>(0);
     const [expandedExplanations, setExpandedExplanations] = useState<Set<number>>(new Set());
+
     const toggleExplanation = (index: number) => {
         const newSet = new Set(expandedExplanations);
         newSet.has(index) ? newSet.delete(index) : newSet.add(index);
         setExpandedExplanations(newSet);
-      };
+    };
+
     useEffect(() => {
         let timer: NodeJS.Timeout;
 
         if (selectedDifficulty !== null && questions.length > 0 && !showResults) {
-            // Set initial time based on difficulty
-            const initialTime = selectedDifficulty <= 3 ? 600 : 900; // 10 or 15 minutes in seconds
+            const initialTime = selectedDifficulty <= 3 ? 600 : 900;
             setTimeLeft(initialTime);
 
             timer = setInterval(() => {
@@ -68,7 +69,19 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                     `${process.env.NEXT_PUBLIC_API_URL}/quizzes/type?questionType=${topic}&difficulty=${selectedDifficulty}`
                 );
                 const data = await response.json();
-                setQuestions(data.slice(0, 10));
+                
+                // Clean all relevant fields
+                const cleanedData = data.map((question: Question) => ({
+                    ...question,
+                    questionText: cleanHtml(question.questionText),
+                    options: question.options.map(option => ({
+                        text: cleanHtml(option.text)
+                    })),
+                    correctAnswers: question.correctAnswers.map(ca => cleanHtml(ca)),
+                    explanation: cleanHtml(question.explanation)
+                }));
+                
+                setQuestions(cleanedData.slice(0, 10));
             } catch (error) {
                 console.error("Error fetching questions:", error);
             } finally {
@@ -82,44 +95,68 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
     }, [topic, selectedDifficulty]);
 
     const handleAnswerSelect = (answer: string) => {
-        if (!showResults) {
-            setSelectedAnswer(answer); // Allow changing the selected answer
+        if (!showResults && questions[currentQuestion]) {
+            const isMultipleSelect = questions[currentQuestion].correctAnswers.length > 1;
+            
+            setSelectedAnswers(prev => {
+                const newAnswers = isMultipleSelect
+                    ? (prev.includes(answer) 
+                        ? prev.filter(a => a !== answer) 
+                        : [...prev, answer])
+                    : (prev.includes(answer) ? [] : [answer]);
+                
+                return newAnswers;
+            });
         }
     };
-
     const handleClose = () => {
         if (!showResults && currentQuestion < questions.length) {
-            setShowWarning(true); // Show warning if the quiz is ongoing
+            setShowWarning(true);
         } else {
-            onClose(); // Close the modal if quiz is complete
+            onClose();
         }
     };
 
     const handleSkipQuestion = () => {
-        setSelectedAnswer(null); // Reset any selected answer
+        setSelectedAnswers([]);
         if (currentQuestion < questions.length - 1) {
-            setCurrentQuestion(currentQuestion + 1); // Skip to next question
+            setCurrentQuestion(currentQuestion + 1);
         } else {
-            setShowResults(true); // If it's the last question, show the results
+            setShowResults(true);
         }
     };
 
     const handleNextQuestion = () => {
-        if (selectedAnswer !== null) {
-            if (selectedAnswer === questions[currentQuestion].correctAnswer) {
-                setScore(score + 1); // Increment score if correct
+        if (questions[currentQuestion]) {
+            const currentQuestionData = questions[currentQuestion];
+            const sortedCorrectAnswers = [...currentQuestionData.correctAnswers].sort();
+            const sortedSelectedAnswers = [...selectedAnswers].sort();
+            const isCorrect = 
+                sortedCorrectAnswers.length === sortedSelectedAnswers.length &&
+                sortedCorrectAnswers.every((answer, index) => 
+                    answer === sortedSelectedAnswers[index]
+                );
+            if (isCorrect) {
+                const newScore = score + 1;
+                setScore(newScore);
             }
         }
-        setSelectedAnswer(null); // Reset selected answer for next question
+
+        setSelectedAnswers([]);
         if (currentQuestion < questions.length - 1) {
-            setCurrentQuestion(currentQuestion + 1); // Move to the next question
+            setCurrentQuestion(currentQuestion + 1);
         } else {
-            setShowResults(true); // If it's the last question, show the results
+            setShowResults(true);
         }
     };
-
-    const cleanHtml = (html: string) => html.replace(/<\/?p>/g, ""); // Removes <p> tags
-
+    const cleanHtml = (html: string) => {
+        // Strip HTML tags
+        const stripped = html.replace(/<\/?[^>]+(>|$)/g, "");
+        // Decode HTML entities
+        const txt = document.createElement("textarea");
+        txt.innerHTML = stripped;
+        return txt.value;
+    };
     if (!selectedDifficulty) {
         return (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
@@ -225,49 +262,50 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                                         {question.options.map((option) => (
                                             <div
                                                 key={option.text}
-                                                className={`p-3 rounded-lg ${option.text === question.correctAnswer
-                                                    ? "bg-green-100 text-gray-700 border border-green-500"
-                                                    : option.text === selectedAnswer
+                                                className={`p-3 rounded-lg ${
+                                                    question.correctAnswers.includes(option.text)
+                                                        ? "bg-green-100 text-gray-700 border border-green-500"
+                                                        : selectedAnswers.includes(option.text)
                                                         ? "bg-red-100 text-gray-700 border border-red-500"
                                                         : "bg-gray-50 text-gray-700 border border-gray-300"
-                                                    }`}
+                                                }`}
                                             >
                                                 {option.text}
-                                                {option.text === question.correctAnswer && (
+                                                {question.correctAnswers.includes(option.text) && (
                                                     <span className="text-green-600 ml-2">✓ Correct</span>
                                                 )}
-                                                {option.text === selectedAnswer &&
-                                                    option.text !== question.correctAnswer && (
+                                                {selectedAnswers.includes(option.text) &&
+                                                    !question.correctAnswers.includes(option.text) && (
                                                         <span className="text-red-600 ml-2">✗ Your Answer</span>
                                                     )}
                                             </div>
                                         ))}
                                     </div>
-                                    <div className="pt-6 px-1 ">
-  <button
-    onClick={() => toggleExplanation(index)}
-    className="flex items-center gap-1 bg-gray-600  hover:bg-gray-500 px-3 py-1 rounded-lg transition-colors"
-  >
-    <span className="text-white font-bold">Explanation</span>
-    <motion.span
-      animate={{ rotate: expandedExplanations.has(index) ? 180 : 0 }}
-      className="inline-block"
-    >
-      ▼
-    </motion.span>
-  </button>
-  <AnimatePresence>
-    {expandedExplanations.has(index) && (
-      <motion.div
-        initial={{ opacity: 0, height: 0 }}
-        animate={{ opacity: 1, height: "auto" }}
-        exit={{ opacity: 0, height: 0 }}
-        className="text-gray-600 pl-2 pt-3"
-        dangerouslySetInnerHTML={{ __html: cleanHtml(question.explanation) }}
-      />
-    )}
-  </AnimatePresence>
-</div>
+                                    <div className="pt-6 px-1">
+                                        <button
+                                            onClick={() => toggleExplanation(index)}
+                                            className="flex items-center gap-1 bg-gray-600 hover:bg-gray-500 px-3 py-1 rounded-lg transition-colors"
+                                        >
+                                            <span className="text-white font-bold">Explanation</span>
+                                            <motion.span
+                                                animate={{ rotate: expandedExplanations.has(index) ? 180 : 0 }}
+                                                className="inline-block"
+                                            >
+                                                ▼
+                                            </motion.span>
+                                        </button>
+                                        <AnimatePresence>
+                                            {expandedExplanations.has(index) && (
+                                                <motion.div
+                                                    initial={{ opacity: 0, height: 0 }}
+                                                    animate={{ opacity: 1, height: "auto" }}
+                                                    exit={{ opacity: 0, height: 0 }}
+                                                    className="text-gray-600 pl-2 pt-3"
+                                                    dangerouslySetInnerHTML={{ __html: cleanHtml(question.explanation) }}
+                                                />
+                                            )}
+                                        </AnimatePresence>
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -299,28 +337,30 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                                 exit={{ opacity: 0, x: -50 }}
                                 transition={{ duration: 0.2 }}
                             >
-                                <p className="text-lg font-medium mb-6 text-gray-800">
-                                    {/* <span className="font-semibold">{currentQuestion + 1}. </span> */}
-                                    <span className="inline" dangerouslySetInnerHTML={{ __html: cleanHtml(questions[currentQuestion].questionText) }}></span>
+                                <p className="text-lg font-medium mb-4 text-gray-800">
+                                    <span dangerouslySetInnerHTML={{ __html: cleanHtml(questions[currentQuestion].questionText) }}></span>
                                 </p>
+                                
                                 <div className="grid gap-3">
                                     {questions[currentQuestion].options.map((option) => {
-                                        const isSelected = selectedAnswer === option.text;
-                                        const isCorrect = option.text === questions[currentQuestion].correctAnswer;
-
+                                        const isSelected = selectedAnswers.includes(option.text);
                                         return (
                                             <button
                                                 key={option.text}
                                                 onClick={() => handleAnswerSelect(option.text)}
-                                                className={`p-3 text-left rounded-lg transition-all ${isSelected
-                                                    ? "bg-purple-600 text-white"
-                                                    : "bg-gray-500 hover:bg-gray-400"
-                                                    }`}
+                                                className={`p-3 text-left rounded-lg transition-all ${
+                                                    isSelected
+                                                        ? "bg-purple-600 text-white"
+                                                        : "bg-gray-500 hover:bg-gray-400"
+                                                }`}
                                             >
                                                 {option.text}
                                             </button>
                                         );
                                     })}
+                                    {questions[currentQuestion].correctAnswers.length > 1 && (
+                                    <div className="text-sm text-gray-600 mb-4">Note: Select all correct answers</div>
+                                )}
                                 </div>
                             </motion.div>
                         </AnimatePresence>
@@ -328,7 +368,7 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                         <div className="mt-6 flex space-x-4">
                             <button
                                 onClick={handleNextQuestion}
-                                disabled={selectedAnswer === null}
+                                disabled={selectedAnswers.length === 0}
                                 className="w-full sm:w-auto bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 disabled:bg-gray-300 transition-colors"
                             >
                                 {currentQuestion === questions.length - 1 ? "Finish Quiz" : "Next Question"}
@@ -337,7 +377,7 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                             {!showResults && (
                                 <button
                                     onClick={handleSkipQuestion}
-                                    className="w-full sm:w-auto bg-gray-500 text-white p-3 rounded-lg hover:bg-gray-600 transition-colors"
+                                    className="w-full sm:w-auto bg-gray-200 text-gray-700 p-3 rounded-lg hover:bg-gray-300 transition-colors"
                                 >
                                     Skip Question
                                 </button>

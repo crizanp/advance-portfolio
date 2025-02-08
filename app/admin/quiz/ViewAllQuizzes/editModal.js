@@ -1,37 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
-import dynamic from 'next/dynamic';
-import 'react-quill/dist/quill.snow.css';
-import 'katex/dist/katex.min.css';
+"use client";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import dynamic from "next/dynamic";
+import "react-quill/dist/quill.snow.css";
+import "katex/dist/katex.min.css";
 
-// Dynamically import ReactQuill to disable SSR
-const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
-// Define toolbar options for ReactQuill
 const toolbarOptions = [
-  [{ header: '1' }, { header: '2' }, { font: [] }],
-  [{ list: 'ordered' }, { list: 'bullet' }],
-  ['bold', 'italic', 'underline', 'strike'],
+  [{ header: "1" }, { header: "2" }, { font: [] }],
+  [{ list: "ordered" }, { list: "bullet" }],
+  ["bold", "italic", "underline", "strike"],
   [{ align: [] }],
-  ['link', 'blockquote', 'code-block'],
-  [{ script: 'sub' }, { script: 'super' }],
+  ["link", "blockquote", "code-block"],
+  [{ script: "sub" }, { script: "super" }],
   [{ color: [] }, { background: [] }],
-  ['clean'], // for clearing the content
+  ["clean"],
 ];
 
 const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
   const [formData, setFormData] = useState({
-    questionType: '',
-    questionText: '',
-    options: ['', ''],
-    correctAnswer: '',
-    explanation: '',
+    questionType: "",
+    questionText: "",
+    options: ["", ""],
+    correctAnswers: [],
+    explanation: "",
     difficulty: 3,
   });
 
   const [types, setTypes] = useState([]);
   const [loadingTypes, setLoadingTypes] = useState(true);
-  const [difficultyError, setDifficultyError] = useState('');
+  const [difficultyError, setDifficultyError] = useState("");
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -43,11 +42,9 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/question-types`);
         const data = await response.json();
-        const formattedTypes = data.map((type) => type.name);
-        setTypes(formattedTypes);
-        setFormData((prev) => ({ ...prev, questionType: formattedTypes[0] || '' }));
+        setTypes(data.map((type) => type.name));
       } catch (error) {
-        console.error('Error fetching question types:', error);
+        console.error("Error fetching question types:", error);
       } finally {
         setLoadingTypes(false);
       }
@@ -62,41 +59,62 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
         questionType: quiz.questionType,
         questionText: quiz.questionText,
         options: quiz.options.map((option) => option.text),
-        correctAnswer: quiz.correctAnswer,
+        correctAnswers: quiz.correctAnswers || [],
         explanation: quiz.explanation,
         difficulty: quiz.difficulty,
       });
     }
   }, [quiz]);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    if (name.startsWith('option')) {
-      const index = name.split('-')[1];
-      const updatedOptions = [...formData.options];
-      updatedOptions[index] = value;
-      setFormData({ ...formData, options: updatedOptions });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+  const handleOptionChange = (index, value) => {
+    const newOptions = [...formData.options];
+    newOptions[index] = value;
+    setFormData({ ...formData, options: newOptions });
+  };
+
+  const toggleCorrectAnswer = (index) => {
+    const selectedOption = formData.options[index];
+    const updatedAnswers = formData.correctAnswers.includes(selectedOption)
+      ? formData.correctAnswers.filter((ans) => ans !== selectedOption)
+      : [...formData.correctAnswers, selectedOption];
+    
+    setFormData({ ...formData, correctAnswers: updatedAnswers });
+  };
+
+  const addOption = () => {
+    setFormData({ ...formData, options: [...formData.options, ""] });
+  };
+
+  const removeOption = (index) => {
+    const updatedOptions = formData.options.filter((_, i) => i !== index);
+    const updatedAnswers = formData.correctAnswers.filter(
+      (ans) => ans !== formData.options[index]
+    );
+    
+    setFormData({
+      ...formData,
+      options: updatedOptions,
+      correctAnswers: updatedAnswers,
+    });
   };
 
   const handleEditorChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const addOption = () => {
-    setFormData((prev) => ({ ...prev, options: [...prev.options, ''] }));
-  };
-
-  const removeOption = (index) => {
-    const updatedOptions = formData.options.filter((_, i) => i !== index);
-    setFormData((prev) => ({ ...prev, options: updatedOptions }));
+  const handleDifficultyChange = (e) => {
+    const value = Number(e.target.value);
+    if (value < 1 || value > 5) {
+      setDifficultyError("Difficulty must be between 1 and 5.");
+    } else {
+      setDifficultyError("");
+    }
+    setFormData({ ...formData, difficulty: value });
   };
 
   const handleSave = () => {
     if (formData.difficulty < 1 || formData.difficulty > 5) {
-      setDifficultyError('Difficulty must be between 1 and 5.');
+      setDifficultyError("Difficulty must be between 1 and 5.");
       return;
     }
 
@@ -128,9 +146,8 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
             <label className="block mb-2 text-lg">Difficulty (1-5)</label>
             <input
               type="number"
-              name="difficulty"
               value={formData.difficulty}
-              onChange={handleChange}
+              onChange={handleDifficultyChange}
               className="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
               min="1"
               max="5"
@@ -143,16 +160,19 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
           <div>
             <label className="block mb-2 text-lg">Question Type</label>
             <select
-              name="questionType"
               value={formData.questionType}
-              onChange={handleChange}
+              onChange={(e) => setFormData({ ...formData, questionType: e.target.value })}
               className="w-full p-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
               disabled={loadingTypes}
             >
               {loadingTypes ? (
                 <option>Loading...</option>
               ) : (
-                types.map((type, index) => <option key={index} value={type}>{type}</option>)
+                types.map((type, index) => (
+                  <option key={index} value={type}>
+                    {type}
+                  </option>
+                ))
               )}
             </select>
           </div>
@@ -160,11 +180,11 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
           {/* Question Text Editor */}
           <div>
             <label className="block mb-2 text-lg">Question Text</label>
-            <div className="resize-y overflow-auto" style={{ minHeight: '150px' }}>
+            <div className="resize-y overflow-auto" style={{ minHeight: "150px" }}>
               {isClient && (
                 <ReactQuill
                   value={formData.questionText}
-                  onChange={(value) => handleEditorChange('questionText', value)}
+                  onChange={(value) => handleEditorChange("questionText", value)}
                   modules={{ toolbar: toolbarOptions }}
                   className="bg-white rounded-lg"
                   theme="snow"
@@ -180,11 +200,16 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
               <div key={index} className="flex items-center gap-2 mb-2">
                 <input
                   type="text"
-                  name={`option-${index}`}
                   value={option}
-                  onChange={handleChange}
+                  onChange={(e) => handleOptionChange(index, e.target.value)}
                   className="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
                   placeholder={`Option ${index + 1}`}
+                />
+                <input
+                  type="checkbox"
+                  checked={formData.correctAnswers.includes(option)}
+                  onChange={() => toggleCorrectAnswer(index)}
+                  className="w-5 h-5"
                 />
                 {formData.options.length > 2 && (
                   <button
@@ -206,27 +231,14 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
             </button>
           </div>
 
-          {/* Correct Answer */}
-          <div>
-            <label className="block mb-2 text-lg">Correct Answer</label>
-            <input
-              type="text"
-              name="correctAnswer"
-              value={formData.correctAnswer}
-              onChange={handleChange}
-              className="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
-              required
-            />
-          </div>
-
           {/* Explanation Editor */}
           <div>
             <label className="block mb-2 text-lg">Explanation</label>
-            <div className="resize-y overflow-auto" style={{ minHeight: '150px' }}>
+            <div className="resize-y overflow-auto" style={{ minHeight: "150px" }}>
               {isClient && (
                 <ReactQuill
                   value={formData.explanation}
-                  onChange={(value) => handleEditorChange('explanation', value)}
+                  onChange={(value) => handleEditorChange("explanation", value)}
                   modules={{ toolbar: toolbarOptions }}
                   className="bg-white rounded-lg"
                   theme="snow"
