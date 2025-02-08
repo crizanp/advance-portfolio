@@ -7,7 +7,8 @@ import PuffLoader from "react-spinners/PuffLoader";
 import axios from "axios";
 import PostModal from "../../components/PostModal";
 import { FiArrowLeft, FiTag } from "react-icons/fi";
-
+import { FaFacebook, FaTwitter, FaLinkedin, FaLink } from "react-icons/fa";
+import { FiShare2 } from "react-icons/fi";
 interface Post {
   _id: string;
   title: string;

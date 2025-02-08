@@ -29,6 +29,16 @@ export default function AdminSidebar() {
               View Categories
             </Link>
           </li>
+          <li className="mb-4">
+            <Link href="/admin/quiz" className="text-lg hover:text-gray-300">
+              Add quiz
+            </Link>
+          </li>
+          <li className="mb-4">
+            <Link href="/admin/quiz/ViewAllQuizzes" className="text-lg hover:text-gray-300">
+              View quiz
+            </Link>
+          </li>
 
           {/* Section for Engineering Notes Management */}
           <li className="mb-4 mt-8 font-bold">Engineering Notes</li>
