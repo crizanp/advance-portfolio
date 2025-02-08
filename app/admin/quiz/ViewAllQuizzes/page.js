@@ -87,7 +87,7 @@ export default function ViewAllQuizzes() {
           <li key={quiz._id} className="p-4 border-b-2 flex justify-between items-center">
             <div>
               <p className="font-semibold">{quiz.questionText}</p>
-              <p className="text-sm text-gray-600">Type: {quiz.questionType}</p>
+              <p className="text-sm text-gray-600">Type: {quiz.questionType} --  Difficulty : {quiz.difficulty}</p>
             </div>
             <div className="flex space-x-4">
               <button
