@@ -1,9 +1,10 @@
-"use client";
+"use client"
 
 import { useState, useEffect } from 'react';
 import QuizModal from '../../components/Quiz';
-import Link from 'next/link';
+import Link from 'next/link'; // Import Link from Next.js
 import QuestionTypeModal from '../../components/QuestionTypeModal';
+import dynamic from 'next/dynamic';
 
 export default function AdminPage() {
   const [showModal, setShowModal] = useState(false);
@@ -11,17 +12,14 @@ export default function AdminPage() {
   const [showTypeModal, setShowTypeModal] = useState(false);
 
   useEffect(() => {
-    // Check if we're in a browser environment
-    if (typeof window !== 'undefined') {
-      // Check if there's quiz data passed for editing in localStorage
-      const quizForEditing = localStorage.getItem('quizForEditing');
-      if (quizForEditing) {
-        setQuizData(JSON.parse(quizForEditing));
-        localStorage.removeItem('quizForEditing');  // Clear localStorage after fetching data
-        setShowModal(true);
-      }
+    // Check if there's quiz data passed for editing
+    const quizForEditing = JSON.parse(localStorage.getItem('quizForEditing'));
+    if (quizForEditing) {
+      setQuizData(quizForEditing);
+      localStorage.removeItem('quizForEditing');  // Clear the localStorage after fetching data
+      setShowModal(true);
     }
-  }, []);  // This runs only on the client side
+  }, []);
 
   const handleSubmit = async (quizData) => {
     try {
@@ -58,17 +56,17 @@ export default function AdminPage() {
       </button>
       
       {/* Link to the ViewAllQuizzes page */}
-      <Link href="/admin/quiz/ViewAllQuizzes">
+      <Link href="/admin/quiz/ViewAllQuizzes" legacyBehavior>
         <button className="bg-purple-600 text-white px-4 mx-4 py-2 rounded">
           View All Quizzes
         </button>
       </Link>
       <button
-        onClick={() => setShowTypeModal(true)}
-        className="bg-green-600 text-white px-4 py-2 rounded"
-      >
-        Manage Question Types
-      </button>
+          onClick={() => setShowTypeModal(true)}
+          className="bg-green-600 text-white px-4 py-2 rounded"
+        >
+          Manage Question Types
+        </button>
       {showModal && (
         <QuizModal
           onClose={() => setShowModal(false)}

@@ -10,8 +10,9 @@ import { Quill } from 'react-quill';
 import katex from 'katex';
 
 // Enable LaTeX support
-window.katex = katex;
-
+useEffect(() => {
+  window.katex = katex;
+}, []);
 // Define Quill toolbar options
 const toolbarOptions = [
   [{ header: [1, 2, 3, false] }],

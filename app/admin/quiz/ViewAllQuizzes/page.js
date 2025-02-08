@@ -1,20 +1,20 @@
 "use client"
 
 import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Modal from './editModal'; // Import the Modal component
+import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 
-export default function ViewAllQuizzes() {
+// Your modal component should be included or imported here
+import Modal from './Modal'; // Example import, adjust to your actual modal file path
+
+function ViewAllQuizzes() {
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isClient, setIsClient] = useState(false); // State to check if on client-side
+  const [isModalOpen, setIsModalOpen] = useState(false); // State for controlling modal visibility
   const router = useRouter();
 
   useEffect(() => {
-    setIsClient(true); // Mark client-side rendering
-
     const fetchQuizzes = async () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/quizzes`);
@@ -27,14 +27,12 @@ export default function ViewAllQuizzes() {
       }
     };
 
-    if (isClient) {
-      fetchQuizzes();
-    }
-  }, [isClient]); // Only run this effect on the client
+    fetchQuizzes();
+  }, []);
 
   const handleEdit = (quiz) => {
     setSelectedQuiz(quiz);
-    setIsModalOpen(true);
+    setIsModalOpen(true); // Open modal for editing
   };
 
   const handleDelete = async (quizId) => {
@@ -114,14 +112,18 @@ export default function ViewAllQuizzes() {
       </ul>
 
       {/* Modal component */}
-      {isClient && (
-        <Modal
-          isOpen={isModalOpen}
-          closeModal={() => setIsModalOpen(false)}
-          quiz={selectedQuiz}
-          updateQuiz={updateQuiz}
-        />
-      )}
+      <Modal
+        isOpen={isModalOpen}
+        closeModal={() => setIsModalOpen(false)}
+        quiz={selectedQuiz}
+        updateQuiz={updateQuiz}
+      />
     </div>
   );
 }
+
+// Wrap ViewAllQuizzes with dynamic import and disable SSR
+export default dynamic(
+  () => Promise.resolve(ViewAllQuizzes),
+  { ssr: false }
+);
