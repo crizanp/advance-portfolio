@@ -60,7 +60,7 @@ const TitleSection = () => {
 
           <motion.div >
             <button
-              onClick={() => setShowCV(true)} // Display the CV when clicked
+              // onClick={() => setShowCV(true)} // Display the CV when clicked
               className="px-8 py-3 border-2 border-purple-600 text-purple-600 rounded-lg hover:bg-purple-50 transition-colors"
             >
               View CV

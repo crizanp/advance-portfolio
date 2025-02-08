@@ -27,6 +27,7 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
     const [showWarning, setShowWarning] = useState(false);
     const [timeLeft, setTimeLeft] = useState<number>(0);
     const [expandedExplanations, setExpandedExplanations] = useState<Set<number>>(new Set());
+    const [allSelections, setAllSelections] = useState<{ [key: string]: string[] }>({});
 
     const toggleExplanation = (index: number) => {
         const newSet = new Set(expandedExplanations);
@@ -69,7 +70,7 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                     `${process.env.NEXT_PUBLIC_API_URL}/quizzes/type?questionType=${topic}&difficulty=${selectedDifficulty}`
                 );
                 const data = await response.json();
-                
+
                 // Clean all relevant fields
                 const cleanedData = data.map((question: Question) => ({
                     ...question,
@@ -80,7 +81,7 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                     correctAnswers: question.correctAnswers.map(ca => cleanHtml(ca)),
                     explanation: cleanHtml(question.explanation)
                 }));
-                
+
                 setQuestions(cleanedData.slice(0, 10));
             } catch (error) {
                 console.error("Error fetching questions:", error);
@@ -97,14 +98,14 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
     const handleAnswerSelect = (answer: string) => {
         if (!showResults && questions[currentQuestion]) {
             const isMultipleSelect = questions[currentQuestion].correctAnswers.length > 1;
-            
+
             setSelectedAnswers(prev => {
                 const newAnswers = isMultipleSelect
-                    ? (prev.includes(answer) 
-                        ? prev.filter(a => a !== answer) 
+                    ? (prev.includes(answer)
+                        ? prev.filter(a => a !== answer)
                         : [...prev, answer])
                     : (prev.includes(answer) ? [] : [answer]);
-                
+
                 return newAnswers;
             });
         }
@@ -131,15 +132,20 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
             const currentQuestionData = questions[currentQuestion];
             const sortedCorrectAnswers = [...currentQuestionData.correctAnswers].sort();
             const sortedSelectedAnswers = [...selectedAnswers].sort();
-            const isCorrect = 
+            const isCorrect =
                 sortedCorrectAnswers.length === sortedSelectedAnswers.length &&
-                sortedCorrectAnswers.every((answer, index) => 
+                sortedCorrectAnswers.every((answer, index) =>
                     answer === sortedSelectedAnswers[index]
                 );
             if (isCorrect) {
-                const newScore = score + 1;
-                setScore(newScore);
+                setScore(score + 1);
             }
+
+            // Save the selections for this question
+            setAllSelections(prev => ({
+                ...prev,
+                [currentQuestionData._id]: selectedAnswers
+            }));
         }
 
         setSelectedAnswers([]);
@@ -150,13 +156,14 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
         }
     };
     const cleanHtml = (html: string) => {
-        // Strip HTML tags
-        const stripped = html.replace(/<\/?[^>]+(>|$)/g, "");
-        // Decode HTML entities
-        const txt = document.createElement("textarea");
-        txt.innerHTML = stripped;
-        return txt.value;
-    };
+    // Only strip potentially dangerous tags while preserving formatting tags
+    const stripped = html.replace(/<(?!\/?(br|strong|em|ul|ol|li|h[1-6]|code|pre|blockquote)\b)[^>]+>/gi, '');
+    
+    // Decode HTML entities
+    const txt = document.createElement("textarea");
+    txt.innerHTML = stripped;
+    return txt.value;
+};
     if (!selectedDifficulty) {
         return (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
@@ -262,21 +269,27 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                                         {question.options.map((option) => (
                                             <div
                                                 key={option.text}
-                                                className={`p-3 rounded-lg ${
-                                                    question.correctAnswers.includes(option.text)
-                                                        ? "bg-green-100 text-gray-700 border border-green-500"
-                                                        : selectedAnswers.includes(option.text)
+                                                className={`p-3 rounded-lg ${question.correctAnswers.includes(option.text)
+                                                    ? "bg-green-100 text-gray-700 border border-green-500"
+                                                    : allSelections[question._id]?.includes(option.text)
                                                         ? "bg-red-100 text-gray-700 border border-red-500"
                                                         : "bg-gray-50 text-gray-700 border border-gray-300"
-                                                }`}
+                                                    }`}
                                             >
                                                 {option.text}
-                                                {question.correctAnswers.includes(option.text) && (
-                                                    <span className="text-green-600 ml-2">✓ Correct</span>
+                                                {allSelections[question._id]?.includes(option.text) && (
+                                                    <span className={`ml-2 ${question.correctAnswers.includes(option.text)
+                                                        ? "text-green-600"
+                                                        : "text-red-600"
+                                                        }`}>
+                                                        {question.correctAnswers.includes(option.text)
+                                                            ? "✓"
+                                                            : "✗"}
+                                                    </span>
                                                 )}
-                                                {selectedAnswers.includes(option.text) &&
-                                                    !question.correctAnswers.includes(option.text) && (
-                                                        <span className="text-red-600 ml-2">✗ Your Answer</span>
+                                                {question.correctAnswers.includes(option.text) &&
+                                                    !allSelections[question._id]?.includes(option.text) && (
+                                                        <span className="text-green-600 ml-2">✓</span>
                                                     )}
                                             </div>
                                         ))}
@@ -301,7 +314,7 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                                                     animate={{ opacity: 1, height: "auto" }}
                                                     exit={{ opacity: 0, height: 0 }}
                                                     className="text-gray-600 pl-2 pt-3"
-                                                    dangerouslySetInnerHTML={{ __html: cleanHtml(question.explanation) }}
+                                                    dangerouslySetInnerHTML={{ __html: question.explanation }}
                                                 />
                                             )}
                                         </AnimatePresence>
@@ -340,7 +353,7 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                                 <p className="text-lg font-medium mb-4 text-gray-800">
                                     <span dangerouslySetInnerHTML={{ __html: cleanHtml(questions[currentQuestion].questionText) }}></span>
                                 </p>
-                                
+
                                 <div className="grid gap-3">
                                     {questions[currentQuestion].options.map((option) => {
                                         const isSelected = selectedAnswers.includes(option.text);
@@ -348,19 +361,18 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                                             <button
                                                 key={option.text}
                                                 onClick={() => handleAnswerSelect(option.text)}
-                                                className={`p-3 text-left rounded-lg transition-all ${
-                                                    isSelected
-                                                        ? "bg-purple-600 text-white"
-                                                        : "bg-gray-500 hover:bg-gray-400"
-                                                }`}
+                                                className={`p-3 text-left rounded-lg transition-all ${isSelected
+                                                    ? "bg-purple-600 text-white"
+                                                    : "bg-gray-500 hover:bg-gray-400"
+                                                    }`}
                                             >
                                                 {option.text}
                                             </button>
                                         );
                                     })}
                                     {questions[currentQuestion].correctAnswers.length > 1 && (
-                                    <div className="text-sm text-gray-600 mb-4">Note: Select all correct answers</div>
-                                )}
+                                        <div className="text-sm text-gray-600 mb-4">Note: Select all correct answers</div>
+                                    )}
                                 </div>
                             </motion.div>
                         </AnimatePresence>
