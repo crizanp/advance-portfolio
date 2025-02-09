@@ -15,17 +15,17 @@ export default function Navbar() {
         <div className="flex justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent
                          hover:from-purple-700 hover:to-blue-600 transition-all"
             >
-              <Image 
-  src='/images/LOGO3.png' 
-  alt='Logo' 
-  width={170}  // Adjust the width as needed
-  height={15} // Adjust the height as needed
-/>
+              <Image
+                src='/images/LOGO3.png'
+                alt='Logo'
+                width={170}  // Adjust the width as needed
+                height={15} // Adjust the height as needed
+              />
 
             </Link>
           </div>
@@ -33,6 +33,7 @@ export default function Navbar() {
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-2 items-center">
             <NavLink href="/category">Categories</NavLink>
+            <NavLink href="/translation">Nepali Unicode</NavLink>
             {/* <NavLink href="/category/telegram-api">Telegram Bot</NavLink> */}
             <NavLink href="/category/reading">Readings</NavLink>
             <NavLink href="/about">About</NavLink>
@@ -62,6 +63,8 @@ export default function Navbar() {
         <div className="md:hidden bg-white border-t border-gray-100">
           <div className="px-4 py-3 space-y-1">
             <MobileNavLink href="/category">Categories</MobileNavLink>
+            <NavLink href="/translation">Nepali Unicode</NavLink>
+
             {/* <MobileNavLink href="/category/telegram-api">Telegram Bot</MobileNavLink> */}
             <MobileNavLink href="/category/reading">Readings</MobileNavLink>
             <MobileNavLink href="/about">About</MobileNavLink>
