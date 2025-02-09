@@ -1,12 +1,11 @@
 // app/translation/page.tsx
 "use client";
 
-import React, { useRef, useState, useMemo, useCallback } from "react";
+import React, { useRef, useState, useMemo, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
 import Sanscript from "@sanskrit-coders/sanscript";
 import Trie from "./utils/Trie";
 import { wordMappings } from "./utils/wordMappings";
-import nepaliWordsData from './utils/nepaliWords.json';
 import { ClipboardDocumentIcon, ShareIcon, ArrowPathIcon, BookOpenIcon } from "@heroicons/react/24/outline";
 import { FaTwitter, FaFacebook, FaLinkedin, FaLink } from 'react-icons/fa';
 
@@ -20,45 +19,62 @@ const TranslationPage = () => {
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [copyMessage, setCopyMessage] = useState<string | null>(null);
   const [showShare, setShowShare] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [nepaliDictionaryTrie, setNepaliDictionaryTrie] = useState<Trie | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const words: NepaliWordsData = nepaliWordsData as NepaliWordsData;
 
-  const commonConversions = useMemo(() => new Map(Object.entries(wordMappings)), []);
+  useEffect(() => {
+    const loadData = async () => {
+      // Initialize trie with wordMappings first
+      const commonConversions = new Map(Object.entries(wordMappings));
+      const trie = new Trie();
+      commonConversions.forEach((nepali, roman) => trie.insert(roman, nepali));
+      
+      // Set initial trie immediately
+      setNepaliDictionaryTrie(trie);
+      setIsLoading(false); // Let UI show while we load more data
 
-  const nepaliDictionaryTrie = useMemo(() => {
-    const trie = new Trie();
-    commonConversions.forEach((nepali, roman) => trie.insert(roman, nepali));
-    words.nepaliWords.forEach((word) => {
-      const romanizedWord = Sanscript.t(word, "devanagari", "itrans").toLowerCase();
-      if (!commonConversions.has(romanizedWord)) {
-        trie.insert(romanizedWord, word);
+      try {
+        const response = await fetch('/utils/nepaliWords.json');
+        const words: NepaliWordsData = await response.json();
+        
+        // Add new words to existing trie
+        words.nepaliWords.forEach((word) => {
+          const romanizedWord = Sanscript.t(word, "devanagari", "itrans").toLowerCase();
+          if (!commonConversions.has(romanizedWord)) {
+            trie.insert(romanizedWord, word);
+          }
+        });
+
+        // Update trie with new words
+        setNepaliDictionaryTrie(trie);
+      } catch (error) {
+        console.error("Failed to load additional data:", error);
       }
-    });
-    return trie;
-  }, [commonConversions]);
+    };
 
+    loadData();
+  }, []);
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const input = e.target.value;
     setRomanInput(input);
   
-    // Handle text inside parentheses
     const segments = input.split(/(\([^)]*\))/g);
     const converted = segments.map(segment => {
       if (segment.startsWith('(') && segment.endsWith(')')) {
-        // Remove parentheses and keep the text inside
-        return segment.slice(1, -1); // Remove the first and last character (parentheses)
+        return segment.slice(1, -1);
       }
       return Sanscript.t(segment, "itrans", "devanagari");
     }).join('');
   
-    // Process suggestions
     const lastWord = input.split(/\s+/).pop()?.toLowerCase().replace(/[()]/g, '') || "";
-    const trieSuggestions = lastWord ? nepaliDictionaryTrie.search(lastWord).slice(0, 6) : [];
+    const trieSuggestions = lastWord && nepaliDictionaryTrie 
+      ? nepaliDictionaryTrie.search(lastWord).slice(0, 6) 
+      : [];
     setSuggestions(trieSuggestions);
   
     setUnicodeOutput(converted);
   }, [nepaliDictionaryTrie]);
-
   const handleSuggestionClick = useCallback((suggestion: string) => {
     const words = romanInput.trim().split(/\s+/);
     words[words.length - 1] = suggestion;
@@ -88,7 +104,6 @@ const TranslationPage = () => {
       <div className="bg-white rounded-xl p-6 max-w-md w-full" onClick={(e) => e.stopPropagation()}>
         <h3 className="text-lg font-semibold mb-4 text-gray-600">Share This Page</h3>
         <div className="grid grid-cols-2 gap-4">
-          {/* Twitter Share without encoding text */}
           <a
             href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=Check out this amazing Nepali Unicode Converter!`}
             target="_blank"
@@ -98,7 +113,6 @@ const TranslationPage = () => {
             <FaTwitter className="w-5 h-5 text-blue-500" />
             <span>Share on Twitter</span>
           </a>
-          {/* Link Copy option */}
           <button
             onClick={() => navigator.clipboard.writeText(window.location.href)}
             className="flex items-center gap-2 p-3 bg-gray-100 text-gray-600 rounded-lg hover:bg-gray-200"
@@ -110,7 +124,19 @@ const TranslationPage = () => {
       </div>
     </motion.div>
   );
-  
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-purple-50 to-blue-50 flex items-center justify-center">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          className="h-12 w-12 border-4 border-purple-500 border-t-transparent rounded-full"
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
@@ -119,6 +145,7 @@ const TranslationPage = () => {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white rounded-2xl shadow-xl p-8 mb-8 border border-purple-100"
         >
+          {/* ... rest of the component remains the same ... */}
           <div className="text-center mb-10">
             <h1 className="text-4xl font-bold text-purple-600 mb-4">
               <BookOpenIcon className="h-10 w-10 inline-block mr-3" />
