@@ -17,9 +17,9 @@ export default function Footer() {
             <Link href="/notes" className="hover:text-purple-600">
               Engineering Notes
             </Link>
-            <Link href="/translation" className="hover:text-purple-600">
+            <a href="/translation" className="hover:text-purple-600">
               Nepali Unicode
-            </Link>
+            </a>
             <Link href="/contact" className="hover:text-purple-600">
               Contact
             </Link>
