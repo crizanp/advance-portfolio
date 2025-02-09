@@ -1,13 +1,14 @@
-"use client"
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import Modal from './editModal'; // Import the Modal component
+"use client";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Modal from "./editModal"; // Import the Modal component
 
 export default function ViewAllQuizzes() {
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false); // State for controlling modal visibility
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sortBy, setSortBy] = useState("none"); // State for sorting
   const router = useRouter();
 
   useEffect(() => {
@@ -17,7 +18,7 @@ export default function ViewAllQuizzes() {
         const data = await response.json();
         setQuizzes(data);
       } catch (error) {
-        console.error('Error fetching quizzes:', error);
+        console.error("Error fetching quizzes:", error);
       } finally {
         setLoading(false);
       }
@@ -26,28 +27,46 @@ export default function ViewAllQuizzes() {
     fetchQuizzes();
   }, []);
 
+  // Handle sorting logic
+  const sortedQuizzes = () => {
+    let sorted = [...quizzes];
+
+    if (sortBy === "type") {
+      sorted.sort((a, b) => a.questionType.localeCompare(b.questionType));
+    } else if (sortBy === "type+difficulty") {
+      sorted.sort((a, b) => {
+        if (a.questionType === b.questionType) {
+          return a.difficulty - b.difficulty;
+        }
+        return a.questionType.localeCompare(b.questionType);
+      });
+    }
+
+    return sorted;
+  };
+
   const handleEdit = (quiz) => {
     setSelectedQuiz(quiz);
     setIsModalOpen(true); // Open modal for editing
   };
 
   const handleDelete = async (quizId) => {
-    const confirmed = window.confirm('Are you sure you want to delete this quiz?');
+    const confirmed = window.confirm("Are you sure you want to delete this quiz?");
     if (confirmed) {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/quizzes/${quizId}`, {
-          method: 'DELETE',
+          method: "DELETE",
         });
 
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.message || 'Failed to delete quiz');
+          throw new Error(errorData.message || "Failed to delete quiz");
         }
 
         setQuizzes(quizzes.filter((quiz) => quiz._id !== quizId));
-        alert('Quiz deleted successfully');
+        alert("Quiz deleted successfully");
       } catch (error) {
-        console.error('Error deleting quiz:', error.message);
+        console.error("Error deleting quiz:", error.message);
       }
     }
   };
@@ -55,39 +74,59 @@ export default function ViewAllQuizzes() {
   const updateQuiz = async (quizId, updatedData) => {
     try {
       const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/quizzes/${quizId}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(updatedData),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.message || 'Failed to update quiz');
+        throw new Error(errorData.message || "Failed to update quiz");
       }
 
       const updatedQuizzes = quizzes.map((quiz) =>
         quiz._id === quizId ? { ...quiz, ...updatedData } : quiz
       );
       setQuizzes(updatedQuizzes);
-      alert('Quiz updated successfully');
+      alert("Quiz updated successfully");
     } catch (error) {
-      console.error('Error updating quiz:', error.message);
+      console.error("Error updating quiz:", error.message);
     }
   };
 
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div>
-      <h1 className="text-xl font-bold mb-6">All Quizzes</h1>
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-6">All Quizzes</h1>
+
+      {/* Sorting Controls */}
+      <div className="mb-6 flex space-x-4">
+        <label className="flex items-center space-x-2">
+          <span className="text-gray-700">Sort By:</span>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="px-4 py-2 border rounded-lg"
+          >
+            <option value="none">None</option>
+            <option value="type">Question Type</option>
+            <option value="type+difficulty">Question Type + Difficulty</option>
+          </select>
+        </label>
+      </div>
+
+      {/* Quiz List */}
       <ul className="space-y-4">
-        {quizzes.map((quiz) => (
+        {sortedQuizzes().map((quiz) => (
           <li key={quiz._id} className="p-4 border-b-2 flex justify-between items-center">
             <div>
               <p className="font-semibold">{quiz.questionText}</p>
-              <p className="text-sm text-gray-600">Type: {quiz.questionType} --  Difficulty : {quiz.difficulty}</p>
+              <p className="text-sm text-gray-600">
+                Type: {quiz.questionType} -- Difficulty: {quiz.difficulty}
+              </p>
             </div>
             <div className="flex space-x-4">
               <button
