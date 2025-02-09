@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -19,7 +20,13 @@ export default function Navbar() {
               className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent
                          hover:from-purple-700 hover:to-blue-600 transition-all"
             >
-              <span className="font-playfair tracking-tight">Crizan Pokhrel</span>
+              <Image 
+  src='/images/LOGO3.png' 
+  alt='Logo' 
+  width={170}  // Adjust the width as needed
+  height={15} // Adjust the height as needed
+/>
+
             </Link>
           </div>
 
