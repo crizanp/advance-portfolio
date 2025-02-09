@@ -11,6 +11,7 @@ import Modal from "./components/Model";
 import CVTemplate from "./components/CVTemplate";
 import { RiPagesLine } from "react-icons/ri";
 import TitleSection from "./components/HeroSection";
+import Image from "next/image"; // Import the Image component
 
 const getLatestPosts = () => posts.slice(0, 2);
 const books = [
@@ -40,7 +41,6 @@ const categories = [
   { name: "Telegram Bots", icon: "🤖", link: "/category/telegram-api" },
   { name: "Reading", icon: "📚", link: "/category/reading" },
   { name: "Research", icon: "🎨", link: "/category/research" },
-
 ];
 const projects = [
   {
@@ -120,239 +120,186 @@ export default function HomePage() {
           })}
         </script>
       </Head>
-      <main className="p-2 pb-8 sm:p-4 md:p-6 lg:p-8 xl:p-10 2xl:p-12 bg-gradient-to-br from-white to-purple-50 min-h-screen relative overflow-hidden">
-        {/* Floating Decorations */}
-        <div className="absolute -top-20 -right-20 w-96 h-96 bg-purple-100 rounded-full opacity-40 mix-blend-multiply blur-xl"></div>
-        <div className="absolute top-1/3 left-0 w-64 h-64 bg-purple-200 rounded-full opacity-30 mix-blend-multiply blur-lg"></div>        {/* Hero Section */}
-
-        {/* Hero Secton */}
-        <TitleSection/>
-        <section className="py-16 md:py-20" id="category">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            {/* Categories Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {categories.map((category, index) => (
-                <motion.div
-                  key={category.name}
-                  className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all
-                   border border-purple-50 hover:border-purple-100 cursor-pointer
-                   flex flex-col items-center text-center"
-                  whileHover={{ scale: 1.05 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <div className="text-4xl mb-4 text-purple-600">{category.icon}</div>
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 hover:text-purple-700 transition-colors">
-                    {category.name}
-                  </h3>
-                  <Link
-                    href={category.link}
-                    className="text-purple-600 hover:text-purple-800 font-medium
-                      flex items-center gap-2 transition-colors"
-                  >
-                    Explore
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 mt-0.5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
-                  </Link>
-                </motion.div>
-              ))}
-            </div>
+      <main className=" pb-8  bg-gradient-to-br from-white to-purple-50 min-h-screen relative overflow-hidden">
+        <div className="relative">
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/images/bg6.jpg"
+              alt="Tech Background"
+              layout="fill"
+              objectFit="cover"
+              quality={100}
+              className="opacity-700"
+            />
+            <div className="absolute inset-0 bg-black/30"></div> {/* Dark overlay */}
           </div>
-        </section>
-        {/* Latest Blog */}
-        <section className="py-16 md:py-20 ">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-12 md:mb-16 text-center"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold text-purple-900 mb-4">
-                Latest Blog Posts
-              </h2>
-              <div className="w-20 h-1 bg-purple-600 mx-auto rounded-full" />
-            </motion.div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
-              {latestPosts.map((post, index) => (
-                <motion.div
-                  key={post.id}
-                  className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all
-                   cursor-pointer
-                   flex flex-col justify-between"
-                  whileHover={{ scale: 1.02 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-3 hover:text-purple-700 transition-colors">
-                      {post.title}
+          {/* Hero Section */}
+          <TitleSection />
+
+          {/* Category Section */}
+          <section className="py-16 md:py-15 relative z-10" id="category">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                {categories.map((category, index) => (
+                  <motion.div
+                    key={category.name}
+                    className="bg-gray-300 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all border border-purple-200 hover:border-purple-100 cursor-pointer flex flex-col items-center text-center"
+                    whileHover={{ scale: 1.05 }}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <div className="text-4xl mb-4 text-purple-600">{category.icon}</div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2 hover:text-purple-700 transition-colors">
+                      {category.name}
                     </h3>
-                    <p className="text-gray-600 mb-5 text-sm md:text-base leading-relaxed">
-                      {post.content.slice(0, 100)}...
-                    </p>
-                  </div>
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="text-purple-600 hover:text-purple-800 font-medium
-                      flex items-center gap-2 transition-colors"
-                  >
-                    Read More
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 mt-0.5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link href={category.link} className="text-purple-600 hover:text-purple-800 font-medium flex items-center gap-2 transition-colors">
+                      Explore
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
-
-        {/* Latest Work */}
-        <section className="py-16 md:py-20">
+          </section>
+        </div>
+        <section className="py-16 md:py-20 relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-12 md:mb-16 text-center"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold text-purple-900 mb-4">
-                My Past Work
-              </h2>
-              <div className="w-20 h-1 bg-purple-600 mx-auto rounded-full" />
-            </motion.div>
-
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {projects.map((project, index) => (
-                <motion.div
-                  key={project.title}
-                  className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all
-                    cursor-pointer"
-                  whileHover={{ scale: 1.02 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <img
-                    src={project.image}
-                    alt={project.title}
-                    className="rounded-lg mb-5 w-full h-48 object-cover"
-                  />
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 hover:text-purple-700 transition-colors">
-                    {project.title}
+              {/* GRE Preparation Card */}
+              <motion.div
+                className="relative p-8 rounded-2xl backdrop-blur-lg bg-gradient-to-br from-blue-50/80 to-indigo-50/80 border border-purple-700 
+        transition-all"
+                whileHover={{ scale: 1.02 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="absolute -top-16 -right-16 w-48 h-48 bg-blue-200/10 rounded-full blur-3xl"></div>
+                <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-indigo-200/10 rounded-full blur-3xl"></div>
+
+                <div className="relative z-10 space-y-6">
+                  <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center">
+                    <RiPagesLine className="w-12 h-12 text-white/90" />
+                  </div>
+                  <h3 className="text-3xl font-bold bg-gradient-to-r from-blue-800 to-indigo-900 bg-clip-text text-transparent">
+                    GRE Mastery Hub
                   </h3>
-                  <p className="text-gray-600 mb-5 text-sm md:text-base leading-relaxed">
-                    {project.description}
+                  <p className="text-gray-600 text-lg leading-relaxed">
+                    Conquer the GRE with comprehensive prep—practice tests, study guides, and progress tracking to boost your success!
                   </p>
                   <Link
-                    href={project.link}
-                    className="text-purple-600 hover:text-purple-800 font-medium
-                      flex items-center gap-2 transition-colors"
+                    href="/gre-exam"
+                    className="inline-flex items-center gap-3 group font-semibold text-blue-700 hover:text-blue-900 transition-colors"
                   >
-                    View Project
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 mt-0.5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
+                    <span>Start Your Journey</span>
+                    <div className="relative w-6 h-6">
+                      <div className="absolute inset-0 bg-blue-600 rounded-full scale-0 group-hover:scale-100 transition-transform" />
+                      <svg
+                        className="relative w-6 h-6 animate-pulse-horizontal"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+                        />
+                      </svg>
+                    </div>
                   </Link>
-                </motion.div>
-              ))}
+                </div>
+              </motion.div>
+
+              {/* Computer Engineering License Preparation Card */}
+              <motion.div
+                className="relative p-8 rounded-2xl backdrop-blur-lg bg-gradient-to-br from-blue-50/80 to-indigo-50/80 border border-purple-700 
+        transition-all"
+                whileHover={{ scale: 1.02 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="absolute -top-16 -left-16 w-48 h-48 bg-emerald-200/10 rounded-full blur-3xl"></div>
+                <div className="absolute -bottom-16 -right-16 w-64 h-64 bg-cyan-200/10 rounded-full blur-3xl"></div>
+
+                <div className="relative z-10 space-y-6">
+                  <div className="w-20 h-20 bg-gradient-to-br from-emerald-600 to-cyan-700 rounded-2xl flex items-center justify-center">
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-white/10 rounded-full animate-ping" />
+                      <svg
+                        className="w-12 h-12 text-white/90"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM15 9l-6 6m0-6l6 6"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <h3 className="text-3xl font-bold bg-gradient-to-r from-emerald-800 to-cyan-900 bg-clip-text text-transparent">
+                    Engineering License
+                  </h3>
+                  <p className="text-gray-600 text-lg leading-relaxed">
+                    Prepare for your computer engineering license with mock tests and practice exams designed to boost your confidence and performance.
+                  </p>
+                  <Link
+                    href="/computer-engineering-license-preparation"
+                    className="inline-flex items-center gap-3 group font-semibold text-emerald-700 hover:text-emerald-900 transition-colors"
+                  >
+                    <span>Start Your Preparation</span>
+                    <div className="relative w-6 h-6">
+                      <div className="absolute inset-0 bg-emerald-600 rounded-full scale-0 group-hover:scale-100 transition-transform" />
+                      <svg
+                        className="relative w-6 h-6 animate-bounce-horizontal"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M13 10V3L4 14h7v7l9-11h-7z"
+                        />
+                      </svg>
+                    </div>
+                  </Link>
+                </div>
+              </motion.div>
             </div>
-          </div>
-        </section>
 
-        {/* Latest Reading*/}
-        <section className="py-10 md:py-14  relative">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="mb-12 md:mb-16 text-center"
-            >
-              <h2 className="text-3xl md:text-4xl font-bold text-purple-900 mb-4">
-                My Latest Readings
-              </h2>
-              <div className="w-20 h-1 bg-purple-600 mx-auto rounded-full" />
-            </motion.div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-              {books.map((book, index) => (
+            {/* Floating Particles */}
+            <div className="absolute inset-0 pointer-events-none">
+              {[...Array(20)].map((_, i) => (
                 <motion.div
-                  key={book.title}
-                  className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-all
-                    cursor-pointer
-                   relative overflow-hidden group"
-                  whileHover={{ scale: 1.02 }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                >
-                  <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-purple-700 transition-colors">
-                    {book.title}
-                  </h3>
-                  <p className="text-gray-600 mb-5 text-sm md:text-base leading-relaxed">
-                    {book.description}
-                  </p>
-                  <Link
-                    href={book.link}
-                    className="text-purple-600 hover:text-purple-800 font-medium
-                      flex items-center gap-2 transition-colors"
-                  >
-                    Read More
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 mt-0.5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
-                  </Link>
-                </motion.div>
+                  key={i}
+                  className="absolute w-2 h-2 bg-blue-300/30 rounded-full"
+                  initial={{
+                    scale: 0,
+                    x: Math.random() * 100 + '%',
+                    y: Math.random() * 100 + '%'
+                  }}
+                  animate={{
+                    scale: [0, 1, 0],
+                    opacity: [0, 0.3, 0]
+                  }}
+                  transition={{
+                    duration: Math.random() * 3 + 2,
+                    repeat: Infinity,
+                    delay: Math.random() * 2
+                  }}
+                />
               ))}
             </div>
           </div>
@@ -388,6 +335,7 @@ export default function HomePage() {
             }}
           />
         </div>
+
       </main>
     </>
   );

@@ -9,7 +9,7 @@ export default function Navbar() {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
-    <nav className="bg-white shadow-sm sticky top-0 z-40 border-b border-gray-100 backdrop-blur-sm">
+    <nav className="bg-white  shadow-sm sticky top-0 z-40 border-b-2 border-purple-300 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo */}
@@ -26,7 +26,7 @@ export default function Navbar() {
           {/* Desktop Menu */}
           <div className="hidden md:flex space-x-2 items-center">
             <NavLink href="/category">Categories</NavLink>
-            <NavLink href="/category/telegram-api">Telegram Bot</NavLink>
+            {/* <NavLink href="/category/telegram-api">Telegram Bot</NavLink> */}
             <NavLink href="/category/reading">Readings</NavLink>
             <NavLink href="/about">About</NavLink>
             <NavLink href="/contact">Contact</NavLink>
@@ -55,7 +55,7 @@ export default function Navbar() {
         <div className="md:hidden bg-white border-t border-gray-100">
           <div className="px-4 py-3 space-y-1">
             <MobileNavLink href="/category">Categories</MobileNavLink>
-            <MobileNavLink href="/category/telegram-api">Telegram Bot</MobileNavLink>
+            {/* <MobileNavLink href="/category/telegram-api">Telegram Bot</MobileNavLink> */}
             <MobileNavLink href="/category/reading">Readings</MobileNavLink>
             <MobileNavLink href="/about">About</MobileNavLink>
             <MobileNavLink href="/contact">Contact</MobileNavLink>

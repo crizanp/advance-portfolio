@@ -27,6 +27,7 @@
     "jszip": "^3.10.1",
     "katex": "^0.16.21",
     "lodash": "^4.17.21",
+    "lodash.debounce": "^4.0.8",
     "mongoose": "^8.7.2",
     "next": "14.2.15",
     "nprogress": "^0.2.0",

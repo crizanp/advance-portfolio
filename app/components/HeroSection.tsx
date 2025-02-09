@@ -8,14 +8,12 @@ import Modal from './Model';
 
 const TitleSection = () => {
   const titles = [
-    'Creative Developer',
+    'React.js Developer',
     'Next.js Developer',
-    'Telegram Bot Developer',
-    'Discord Bot Developer',
-    'AI Agent Developer',
-    'SEO Expert',
-    'Blockchain Enthusiast',
-    'Novel Reader',
+    'Node.js Developer',
+    'API Developer',
+    'Mini Apps Developer',
+    'Core PHP Developer',
   ];
 
   const [currentTitle, setCurrentTitle] = useState(titles[0]);
@@ -40,14 +38,14 @@ const TitleSection = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
-        <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent py-6">
-          I am {currentTitle}
+        <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-white py-6">
+          I'm {currentTitle}
         </h1>
-        <p className="text-xl text-purple-700 max-w-2xl mx-auto mb-8">
+        <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
           Turning ideas into digital experiences through code and creativity
         </p>
 
-        <div className="flex justify-center gap-4">
+        <div className="flex justify-center gap-4 ">
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link
               href="/projects"
@@ -61,7 +59,7 @@ const TitleSection = () => {
           <motion.div >
             <button
               // onClick={() => setShowCV(true)} // Display the CV when clicked
-              className="px-8 py-3 border-2 border-purple-600 text-purple-600 rounded-lg hover:bg-purple-50 transition-colors"
+              className="px-8 py-3 border-2 border-gray-300 text-gray-200 rounded-lg hover:bg-purple-50  hover:text-gray-700 hover:border-gray-700 transition-colors"
             >
               View CV
             </button>
@@ -75,10 +73,10 @@ const TitleSection = () => {
         </div>
 
         <div className="mt-8 flex justify-center gap-4">
-          <a href="https://www.linkedin.com/in/srijanpokhrel/" target="_blank" rel="noopener" className="p-2 text-purple-600 hover:text-purple-700 transition-colors">
+          <a href="https://www.linkedin.com/in/srijanpokhrel/" target="_blank" rel="noopener" className="p-2 text-gray-300 hover:text-gray-400 transition-colors">
             <FaLinkedin className="text-3xl" />
           </a>
-          <a href="https://github.com/crizanp" target="_blank" rel="noopener" className="p-2 text-purple-600 hover:text-purple-700 transition-colors">
+          <a href="https://github.com/crizanp" target="_blank" rel="noopener" className="p-2 text-gray-300 hover:text-gray-400 transition-colors">
             <FaGithub className="text-3xl" />
           </a>
         </div>

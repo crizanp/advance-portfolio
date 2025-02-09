@@ -3,7 +3,7 @@ import { FaFacebook, FaInstagram, FaLinkedin, FaGithub } from 'react-icons/fa';
 
 export default function Footer() {
   return (
-    <footer className="bg-white text-gray-800 py-10 border-t-4 border-purple-600">
+    <footer className="bg-white text-gray-800 py-10 border-t-2 border-purple-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
           {/* Footer Links */}
@@ -65,7 +65,7 @@ export default function Footer() {
         {/* Copyright */}
         <div className="mt-8 text-center">
           <p className="text-gray-500 text-sm">
-            &copy; {new Date().getFullYear()} Crizan Np. All Rights Reserved.
+            &copy; {new Date().getFullYear()} Crizan Pokhrel. All Rights Reserved.
           </p>
         </div>
       </div>
