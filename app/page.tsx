@@ -254,7 +254,7 @@ export default function HomePage() {
                     Prepare for your computer engineering license with mock tests and practice exams designed to boost your confidence and performance.
                   </p>
                   <Link
-                    href="/computer-engineering-license-preparation"
+                    href="/"
                     className="inline-flex items-center gap-3 group font-semibold text-emerald-700 hover:text-emerald-900 transition-colors"
                   >
                     <span>Start Your Preparation</span>
