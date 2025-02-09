@@ -59,21 +59,26 @@ const TranslationPage = () => {
     const input = e.target.value;
     setRomanInput(input);
   
+    // Convert input to Unicode, preserving text in parentheses
     const segments = input.split(/(\([^)]*\))/g);
     const converted = segments.map(segment => {
       if (segment.startsWith('(') && segment.endsWith(')')) {
-        return segment.slice(1, -1);
+        return segment.slice(1, -1); // Preserve text inside parentheses
       }
       return Sanscript.t(segment, "itrans", "devanagari");
     }).join('');
   
-    const lastWord = input.split(/\s+/).pop()?.toLowerCase().replace(/[()]/g, '') || "";
+    setUnicodeOutput(converted);
+  
+    // Extract the last word for suggestions
+    const words = input.split(/\s+/); // Split by spaces
+    const lastWord = words[words.length - 1]?.toLowerCase().replace(/[()]/g, '') || "";
+  
+    // Generate suggestions using the trie
     const trieSuggestions = lastWord && nepaliDictionaryTrie 
       ? nepaliDictionaryTrie.search(lastWord).slice(0, 6) 
       : [];
     setSuggestions(trieSuggestions);
-  
-    setUnicodeOutput(converted);
   }, [nepaliDictionaryTrie]);
   const handleSuggestionClick = useCallback((suggestion: string) => {
     const words = romanInput.trim().split(/\s+/);
