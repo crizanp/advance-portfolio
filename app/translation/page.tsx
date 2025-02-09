@@ -35,7 +35,7 @@ const TranslationPage = () => {
       setIsLoading(false); // Let UI show while we load more data
 
       try {
-        const response = await fetch('/utils/nepaliWords.json');
+        const response = await fetch('./NepaliWords.json');
         const words: NepaliWordsData = await response.json();
         
         // Add new words to existing trie
@@ -76,7 +76,7 @@ const TranslationPage = () => {
   
     // Generate suggestions using the trie
     const trieSuggestions = lastWord && nepaliDictionaryTrie 
-      ? nepaliDictionaryTrie.search(lastWord).slice(0, 6) 
+      ? nepaliDictionaryTrie.search(lastWord).slice(0, 3) 
       : [];
     setSuggestions(trieSuggestions);
   }, [nepaliDictionaryTrie]);
