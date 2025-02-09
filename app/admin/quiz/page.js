@@ -72,7 +72,7 @@ export default function AdminPage() {
   };
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
+    <div className="p-6 bg-gray-100 min-h-screen text-gray-700">
       <h1 className="text-3xl font-bold text-gray-800 mb-6">Admin Dashboard</h1>
 
       {/* Action Buttons */}

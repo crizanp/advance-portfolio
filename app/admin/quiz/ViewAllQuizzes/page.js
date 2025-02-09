@@ -99,7 +99,7 @@ export default function ViewAllQuizzes() {
   if (loading) return <div>Loading...</div>;
 
   return (
-    <div className="p-6">
+    <div className="p-6 text-black">
       <h1 className="text-2xl font-bold mb-6">All Quizzes</h1>
 
       {/* Sorting Controls */}

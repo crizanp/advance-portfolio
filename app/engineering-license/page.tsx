@@ -9,13 +9,7 @@ import { QuizModal } from "../components/QuizModal";
 import { BookOpenIcon, ChartBarIcon } from "@heroicons/react/24/outline";
 
 const greTopics = [
-  {
-    name: "Quantitative",
-    icon: "🧮",
-    description: "Master algebra, geometry, and data analysis",
-    link: "/math",
-    color: "bg-purple-100"
-  },
+  
   {
     name: "Verbal Basic",
     icon: "📖",
@@ -31,18 +25,11 @@ const greTopics = [
     color: "bg-pink-100"
   },
   {
-    name: "Analytical Writing",
-    icon: "✍️",
-    description: "Perfect your essay writing skills",
-    link: "/writing",
-    color: "bg-teal-100"
-  },
-  {
-    name: "Practice Tests",
-    icon: "📝",
-    description: "Full-length simulated exams",
-    link: "/practice-tests",
-    color: "bg-orange-100"
+    name: "Quantitative",
+    icon: "🧮",
+    description: "Master algebra, geometry, and data analysis",
+    link: "/math",
+    color: "bg-purple-100"
   }
 ];
 
@@ -91,7 +78,7 @@ export default function HomePage() {
     Join over 250,000 students who boosted their GRE scores with our advanced platform. Challenge yourself with timed exercises and get instant feedback to track your progress across all sections.
   </p>
 
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-12">
     <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
       <h3 className="text-xl sm:text-2xl font-bold mb-3 text-gray-900">325+ Average Score</h3>
       <p className="text-sm sm:text-base text-gray-600">Top 5% of test takers</p>
