@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -7,8 +7,7 @@ import PuffLoader from "react-spinners/PuffLoader";
 import axios from "axios";
 import PostModal from "../../components/PostModal";
 import { FiArrowLeft, FiTag } from "react-icons/fi";
-import { FaFacebook, FaTwitter, FaLinkedin, FaLink } from "react-icons/fa";
-import { FiShare2 } from "react-icons/fi";
+
 interface Post {
   _id: string;
   title: string;
@@ -27,12 +26,14 @@ interface CategoryPageProps {
 const stripHtmlTags = (html: string) => {
   return html.replace(/<\/?[^>]+(>|$)/g, "");
 };
+
 const scrollToHash = (hash) => {
   const element = document.getElementById(hash);
   if (element) {
     element.scrollIntoView({ behavior: 'smooth' });
   }
 };
+
 export default function CategoryPage({ params }: CategoryPageProps) {
   const category = decodeURIComponent(params.category);
   const [posts, setPosts] = useState<Post[]>([]);
@@ -86,7 +87,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           animate={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 260, damping: 20 }}
         >
-          <PuffLoader color="#8B5CF6" size={150} /> {/* Changed to purple-500 */}
+          <PuffLoader color="#8B5CF6" size={150} />
         </motion.div>
       </div>
     );
@@ -124,69 +125,81 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   }
 
   return (
-    <main className="relative min-h-screen bg-white text-gray-900 px-4 py-6 sm:py-8 md:py-12">
-      <div className="max-w-7xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mb-8 sm:mb-12"
-        >
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-center relative mb-8">
+    <main className="relative min-h-screen bg-white text-gray-900">
+      {/* Hero Section */}
+      <div className="relative bg-gradient-to-r from-purple-900 to-blue-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 py-16 sm:py-24">
+          <div className="relative z-10">
             <Link
               href="/#category"
               onClick={() => scrollToHash('category')}
-              className="flex items-center gap-2 text-purple-600 hover:text-purple-700 transition-colors sm:absolute sm:left-0 mb-4 sm:mb-0"
+              className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors mb-6"
             >
               <FiArrowLeft className="text-sm" />
               <span className="text-sm font-medium">All Categories</span>
             </Link>
-
-            <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-purple-800 text-center">
+            
+            <h1 className="text-4xl sm:text-5xl text-white md:text-6xl font-bold mt-4">
               {category
                 .split("-")
                 .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                 .join(" ")}
             </h1>
+            <p className="mt-4 text-lg text-white/80">
+              Explore my collection of articles and insights on {category}
+            </p>
           </div>
+          
+          {/* Abstract background pattern */}
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute inset-0" style={{
+              backgroundImage: "radial-gradient(circle at 25px 25px, white 1%, transparent 0%), radial-gradient(circle at 75px 75px, white 2%, transparent 0%)",
+              backgroundSize: "100px 100px"
+            }}/>
+          </div>
+        </div>
+      </div>
 
-          {category.toLowerCase() === "reading" && tags.length > 0 && (
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              className="mb-8 sm:mb-12"
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <FiTag className="text-xl text-purple-600" />
-                <h3 className="text-lg font-semibold text-gray-700">
-                  Filter by Tags:
-                </h3>
-              </div>
-              <div className="flex gap-2 overflow-x-auto pb-3">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        {category.toLowerCase() === "reading" && tags.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mb-8 sm:mb-12"
+          >
+            <div className="flex items-center gap-3 mb-4">
+              <FiTag className="text-xl text-purple-600" />
+              <h3 className="text-lg font-semibold text-gray-700">
+                Filter by Tags:
+              </h3>
+            </div>
+            <div className="flex gap-2 overflow-x-auto pb-3">
+              <button
+                onClick={() => setSelectedTag(null)}
+                className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${
+                  !selectedTag
+                    ? "bg-purple-600 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
+                All
+              </button>
+              {tags.map((tag) => (
                 <button
-                  onClick={() => setSelectedTag(null)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${!selectedTag
+                  key={tag}
+                  onClick={() => setSelectedTag(tag)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${
+                    selectedTag === tag
                       ? "bg-purple-600 text-white"
                       : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                    }`}
+                  }`}
                 >
-                  All
+                  {tag}
                 </button>
-                {tags.map((tag) => (
-                  <button
-                    key={tag}
-                    onClick={() => setSelectedTag(tag)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${selectedTag === tag
-                        ? "bg-purple-600 text-white"
-                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                      }`}
-                  >
-                    {tag}
-                  </button>
-                ))}
-              </div>
-            </motion.div>
-          )}
-        </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        )}
 
         <AnimatePresence>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
@@ -197,8 +210,8 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 className="p-4 sm:p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all cursor-pointer
-                          border-2 border-purple-100 hover:border-purple-200  /* Added purple borders */
-                          shadow-purple-200/40 hover:shadow-purple-300/50"  /* Added purple shadows */
+                          border-2 border-purple-100 hover:border-purple-200
+                          shadow-purple-200/40 hover:shadow-purple-300/50"
                 onClick={() => setSelectedPostSlug(post.slug)}
               >
                 <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">

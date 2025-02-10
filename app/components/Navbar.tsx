@@ -21,7 +21,7 @@ export default function Navbar() {
                          hover:from-purple-700 hover:to-blue-600 transition-all"
             >
               <Image
-                src='/images/LOGO3.png'
+                src='/images/Logo7.png'
                 alt='Logo'
                 width={170}  // Adjust the width as needed
                 height={15} // Adjust the height as needed

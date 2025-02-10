@@ -69,10 +69,10 @@ export default function HomePage() {
   <motion.h1
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
-    className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight"
+    className="text-4xl text-gray-700 sm:text-5xl md:text-6xl font-bold mb-6 leading-tight"
   >
     Conquer the GRE <br />
-    <span className="text-purple-600">Smart Preparation System</span>
+    <span className="text-purple-600 ">Smart Preparation System</span>
   </motion.h1>
   <p className="text-xs sm:text-sm md:text-base text-gray-700 max-w-2xl mx-auto mb-8">
     Join over 250,000 students who boosted their GRE scores with our advanced platform. Challenge yourself with timed exercises and get instant feedback to track your progress across all sections.

@@ -72,6 +72,7 @@ export default function NotesPage() {
 
   return (
     <main className="p-4 sm:p-6 lg:p-10 bg-gradient-to-br from-purple-50 to-white min-h-screen">
+      
       {/* Introduction Section */}
       <section className="mb-12 text-center px-2 sm:px-4 lg:px-0">
         <motion.div

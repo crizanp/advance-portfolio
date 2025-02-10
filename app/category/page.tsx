@@ -68,7 +68,7 @@ export default function CategoriesPage() {
   return (
     <main className="min-h-screen bg-gradient-to-b from-white to-purple-50">
       {/* Hero Section */}
-      <div className="bg-purple-500 text-white py-20 px-4">
+      <div className="relative bg-gradient-to-r from-purple-900 to-blue-900 text-white py-20 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -78,7 +78,7 @@ export default function CategoriesPage() {
             Explore Technical Resources
           </motion.h1>
           <p className="text-xl text-purple-100 max-w-2xl mx-auto">
-            Discover comprehensive guides, tutorials, and resources across various technology domains.
+          Explore about coding, software, and tech with simple and clear explanations.
           </p>
         </div>
       </div>
