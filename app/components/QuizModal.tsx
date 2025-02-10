@@ -61,8 +61,44 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
         const mins = Math.floor(seconds / 60);
         const secs = seconds % 60;
         return `${mins}:${secs.toString().padStart(2, '0')}`;
+    };const isValidBase64Image = (str: string): boolean => {
+        try {
+            return str.startsWith('data:image') && str.includes('base64');
+        } catch {
+            return false;
+        }
     };
-
+    const processExplanationHtml = (html: string): string => {
+        // Don't process if not a string
+        if (typeof html !== 'string') return '';
+    
+        // Replace encoded quotes and other HTML entities
+        let processed = html
+            .replace(/&quot;/g, '"')
+            .replace(/&#34;/g, '"')
+            .replace(/&amp;/g, '&')
+            .replace(/&#38;/g, '&')
+            .replace(/&lt;/g, '<')
+            .replace(/&#60;/g, '<')
+            .replace(/&gt;/g, '>')
+            .replace(/&#62;/g, '>');
+    
+        // Process img tags with base64 content
+        processed = processed.replace(
+            /<img[^>]*src=\\?"([^"\\]*)\\?"[^>]*>/gi,
+            (match, src) => {
+                // Remove any escape characters
+                const cleanSrc = src.replace(/\\/g, '');
+                
+                if (isValidBase64Image(cleanSrc)) {
+                    return `<img src="${cleanSrc}" style="max-width: 100%; height: auto; margin: 10px 0;" />`;
+                }
+                return match;
+            }
+        );
+    
+        return processed;
+    };
     useEffect(() => {
         const fetchQuestions = async () => {
             try {
@@ -71,7 +107,7 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                 );
                 const data = await response.json();
 
-                // Clean all relevant fields
+                // Clean all relevant fields except explanation
                 const cleanedData = data.map((question: Question) => ({
                     ...question,
                     questionText: cleanHtml(question.questionText),
@@ -79,7 +115,8 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                         text: cleanHtml(option.text)
                     })),
                     correctAnswers: question.correctAnswers.map(ca => cleanHtml(ca)),
-                    explanation: cleanHtml(question.explanation)
+                    // Process explanation HTML but preserve formatting and images
+                    explanation: processExplanationHtml(question.explanation)
                 }));
 
                 setQuestions(cleanedData.slice(0, 10));
@@ -308,16 +345,18 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                                             </motion.span>
                                         </button>
                                         <AnimatePresence>
-                                            {expandedExplanations.has(index) && (
-                                                <motion.div
-                                                    initial={{ opacity: 0, height: 0 }}
-                                                    animate={{ opacity: 1, height: "auto" }}
-                                                    exit={{ opacity: 0, height: 0 }}
-                                                    className="text-gray-600 pl-2 pt-3"
-                                                    dangerouslySetInnerHTML={{ __html: question.explanation }}
-                                                />
-                                            )}
-                                        </AnimatePresence>
+                                        {expandedExplanations.has(index) && (
+                                            <motion.div
+                                                initial={{ opacity: 0, height: 0 }}
+                                                animate={{ opacity: 1, height: "auto" }}
+                                                exit={{ opacity: 0, height: 0 }}
+                                                className="text-gray-600 pl-2 pt-3 quiz-explanation"
+                                                dangerouslySetInnerHTML={{ 
+                                                    __html: question.explanation 
+                                                }}
+                                            />
+                                        )}
+                                    </AnimatePresence>
                                     </div>
                                 </div>
                             ))}
