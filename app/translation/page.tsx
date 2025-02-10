@@ -81,14 +81,30 @@ const TranslationPage = () => {
     setSuggestions(trieSuggestions);
   }, [nepaliDictionaryTrie]);
   const handleSuggestionClick = useCallback((suggestion: string) => {
+    // Split the current input into words
     const words = romanInput.trim().split(/\s+/);
+    // Replace the last word with the suggestion
     words[words.length - 1] = suggestion;
+    // Create new input with a space at the end
     const newInput = words.join(" ") + " ";
     setRomanInput(newInput);
+  
+    // Convert the new input to Unicode, preserving text in parentheses
+    const segments = newInput.split(/(\([^)]*\))/g);
+    const converted = segments.map(segment => {
+      if (segment.startsWith('(') && segment.endsWith(')')) {
+        return segment.slice(1, -1); // Preserve text inside parentheses
+      }
+      return Sanscript.t(segment, "itrans", "devanagari");
+    }).join('');
+  
+    // Update the Unicode output
+    setUnicodeOutput(converted);
+    
+    // Clear suggestions and focus input
     setSuggestions([]);
     inputRef.current?.focus();
   }, [romanInput]);
-
   const copyToClipboard = useCallback(() => {
     navigator.clipboard.writeText(unicodeOutput);
     setCopyMessage("Copied to clipboard!");
