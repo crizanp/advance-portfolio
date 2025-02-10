@@ -193,14 +193,17 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
         }
     };
     const cleanHtml = (html: string) => {
-    // Only strip potentially dangerous tags while preserving formatting tags
-    const stripped = html.replace(/<(?!\/?(br|strong|em|ul|ol|li|h[1-6]|code|pre|blockquote)\b)[^>]+>/gi, '');
-    
-    // Decode HTML entities
-    const txt = document.createElement("textarea");
-    txt.innerHTML = stripped;
-    return txt.value;
-};
+        // First handle the asterisk patterns for bold text
+        let processed = html.replace(/\*+([^*]+)\*+/g, '<strong>$1</strong>');
+        
+        // Then strip potentially dangerous tags while preserving formatting tags
+        processed = processed.replace(/<(?!\/?(br|strong|em|ul|ol|li|h[1-6]|code|pre|blockquote)\b)[^>]+>/gi, '');
+        
+        // Decode HTML entities
+        const txt = document.createElement("textarea");
+        txt.innerHTML = processed;
+        return txt.value;
+    };
     if (!selectedDifficulty) {
         return (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
@@ -298,10 +301,15 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                         <div className="space-y-6">
                             {questions.map((question, index) => (
                                 <div key={question._id} className="border-b pb-6">
-                                    <p className="font-medium mb-4 text-gray-800">
-                                        <span className="font-semibold">{index + 1}.</span>
-                                        <span dangerouslySetInnerHTML={{ __html: cleanHtml(question.questionText) }}></span>
-                                    </p>
+                                   <p className="font-medium mb-4 text-gray-800">
+    <span className="font-semibold">{index + 1}.</span>
+    <span
+        dangerouslySetInnerHTML={{
+            __html: cleanHtml(question.questionText).replace(/\*(.*?)\*/g, "<b>$1</b>")
+        }}
+    ></span>
+</p>
+
                                     <div className="grid gap-2">
                                         {question.options.map((option) => (
                                             <div
