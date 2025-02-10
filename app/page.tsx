@@ -140,7 +140,7 @@ export default function HomePage() {
           {/* Category Section */}
           <section className="py-16 md:py-15 relative z-10" id="category">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:gap-4 gap-2">
                 {categories.map((category, index) => (
                   <motion.div
                     key={category.name}
@@ -151,10 +151,10 @@ export default function HomePage() {
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                   >
                     <div className="text-4xl mb-4 text-purple-600">{category.icon}</div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-2 hover:text-purple-700 transition-colors">
+                    <h3 className="sm:text-xl font-bold text-gray-900 mb-2 hover:text-purple-700 transition-colors">
                       {category.name}
                     </h3>
-                    <Link href={category.link} className="text-purple-600 hover:text-purple-800 font-medium flex items-center gap-2 transition-colors">
+                    <Link href={category.link} className="text-purple-600 hover:text-purple-800 text-sm flex items-center gap-2 transition-colors">
                       Explore
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
