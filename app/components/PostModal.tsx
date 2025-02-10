@@ -226,7 +226,7 @@ export default function PostModal({ slug, isOpen, onClose }) {
             Close
           </button>
           {loading ? (
-            <div className="flex items-center justify-center min-h-[300px]">
+            <div className="flex items-center justify-center min-h-[100vh]">
               <PuffLoader color="#3B82F6" size={100} />
             </div>
           ) : error ? (
