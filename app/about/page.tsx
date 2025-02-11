@@ -72,7 +72,7 @@ const projects = [
   },
   {
     title: "Trading Bot System",
-    description: "Automated cryptocurrency trading platform",
+    description: "Automated trading platform",
     tech: ['Node.js', 'WebSocket', 'TensorFlow', 'AWS']
   },
   {
