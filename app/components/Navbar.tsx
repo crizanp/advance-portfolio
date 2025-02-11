@@ -6,23 +6,25 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
   return (
-    <nav className="bg-white  shadow-sm sticky top-0 z-40 backdrop-blur-sm">
+    <nav className="bg-white  shadow-lg sticky top-0 z-40 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {}
           <div className="flex items-center">
             <Link
               href="/"
-              className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-blue-500 bg-clip-text text-transparent
-                         hover:from-purple-700 hover:to-blue-600 transition-all"
+              className="group relative flex items-center space-x-1"
             >
-              <Image
-                src='/images/Logo7.png'
-                alt='Logo'
-                width={170}  
-                height={15} 
-              />
+             <span className="sm:text-4xl text-3xl font-black tracking-tighter text-purple-700 ">
+                C
+              </span> <span className="sm:text-2xl text-2xl  font-black tracking-tighter text-gray-700 
+                            transition-all duration-300">
+                RIZAN
+              </span>
+              <span className="sm:text-4xl text-3xl font-black text-purple-700 tracking-tighter transition-colors duration-300">P</span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gray-800 transition-all duration-300 group-hover:w-full"></span>
             </Link>
+            <span className="ml-3 text-xs text-gray-500 hidden sm:block">Tech • Code • Tools</span>
           </div>
           {}
           <div className="hidden md:flex space-x-2 items-center">

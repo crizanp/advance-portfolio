@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
-import Head from "next/head";
+import DynamicHead from "./components/DynamicHead";
 import Link from "next/link";
 import { posts } from "../lib/data";
 import { motion } from "framer-motion";
@@ -10,7 +10,8 @@ import Modal from "./components/Model";
 import CVTemplate from "./components/CVTemplate";
 import { RiPagesLine } from "react-icons/ri";
 import TitleSection from "./components/HeroSection";
-import Image from "next/image"; 
+import Image from "next/image";
+
 const getLatestPosts = () => posts.slice(0, 2);
 const books = [
   {
@@ -64,6 +65,22 @@ export default function HomePage() {
   const [latestPosts, setLatestPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCV, setShowCV] = useState(false);
+  const pageTitle = "Crijan Pokhrel - Developer, Blockchain Enthusiast & Tech Blogger";
+  const pageDescription = "Explore my portfolio, projects, and technical blogs. I specialize in blockchain development, software engineering, and Web3 technologies.";
+  const canonicalUrl = "https://srijanpokhrel.com.np";
+  const ogImageUrl = "https://srijanpokhrel.com.np/images/image.png";
+
+  const schemaMarkup = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Crijan Pokhrel",
+    url: canonicalUrl,
+    jobTitle: "Developer, Blockchain Enthusiast, Tech Blogger",
+    sameAs: [
+      "https://linkedin.com/in/srijanpokhrel",
+      "https://github.com/crizanp",
+    ],
+  };
   useEffect(() => {
     if (window.location.hash) {
       const hash = window.location.hash.substring(1);
@@ -83,36 +100,15 @@ export default function HomePage() {
       </div>
     );
   }
-  const metaTitle = "Welcome to My Space - Portfolio, Blog, and Projects";
-  const metaDescription =
-    "Explore projects, blogs, and insights shared by a passionate developer. Discover tutorials, latest projects, and more.";
-  const metaUrl = "https://yourwebsite.com"; 
-  const metaImage = "https://yourwebsite.com/images/og-image.png"; 
   return (
     <>
-      <Head>
-        <title>{metaTitle}</title>
-        <meta name="description" content={metaDescription} />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta property="og:title" content={metaTitle} />
-        <meta property="og:description" content={metaDescription} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={metaUrl} />
-        <meta property="og:image" content={metaImage} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={metaTitle} />
-        <meta name="twitter:description" content={metaDescription} />
-        <meta name="twitter:image" content={metaImage} />
-        <link rel="canonical" href={metaUrl} />
-        <script type="application/ld+json">
-          {JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebSite",
-            name: "My Portfolio",
-            url: metaUrl,
-          })}
-        </script>
-      </Head>
+      <DynamicHead
+        title={pageTitle}
+        description={pageDescription}
+        canonicalUrl={canonicalUrl}
+        ogImageUrl={ogImageUrl}
+        schemaMarkup={schemaMarkup}
+      />
       <main className=" pb-8  bg-gradient-to-br from-white to-purple-50 min-h-screen relative overflow-hidden">
         <div className="relative">
           <div className="absolute inset-0 z-0">
@@ -124,11 +120,11 @@ export default function HomePage() {
               quality={100}
               className="opacity-700"
             />
-            <div className="absolute inset-0 bg-black/30"></div> {}
+            <div className="absolute inset-0 bg-black/30"></div> { }
           </div>
-          {}
+          { }
           <TitleSection />
-          {}
+          { }
           <section className="py-16 md:py-15 relative z-10" id="category">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:gap-4 gap-2">
@@ -160,7 +156,7 @@ export default function HomePage() {
         <section className="py-16 md:py-20 relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {}
+              { }
               <motion.div
                 className="relative p-8 rounded-2xl backdrop-blur-lg bg-gradient-to-br from-blue-50/80 to-indigo-50/80 border border-purple-700 
         transition-all"
@@ -205,7 +201,7 @@ export default function HomePage() {
                   </Link>
                 </div>
               </motion.div>
-              {}
+              { }
               <motion.div
                 className="relative p-8 rounded-2xl backdrop-blur-lg bg-gradient-to-br from-blue-50/80 to-indigo-50/80 border border-purple-700 
         transition-all"
@@ -266,7 +262,7 @@ export default function HomePage() {
                 </div>
               </motion.div>
             </div>
-            {}
+            { }
             <div className="absolute inset-0 pointer-events-none">
               {[...Array(20)].map((_, i) => (
                 <motion.div
@@ -291,7 +287,7 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-        {}
+        { }
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
           <motion.div
             className="w-32 h-32 bg-blue-600 rounded-full opacity-20 absolute top-10 left-10"
