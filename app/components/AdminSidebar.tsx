@@ -8,7 +8,6 @@ export default function AdminSidebar() {
       </h2>
       <nav>
         <ul>
-          {/* Section for General Post Management */}
           <li className="mb-4">
             <Link href="/admin/add-post" className="text-lg hover:text-gray-300">
               Add Post
@@ -40,10 +39,8 @@ export default function AdminSidebar() {
             </Link>
           </li>
 
-          {/* Section for Engineering Notes Management */}
           <li className="mb-4 mt-8 font-bold">Engineering Notes</li>
 
-          {/* Semester Management */}
           <li className="mb-4">
             <Link href="/admin/engineering-notes/semester/add" className="text-lg hover:text-gray-300">
               Add Semester
@@ -55,7 +52,6 @@ export default function AdminSidebar() {
             </Link>
           </li>
 
-          {/* Subject Management */}
           <li className="mb-4">
             <Link href="/admin/engineering-notes/subject/add" className="text-lg hover:text-gray-300">
               Add Subject
@@ -67,7 +63,6 @@ export default function AdminSidebar() {
             </Link>
           </li>
 
-          {/* Post Management for Subjects */}
           <li className="mb-4">
             <Link href="/admin/engineering-notes/post/add" className="text-lg hover:text-gray-300">
               Add Post to Subject

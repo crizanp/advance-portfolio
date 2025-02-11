@@ -5,13 +5,11 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import PuffLoader from "react-spinners/PuffLoader";
 
-// Function to remove HTML tags and return plain text
 const stripHtml = (html) => {
   const doc = new DOMParser().parseFromString(html, "text/html");
   return doc.body.textContent || "";
 };
 
-// Function to safely get a decoded string from useParams (handles string[] or string)
 const safeParamToString = (param) => {
   const paramString = Array.isArray(param) ? param.join("") : param;
   return decodeURIComponent(paramString || "");
@@ -22,7 +20,6 @@ export default function NotesDetailPage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Convert subjectName and semesterName safely to decoded strings
   const subjectNameStr = safeParamToString(subjectName);
   const semesterNameStr = safeParamToString(semesterName);
 
@@ -72,7 +69,6 @@ export default function NotesDetailPage() {
 
   return (
     <main className="p-4 sm:p-6 lg:p-10 bg-gradient-to-br from-purple-50 to-white min-h-screen">
-      {/* Breadcrumb Navigation */}
       <nav className="mb-6">
         <ul className="flex flex-wrap text-purple-700 text-sm space-x-2">
           {breadcrumbItems.map((item, index) => (
@@ -88,7 +84,6 @@ export default function NotesDetailPage() {
         </ul>
       </nav>
 
-      {/* Motivational Section at the Top */}
       <section className="mb-10 text-center px-2 sm:px-4 lg:px-0">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -103,29 +98,11 @@ export default function NotesDetailPage() {
               foundation is just the beginning of building a great skyscraper of
               knowledge.
             </p>
-            {/* <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-purple-50 hover:shadow-md transition-shadow">
-                <h3 className="text-purple-700 font-semibold mb-3">Explore Beyond</h3>
-                <p className="text-gray-600">
-                  Don't just stop at the notes provided here! Your library has
-                  treasures waiting for you. Find the best author on the topic, crack
-                  open that hefty book, and dive deep.
-                </p>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-purple-50 hover:shadow-md transition-shadow">
-                <h3 className="text-purple-700 font-semibold mb-3">Stay Curious</h3>
-                <p className="text-gray-600">
-                  "Learning never exhausts the mind," said Leonardo da Vinci. Go
-                  beyond, explore, experiment, and get curious! After all, "Google is
-                  great, but the library is still magic."
-                </p>
-              </div>
-            </div> */}
+
           </div>
         </motion.div>
       </section>
 
-      {/* Posts for the Subject */}
       <h2 className="text-3xl sm:text-4xl font-bold text-purple-700 text-center mb-10">
         Notes for {subjectNameStr}
       </h2>

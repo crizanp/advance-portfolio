@@ -1,6 +1,4 @@
-// app/translation/page.tsx
 "use client";
-
 import React, { useRef, useState, useMemo, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
 import Sanscript from "@sanskrit-coders/sanscript";
@@ -8,11 +6,9 @@ import Trie from "./utils/Trie";
 import { wordMappings } from "./utils/wordMappings";
 import { ClipboardDocumentIcon, ShareIcon, ArrowPathIcon, BookOpenIcon } from "@heroicons/react/24/outline";
 import { FaTwitter, FaFacebook, FaLinkedin, FaLink } from 'react-icons/fa';
-
 interface NepaliWordsData {
   nepaliWords: string[];
 }
-
 const TranslationPage = () => {
   const [romanInput, setRomanInput] = useState("");
   const [unicodeOutput, setUnicodeOutput] = useState("");
@@ -22,86 +18,60 @@ const TranslationPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [nepaliDictionaryTrie, setNepaliDictionaryTrie] = useState<Trie | null>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-
   useEffect(() => {
     const loadData = async () => {
-      // Initialize trie with wordMappings first
       const commonConversions = new Map(Object.entries(wordMappings));
       const trie = new Trie();
       commonConversions.forEach((nepali, roman) => trie.insert(roman, nepali));
-      
-      // Set initial trie immediately
       setNepaliDictionaryTrie(trie);
-      setIsLoading(false); // Let UI show while we load more data
-
+      setIsLoading(false); 
       try {
         const response = await fetch('./NepaliWords.json');
         const words: NepaliWordsData = await response.json();
-        
-        // Add new words to existing trie
         words.nepaliWords.forEach((word) => {
           const romanizedWord = Sanscript.t(word, "devanagari", "itrans").toLowerCase();
           if (!commonConversions.has(romanizedWord)) {
             trie.insert(romanizedWord, word);
           }
         });
-
-        // Update trie with new words
         setNepaliDictionaryTrie(trie);
       } catch (error) {
         console.error("Failed to load additional data:", error);
       }
     };
-
     loadData();
   }, []);
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const input = e.target.value;
     setRomanInput(input);
-  
-    // Convert input to Unicode, preserving text in parentheses
     const segments = input.split(/(\([^)]*\))/g);
     const converted = segments.map(segment => {
       if (segment.startsWith('(') && segment.endsWith(')')) {
-        return segment.slice(1, -1); // Preserve text inside parentheses
+        return segment.slice(1, -1); 
       }
       return Sanscript.t(segment, "itrans", "devanagari");
     }).join('');
-  
     setUnicodeOutput(converted);
-  
-    // Extract the last word for suggestions
-    const words = input.split(/\s+/); // Split by spaces
+    const words = input.split(/\s+/); 
     const lastWord = words[words.length - 1]?.toLowerCase().replace(/[()]/g, '') || "";
-  
-    // Generate suggestions using the trie
     const trieSuggestions = lastWord && nepaliDictionaryTrie 
       ? nepaliDictionaryTrie.search(lastWord).slice(0, 3) 
       : [];
     setSuggestions(trieSuggestions);
   }, [nepaliDictionaryTrie]);
   const handleSuggestionClick = useCallback((suggestion: string) => {
-    // Split the current input into words
     const words = romanInput.trim().split(/\s+/);
-    // Replace the last word with the suggestion
     words[words.length - 1] = suggestion;
-    // Create new input with a space at the end
     const newInput = words.join(" ") + " ";
     setRomanInput(newInput);
-  
-    // Convert the new input to Unicode, preserving text in parentheses
     const segments = newInput.split(/(\([^)]*\))/g);
     const converted = segments.map(segment => {
       if (segment.startsWith('(') && segment.endsWith(')')) {
-        return segment.slice(1, -1); // Preserve text inside parentheses
+        return segment.slice(1, -1); 
       }
       return Sanscript.t(segment, "itrans", "devanagari");
     }).join('');
-  
-    // Update the Unicode output
     setUnicodeOutput(converted);
-    
-    // Clear suggestions and focus input
     setSuggestions([]);
     inputRef.current?.focus();
   }, [romanInput]);
@@ -110,11 +80,9 @@ const TranslationPage = () => {
     setCopyMessage("Copied to clipboard!");
     setTimeout(() => setCopyMessage(null), 3000);
   }, [unicodeOutput]);
-
   const shareContent = useCallback(() => {
     setShowShare(true);
   }, []);
-
   const ShareButton = () => (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -145,7 +113,6 @@ const TranslationPage = () => {
       </div>
     </motion.div>
   );
-
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-purple-50 to-blue-50 flex items-center justify-center">
@@ -157,7 +124,6 @@ const TranslationPage = () => {
       </div>
     );
   }
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
@@ -166,7 +132,7 @@ const TranslationPage = () => {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white rounded-2xl shadow-xl p-8 mb-8 border border-purple-100"
         >
-          {/* ... rest of the component remains the same ... */}
+          {}
           <div className="text-center mb-10">
             <h1 className="text-4xl font-bold text-purple-600 mb-4">
               <BookOpenIcon className="h-10 w-10 inline-block mr-3" />
@@ -176,7 +142,6 @@ const TranslationPage = () => {
               Convert Romanized Nepali (like "kasto") to Unicode Devanagari (कस्तो) instantly
             </p>
           </div>
-
           <div className="mb-10">
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">Features</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
@@ -190,13 +155,11 @@ const TranslationPage = () => {
               </div>
             </div>
           </div>
-
           {copyMessage && (
             <div className="bg-green-100 text-green-800 px-4 py-2 rounded-lg mb-4 text-center">
               {copyMessage}
             </div>
           )}
-
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -228,7 +191,6 @@ const TranslationPage = () => {
                 )}
               </div>
             </div>
-
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Nepali Unicode Output
@@ -259,7 +221,6 @@ const TranslationPage = () => {
             </div>
           </div>
         </motion.div>
-
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-purple-100">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">About Nepali Unicode</h2>
           <div className="space-y-4 text-gray-600">
@@ -279,10 +240,8 @@ const TranslationPage = () => {
           </div>
         </div>
       </div>
-
       {showShare && <ShareButton />}
     </div>
   );
 };
-
 export default TranslationPage;

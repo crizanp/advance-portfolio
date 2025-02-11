@@ -1,5 +1,4 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
@@ -11,8 +10,7 @@ import Modal from "./components/Model";
 import CVTemplate from "./components/CVTemplate";
 import { RiPagesLine } from "react-icons/ri";
 import TitleSection from "./components/HeroSection";
-import Image from "next/image"; // Import the Image component
-
+import Image from "next/image"; 
 const getLatestPosts = () => posts.slice(0, 2);
 const books = [
   {
@@ -66,21 +64,18 @@ export default function HomePage() {
   const [latestPosts, setLatestPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCV, setShowCV] = useState(false);
-
   useEffect(() => {
     if (window.location.hash) {
       const hash = window.location.hash.substring(1);
       scrollToHash(hash);
     }
   }, []);
-
   useEffect(() => {
     setTimeout(() => {
       setLatestPosts(getLatestPosts());
       setLoading(false);
     }, 2000);
   }, []);
-
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-white">
@@ -88,13 +83,11 @@ export default function HomePage() {
       </div>
     );
   }
-
   const metaTitle = "Welcome to My Space - Portfolio, Blog, and Projects";
   const metaDescription =
     "Explore projects, blogs, and insights shared by a passionate developer. Discover tutorials, latest projects, and more.";
-  const metaUrl = "https://yourwebsite.com"; // Replace with your site URL
-  const metaImage = "https://yourwebsite.com/images/og-image.png"; // Replace with your OG image URL
-
+  const metaUrl = "https://yourwebsite.com"; 
+  const metaImage = "https://yourwebsite.com/images/og-image.png"; 
   return (
     <>
       <Head>
@@ -131,13 +124,11 @@ export default function HomePage() {
               quality={100}
               className="opacity-700"
             />
-            <div className="absolute inset-0 bg-black/30"></div> {/* Dark overlay */}
+            <div className="absolute inset-0 bg-black/30"></div> {}
           </div>
-
-          {/* Hero Section */}
+          {}
           <TitleSection />
-
-          {/* Category Section */}
+          {}
           <section className="py-16 md:py-15 relative z-10" id="category">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:gap-4 gap-2">
@@ -169,7 +160,7 @@ export default function HomePage() {
         <section className="py-16 md:py-20 relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* GRE Preparation Card */}
+              {}
               <motion.div
                 className="relative p-8 rounded-2xl backdrop-blur-lg bg-gradient-to-br from-blue-50/80 to-indigo-50/80 border border-purple-700 
         transition-all"
@@ -180,7 +171,6 @@ export default function HomePage() {
               >
                 <div className="absolute -top-16 -right-16 w-48 h-48 bg-blue-200/10 rounded-full blur-3xl"></div>
                 <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-indigo-200/10 rounded-full blur-3xl"></div>
-
                 <div className="relative z-10 space-y-6">
                   <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-indigo-700 rounded-2xl flex items-center justify-center">
                     <RiPagesLine className="w-12 h-12 text-white/90" />
@@ -215,8 +205,7 @@ export default function HomePage() {
                   </Link>
                 </div>
               </motion.div>
-
-              {/* Computer Engineering License Preparation Card */}
+              {}
               <motion.div
                 className="relative p-8 rounded-2xl backdrop-blur-lg bg-gradient-to-br from-blue-50/80 to-indigo-50/80 border border-purple-700 
         transition-all"
@@ -227,7 +216,6 @@ export default function HomePage() {
               >
                 <div className="absolute -top-16 -left-16 w-48 h-48 bg-emerald-200/10 rounded-full blur-3xl"></div>
                 <div className="absolute -bottom-16 -right-16 w-64 h-64 bg-cyan-200/10 rounded-full blur-3xl"></div>
-
                 <div className="relative z-10 space-y-6">
                   <div className="w-20 h-20 bg-gradient-to-br from-emerald-600 to-cyan-700 rounded-2xl flex items-center justify-center">
                     <div className="relative">
@@ -278,8 +266,7 @@ export default function HomePage() {
                 </div>
               </motion.div>
             </div>
-
-            {/* Floating Particles */}
+            {}
             <div className="absolute inset-0 pointer-events-none">
               {[...Array(20)].map((_, i) => (
                 <motion.div
@@ -304,8 +291,7 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-
-        {/* Animated Game-Like Background Elements */}
+        {}
         <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
           <motion.div
             className="w-32 h-32 bg-blue-600 rounded-full opacity-20 absolute top-10 left-10"
@@ -335,7 +321,6 @@ export default function HomePage() {
             }}
           />
         </div>
-
       </main>
     </>
   );

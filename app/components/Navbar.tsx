@@ -1,19 +1,15 @@
 'use client';
-
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-
   const toggleMenu = () => setIsOpen(!isOpen);
-
   return (
     <nav className="bg-white  shadow-sm sticky top-0 z-40 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          {/* Logo */}
+          {}
           <div className="flex items-center">
             <Link
               href="/"
@@ -23,24 +19,21 @@ export default function Navbar() {
               <Image
                 src='/images/Logo7.png'
                 alt='Logo'
-                width={170}  // Adjust the width as needed
-                height={15} // Adjust the height as needed
+                width={170}  
+                height={15} 
               />
-
             </Link>
           </div>
-
-          {/* Desktop Menu */}
+          {}
           <div className="hidden md:flex space-x-2 items-center">
             <NavLink href="/category">Categories</NavLink>
             <NavLink href="/translation">Nepali Unicode</NavLink>
-            {/* <NavLink href="/category/telegram-api">Telegram Bot</NavLink> */}
+            {}
             <NavLink href="/category/reading">Readings</NavLink>
             <NavLink href="/about">About</NavLink>
             <NavLink href="/contact">Contact</NavLink>
           </div>
-
-          {/* Mobile Menu Button */}
+          {}
           <div className="flex items-center md:hidden">
             <button
               onClick={toggleMenu}
@@ -57,15 +50,13 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-
-      {/* Mobile Menu Dropdown */}
+      {}
       {isOpen && (
         <div className="md:hidden bg-white border-t border-gray-100">
           <div className="px-4 py-3 space-y-1">
             <MobileNavLink href="/category">Categories</MobileNavLink>
             <NavLink href="/translation">Nepali Unicode</NavLink>
-
-            {/* <MobileNavLink href="/category/telegram-api">Telegram Bot</MobileNavLink> */}
+            {}
             <MobileNavLink href="/category/reading">Readings</MobileNavLink>
             <MobileNavLink href="/about">About</MobileNavLink>
             <MobileNavLink href="/contact">Contact</MobileNavLink>
@@ -75,8 +66,6 @@ export default function Navbar() {
     </nav>
   );
 }
-
-// Reusable NavLink component
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
   <Link
     href={href}
@@ -87,8 +76,6 @@ const NavLink = ({ href, children }: { href: string; children: React.ReactNode }
     <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-purple-600 transition-all group-hover:w-full"></span>
   </Link>
 );
-
-// Mobile NavLink component
 const MobileNavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
   <Link
     href={href}

@@ -11,11 +11,14 @@ export default function Footer() {
             <Link href="/about" className="hover:text-purple-600">
               About
             </Link>
+            <Link href="/codecleaner" className="hover:text-purple-600">
+              Code Cleaner
+            </Link>
             <Link href="/projects" className="hover:text-purple-600">
               Projects
             </Link>
             <Link href="/notes" className="hover:text-purple-600">
-              Engineering Notes
+              Notes
             </Link>
             <a href="/translation" className="hover:text-purple-600">
               Nepali Unicode

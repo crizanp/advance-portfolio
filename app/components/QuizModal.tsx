@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { motion, AnimatePresence } from "framer-motion";
-
 type Question = {
     _id: string;
     questionText: string;
@@ -10,12 +9,10 @@ type Question = {
     explanation: string;
     difficulty: number;
 };
-
 type QuizModalProps = {
     topic: string;
     onClose: () => void;
 };
-
 export function QuizModal({ topic, onClose }: QuizModalProps) {
     const [selectedDifficulty, setSelectedDifficulty] = useState<number | null>(null);
     const [questions, setQuestions] = useState<Question[]>([]);
@@ -28,20 +25,16 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
     const [timeLeft, setTimeLeft] = useState<number>(0);
     const [expandedExplanations, setExpandedExplanations] = useState<Set<number>>(new Set());
     const [allSelections, setAllSelections] = useState<{ [key: string]: string[] }>({});
-
     const toggleExplanation = (index: number) => {
         const newSet = new Set(expandedExplanations);
         newSet.has(index) ? newSet.delete(index) : newSet.add(index);
         setExpandedExplanations(newSet);
     };
-
     useEffect(() => {
         let timer: NodeJS.Timeout;
-
         if (selectedDifficulty !== null && questions.length > 0 && !showResults) {
             const initialTime = selectedDifficulty <= 3 ? 600 : 900;
             setTimeLeft(initialTime);
-
             timer = setInterval(() => {
                 setTimeLeft((prev) => {
                     if (prev <= 1) {
@@ -53,10 +46,8 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                 });
             }, 1000);
         }
-
         return () => clearInterval(timer);
     }, [selectedDifficulty, questions, showResults]);
-
     const formatTime = (seconds: number): string => {
         const mins = Math.floor(seconds / 60);
         const secs = seconds % 60;
@@ -69,10 +60,7 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
         }
     };
     const processExplanationHtml = (html: string): string => {
-        // Don't process if not a string
         if (typeof html !== 'string') return '';
-    
-        // Replace encoded quotes and other HTML entities
         let processed = html
             .replace(/&quot;/g, '"')
             .replace(/&#34;/g, '"')
@@ -82,21 +70,16 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
             .replace(/&#60;/g, '<')
             .replace(/&gt;/g, '>')
             .replace(/&#62;/g, '>');
-    
-        // Process img tags with base64 content
         processed = processed.replace(
             /<img[^>]*src=\\?"([^"\\]*)\\?"[^>]*>/gi,
             (match, src) => {
-                // Remove any escape characters
                 const cleanSrc = src.replace(/\\/g, '');
-                
                 if (isValidBase64Image(cleanSrc)) {
                     return `<img src="${cleanSrc}" style="max-width: 100%; height: auto; margin: 10px 0;" />`;
                 }
                 return match;
             }
         );
-    
         return processed;
     };
     useEffect(() => {
@@ -106,8 +89,6 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                     `${process.env.NEXT_PUBLIC_API_URL}/quizzes/type?questionType=${topic}&difficulty=${selectedDifficulty}`
                 );
                 const data = await response.json();
-
-                // Clean all relevant fields except explanation
                 const cleanedData = data.map((question: Question) => ({
                     ...question,
                     questionText: cleanHtml(question.questionText),
@@ -115,10 +96,8 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                         text: cleanHtml(option.text)
                     })),
                     correctAnswers: question.correctAnswers.map(ca => cleanHtml(ca)),
-                    // Process explanation HTML but preserve formatting and images
                     explanation: processExplanationHtml(question.explanation)
                 }));
-
                 setQuestions(cleanedData.slice(0, 10));
             } catch (error) {
                 console.error("Error fetching questions:", error);
@@ -126,23 +105,19 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                 setLoading(false);
             }
         };
-
         if (topic && selectedDifficulty !== null) {
             fetchQuestions();
         }
     }, [topic, selectedDifficulty]);
-
     const handleAnswerSelect = (answer: string) => {
         if (!showResults && questions[currentQuestion]) {
             const isMultipleSelect = questions[currentQuestion].correctAnswers.length > 1;
-
             setSelectedAnswers(prev => {
                 const newAnswers = isMultipleSelect
                     ? (prev.includes(answer)
                         ? prev.filter(a => a !== answer)
                         : [...prev, answer])
                     : (prev.includes(answer) ? [] : [answer]);
-
                 return newAnswers;
             });
         }
@@ -154,7 +129,6 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
             onClose();
         }
     };
-
     const handleSkipQuestion = () => {
         setSelectedAnswers([]);
         if (currentQuestion < questions.length - 1) {
@@ -163,7 +137,6 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
             setShowResults(true);
         }
     };
-
     const handleNextQuestion = () => {
         if (questions[currentQuestion]) {
             const currentQuestionData = questions[currentQuestion];
@@ -177,14 +150,11 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
             if (isCorrect) {
                 setScore(score + 1);
             }
-
-            // Save the selections for this question
             setAllSelections(prev => ({
                 ...prev,
                 [currentQuestionData._id]: selectedAnswers
             }));
         }
-
         setSelectedAnswers([]);
         if (currentQuestion < questions.length - 1) {
             setCurrentQuestion(currentQuestion + 1);
@@ -193,13 +163,8 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
         }
     };
     const cleanHtml = (html: string) => {
-        // First handle the asterisk patterns for bold text
         let processed = html.replace(/\*+([^*]+)\*+/g, '<strong>$1</strong>');
-        
-        // Then strip potentially dangerous tags while preserving formatting tags
         processed = processed.replace(/<(?!\/?(br|strong|em|ul|ol|li|h[1-6]|code|pre|blockquote)\b)[^>]+>/gi, '');
-        
-        // Decode HTML entities
         const txt = document.createElement("textarea");
         txt.innerHTML = processed;
         return txt.value;
@@ -238,7 +203,6 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
             </div>
         );
     }
-
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
@@ -282,7 +246,6 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                         </div>
                     </div>
                 )}
-
                 {loading ? (
                     <div className="text-center py-8">
                         <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-900 mx-auto"></div>
@@ -297,7 +260,6 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                                 Score: {score}/{questions.length}
                             </p>
                         </div>
-
                         <div className="space-y-6">
                             {questions.map((question, index) => (
                                 <div key={question._id} className="border-b pb-6">
@@ -309,7 +271,6 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
         }}
     ></span>
 </p>
-
                                     <div className="grid gap-2">
                                         {question.options.map((option) => (
                                             <div
@@ -388,7 +349,6 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                                 />
                             </div>
                         </div>
-
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={currentQuestion}
@@ -400,7 +360,6 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                                 <p className="text-lg font-medium mb-4 text-gray-800">
                                     <span dangerouslySetInnerHTML={{ __html: cleanHtml(questions[currentQuestion].questionText) }}></span>
                                 </p>
-
                                 <div className="grid gap-3">
                                     {questions[currentQuestion].options.map((option) => {
                                         const isSelected = selectedAnswers.includes(option.text);
@@ -423,7 +382,6 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                                 </div>
                             </motion.div>
                         </AnimatePresence>
-
                         <div className="mt-6 flex space-x-4">
                             <button
                                 onClick={handleNextQuestion}
@@ -432,7 +390,6 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                             >
                                 {currentQuestion === questions.length - 1 ? "Finish Quiz" : "Next Question"}
                             </button>
-
                             {!showResults && (
                                 <button
                                     onClick={handleSkipQuestion}

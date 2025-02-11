@@ -3,9 +3,8 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { RiPagesLine } from 'react-icons/ri';
 import { FaLinkedin, FaGithub } from 'react-icons/fa';
-import CVTemplate from './CVTemplate'; // Import your CVTemplate component
+import CVTemplate from './CVTemplate'; 
 import Modal from './Model';
-
 const TitleSection = () => {
   const titles = [
     'React.js Developer',
@@ -15,10 +14,8 @@ const TitleSection = () => {
     'Mini Apps Developer',
     'Core PHP Developer',
   ];
-
   const [currentTitle, setCurrentTitle] = useState(titles[0]);
   const [showCV, setShowCV] = useState(false);
-
   useEffect(() => {
     const titleInterval = setInterval(() => {
       setCurrentTitle((prevTitle) => {
@@ -26,11 +23,9 @@ const TitleSection = () => {
         const nextIndex = (currentIndex + 1) % titles.length;
         return titles[nextIndex];
       });
-    }, 3000); // Change title every 3 seconds
-
-    return () => clearInterval(titleInterval); // Clean up the interval when component unmounts
+    }, 3000); 
+    return () => clearInterval(titleInterval); 
   }, []);
-
   return (
     <section className="text-center py-8 relative z-10">
       <motion.div
@@ -44,7 +39,6 @@ const TitleSection = () => {
         <p className="text-xl text-gray-300 max-w-2xl mx-auto mb-8">
           Turning ideas into digital experiences through code and creativity
         </p>
-
         <div className="flex justify-center gap-4 ">
           <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
             <Link
@@ -55,15 +49,13 @@ const TitleSection = () => {
               View Work
             </Link>
           </motion.div>
-
           <motion.div >
             <button
-              // onClick={() => setShowCV(true)} // Display the CV when clicked
               className="px-8 py-3 border-2 border-gray-300 text-gray-200 rounded-lg hover:bg-purple-50  hover:text-gray-700 hover:border-gray-700 transition-colors"
             >
               View CV
             </button>
-             {/* Conditional rendering for CV popup */}
+             {}
              <Modal show={showCV} onClose={() => setShowCV(false)}>
               <div className="modal-content" style={{ maxHeight: "80vh", overflowY: "auto" }}>
                 <CVTemplate />
@@ -71,7 +63,6 @@ const TitleSection = () => {
             </Modal>
           </motion.div>
         </div>
-
         <div className="mt-8 flex justify-center gap-4">
           <a href="https://www.linkedin.com/in/srijanpokhrel/" target="_blank" rel="noopener" className="p-2 text-gray-300 hover:text-gray-400 transition-colors">
             <FaLinkedin className="text-3xl" />
@@ -81,9 +72,7 @@ const TitleSection = () => {
           </a>
         </div>
       </motion.div>
-
     </section>
   );
 };
-
 export default TitleSection;

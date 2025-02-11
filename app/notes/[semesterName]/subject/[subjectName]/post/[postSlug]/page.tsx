@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, notFound } from "next/navigation";
 import parse, { domToReact } from "html-react-parser";
 import Prism from "prismjs";
-import "prismjs/themes/prism.css"; // Light theme for Prism
+import "prismjs/themes/prism.css";
 import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-css";
 import "prismjs/components/prism-markup";
@@ -143,7 +143,6 @@ export default function NotesDetailPage() {
     <div className="relative min-h-screen bg-gradient-to-br from-purple-50 to-white text-gray-900 p-4 sm:p-6 lg:p-10">
       <FloatingBubbles />
 
-      {/* Breadcrumb Navigation */}
       <nav className="mb-6">
         <ul className="flex flex-wrap text-gray-900 text-sm space-x-2">
           {breadcrumbItems.map((item, index) => (

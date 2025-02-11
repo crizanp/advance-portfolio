@@ -1,10 +1,8 @@
 "use client";
-
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import PuffLoader from "react-spinners/PuffLoader";
-
 interface Post {
   _id: string;
   title: string;
@@ -12,25 +10,20 @@ interface Post {
   content: string;
   imageUrl?: string;
 }
-
 interface TagPageProps {
   params: {
     tag: string;
   };
 }
-
-// Function to strip HTML tags from a string
 const stripHtml = (html) => {
   const doc = new DOMParser().parseFromString(html, "text/html");
   return doc.body.textContent || "";
 };
-
 export default function TagPage({ params }: TagPageProps) {
   const tag = decodeURIComponent(params.tag);
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
   useEffect(() => {
     async function fetchPosts() {
       try {
@@ -50,10 +43,8 @@ export default function TagPage({ params }: TagPageProps) {
         setLoading(false);
       }
     }
-
     fetchPosts();
   }, [tag]);
-
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-900">
@@ -61,7 +52,6 @@ export default function TagPage({ params }: TagPageProps) {
       </div>
     );
   }
-
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white">
@@ -75,7 +65,6 @@ export default function TagPage({ params }: TagPageProps) {
       </div>
     );
   }
-
   return (
     <main className="min-h-screen bg-gray-900 text-white p-4 sm:p-6 lg:p-10">
       <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-10 text-center">

@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import Spinner from '../components/Spinner';
 
-// Define types for posts and categories
 interface Post {
   _id: string;
   title: string;
@@ -20,7 +19,6 @@ interface Category {
   name: string;
 }
 
-// Helper function to extract unique category names
 const getUniqueCategories = (posts: Post[], categories: Category[]): string[] => {
   const categoryIds = posts.map((post) => post.category);
   const categoryNames = categoryIds.map((id) => categories.find((cat) => cat._id === id)?.name || 'Unknown');
@@ -57,7 +55,6 @@ export default function HomePage() {
 
   const categoryList = getUniqueCategories(posts, categories);
 
-  // Filter posts based on selected category
   const filteredPosts =
     selectedCategory === 'All'
       ? posts
@@ -74,7 +71,6 @@ export default function HomePage() {
         <p className="text-center text-red-500 dark:text-red-400">Error: {error}</p>
       )}
 
-      {/* Tab-based category filter */}
       <div className="flex justify-center mb-6 lg:mb-10">
         <div className="inline-flex border-b-2 border-gray-300 dark:border-gray-700 overflow-x-auto">
           {categoryList.map((category) => (
@@ -93,7 +89,6 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* Post Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredPosts.map((post) => (
           <motion.div
@@ -121,7 +116,6 @@ export default function HomePage() {
         ))}
       </div>
 
-      {/* No Posts Found Message */}
       {filteredPosts.length === 0 && !loading && (
         <p className="text-center text-gray-500 dark:text-gray-400 mt-10">No posts found in this category.</p>
       )}

@@ -150,7 +150,6 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             </p>
           </div>
           
-          {/* Abstract background pattern */}
           <div className="absolute inset-0 opacity-10">
             <div className="absolute inset-0" style={{
               backgroundImage: "radial-gradient(circle at 25px 25px, white 1%, transparent 0%), radial-gradient(circle at 75px 75px, white 2%, transparent 0%)",

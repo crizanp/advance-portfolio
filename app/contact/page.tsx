@@ -4,34 +4,6 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import { PuffLoader } from "react-spinners";
 
-const FloatingBubbles = () => {
-  const colors = ["#4C51BF", "#ED64A6", "#9F7AEA", "#F6AD55"];
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(10)].map((_, index) => (
-        <motion.div
-          key={index}
-          className="absolute rounded-full"
-          style={{
-            backgroundColor: colors[index % colors.length],
-            width: `${Math.random() * 80 + 20}px`,
-            height: `${Math.random() * 80 + 20}px`,
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            opacity: 0.2,
-          }}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{
-            opacity: [0.2, 0.4, 0.2],
-            scale: [0.5, 1, 0.5],
-            transition: { duration: Math.random() * 5 + 3, repeat: Infinity },
-          }}
-        />
-      ))}
-    </div>
-  );
-};
-
 export default function ContactPage() {
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -48,7 +20,6 @@ export default function ContactPage() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate form submission delay
     setTimeout(() => {
       setLoading(false);
       alert("Thank you for reaching out! We will get back to you shortly.");
@@ -57,15 +28,14 @@ export default function ContactPage() {
   };
 
   return (
-    <main className="relative min-h-screen bg-gray-900 text-white px-6 py-12 sm:p-12 md:p-16 lg:p-20 xl:p-24 2xl:p-28">
-      <FloatingBubbles />
-      <h1 className="text-5xl font-bold text-center mb-12 text-gray-200 neon-glow">
-        Contact Us
+    <main className="relative min-h-screen bg-white text-gray-900 px-6 py-6 sm:p-6 md:p-8 lg:p-10 xl:p-12 2xl:p-14">
+      <h1 className="text-5xl font-bold text-center mb-12 text-gray-900">
+        Lets Collab!
       </h1>
-      <div className="max-w-3xl mx-auto bg-gray-800 bg-opacity-80 rounded-lg shadow-lg p-8">
+      <div className="max-w-3xl mx-auto bg-white rounded-lg shadow-lg p-8 border border-gray-200">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <label className="block text-lg font-medium text-gray-200 mb-2">
+            <label className="block text-lg font-medium text-gray-700 mb-2">
               Name
             </label>
             <input
@@ -73,13 +43,13 @@ export default function ContactPage() {
               name="name"
               value={formData.name}
               onChange={handleInputChange}
-              className="w-full p-3 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-md bg-gray-100 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter your name"
               required
             />
           </div>
           <div>
-            <label className="block text-lg font-medium text-gray-200 mb-2">
+            <label className="block text-lg font-medium text-gray-700 mb-2">
               Email
             </label>
             <input
@@ -87,13 +57,13 @@ export default function ContactPage() {
               name="email"
               value={formData.email}
               onChange={handleInputChange}
-              className="w-full p-3 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-md bg-gray-100 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter your email"
               required
             />
           </div>
           <div>
-            <label className="block text-lg font-medium text-gray-200 mb-2">
+            <label className="block text-lg font-medium text-gray-700 mb-2">
               Message
             </label>
             <textarea
@@ -101,7 +71,7 @@ export default function ContactPage() {
               value={formData.message}
               onChange={handleInputChange}
               rows={5}
-              className="w-full p-3 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 rounded-md bg-gray-100 text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Write your message"
               required
             ></textarea>
@@ -117,47 +87,6 @@ export default function ContactPage() {
           </div>
         </form>
       </div>
-      {/* <div className="mt-12 text-center space-y-4">
-        <h2 className="text-2xl font-semibold text-gray-200">Follow Us</h2>
-        <div className="flex justify-center space-x-6">
-          <a
-            href="https://facebook.com"
-            className="text-gray-400 hover:text-blue-500 transition"
-            aria-label="Facebook"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <i className="fab fa-facebook fa-2x"></i>
-          </a>
-          <a
-            href="https://twitter.com"
-            className="text-gray-400 hover:text-blue-500 transition"
-            aria-label="Twitter"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <i className="fab fa-twitter fa-2x"></i>
-          </a>
-          <a
-            href="https://instagram.com"
-            className="text-gray-400 hover:text-pink-500 transition"
-            aria-label="Instagram"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <i className="fab fa-instagram fa-2x"></i>
-          </a>
-          <a
-            href="https://linkedin.com"
-            className="text-gray-400 hover:text-blue-600 transition"
-            aria-label="LinkedIn"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <i className="fab fa-linkedin fa-2x"></i>
-          </a>
-        </div>
-      </div> */}
     </main>
   );
 }

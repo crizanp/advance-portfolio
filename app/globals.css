@@ -1,74 +1,59 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
 :root {
   --background: #ffffff;
   --foreground: #ffffff;
 }
-
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #ffffff;
     --foreground: #ededed;
   }
 }
-
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
-  transition: none !important; /* Disable global transition */
-  transform: none !important; /* Disable global transform */
+  transition: none !important; 
+  transform: none !important; 
 }
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
 }
-/* globals.css */
 .ql-font-monospace {
   font-family: "Courier New", Courier, monospace;
-  color: #5d5858;            /* Light text color */
-  padding: 0.2rem 0.4rem;    /* Some padding around text */
-  border-radius: 4px;        /* Rounded corners */
+  color: #5d5858;            
+  padding: 0.2rem 0.4rem;    
+  border-radius: 4px;        
 }
-
-/* styles/global.css or wherever your global styles are */
 #nprogress .bar {
-  background: #29d; /* Change this to your preferred color */
-  height: 4px; /* Adjust the height as needed */
+  background: #29d; 
+  height: 4px; 
 }
-
 #nprogress .peg {
   box-shadow: 0 0 10px #29d, 0 0 5px #29d;
 }
-
 #nprogress .spinner {
-  display: none; /* Hide the spinner if you only want the bar */
+  display: none; 
 }
-/* Custom Scrollbar */
 .custom-scroll::-webkit-scrollbar {
   width: 10px;
 }
-
 .custom-scroll::-webkit-scrollbar-track {
   background: #f5f3ff;
   border-radius: 4px;
 }
-
 .custom-scroll::-webkit-scrollbar-thumb {
   background: #8b5cf6;
   border-radius: 4px;
   border: 2px solid #f5f3ff;
 }
-
 .custom-scroll::-webkit-scrollbar-thumb:hover {
   background: #7c3aed;
 }
-
-/* Firefox support */
 .custom-scroll {
   scrollbar-width: thin;
   scrollbar-color: #8b5cf6 #f5f3ff;

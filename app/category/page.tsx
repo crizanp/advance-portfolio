@@ -89,7 +89,6 @@ export default function CategoriesPage() {
 
         {!loading && (
           <div className="grid lg:grid-cols-4 gap-8">
-            {/* Categories Grid */}
             <div className="lg:col-span-3">
               <h2 className="text-3xl font-bold text-gray-900 mb-8">
                 Featured Categories
@@ -134,7 +133,6 @@ export default function CategoriesPage() {
   );
 }
 
-// Helper function to assign icons based on category name
 const getCategoryIcon = (categoryName) => {
   const icons = {
     'Web Development': FiCode,
@@ -143,7 +141,6 @@ const getCategoryIcon = (categoryName) => {
     'System Design': FiLayers,
     'API Development': FiRss,
     'DevOps': FiServer,
-    // Add more mappings as needed
   };
   return icons[categoryName] || FiBook;
 };

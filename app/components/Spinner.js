@@ -1,5 +1,5 @@
 // components/Spinner.js
-import { PuffLoader } from "react-spinners"; // Using PuffLoader as the spinner
+import { PuffLoader } from "react-spinners";
 
 const Spinner = ({ loading }) => {
   if (!loading) return null;

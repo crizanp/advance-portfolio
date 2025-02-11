@@ -1,5 +1,3 @@
-// components/Sidebar.tsx
-
 const tools = ["Dex Screener", "Token Checker", "Trending Tokens", "Latest Boosts"];
 
 export default function Sidebar() {

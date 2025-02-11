@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import PuffLoader from "react-spinners/PuffLoader"; 
-
 type Project = {
   id: number;
   title: string;
@@ -14,19 +13,13 @@ type Project = {
     link?: string;
   }[];
 };
-
 export default function PortfolioShowcase() {
-  const [projects, setProjects] = useState<Project[]>([]); // Store projects
-  const [loading, setLoading] = useState(true); // Loading state
-
-  // Simulate fetching projects (replace with actual API call)
+  const [projects, setProjects] = useState<Project[]>([]); 
+  const [loading, setLoading] = useState(true); 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        // Simulate API delay
         await new Promise((resolve) => setTimeout(resolve, 1000));
-
-        // Mock data for 9 projects
         const mockProjects: Project[] = [
           {
             id: 1,
@@ -55,7 +48,6 @@ export default function PortfolioShowcase() {
               { text: "Next js", link: "" },
             ],
           },
-          
           {
             id: 4,
             title: "Science Experiment Platform",
@@ -84,9 +76,7 @@ export default function PortfolioShowcase() {
               { text: "PHP", link: "" },
             ],
           }
-          // Add 8 more projects here...
         ];
-
         setProjects(mockProjects);
       } catch (error) {
         console.error("Error fetching projects:", error);
@@ -94,10 +84,8 @@ export default function PortfolioShowcase() {
         setLoading(false);
       }
     };
-
     fetchProjects();
   }, []);
-
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -105,21 +93,18 @@ export default function PortfolioShowcase() {
       </div>
     );
   }
-
   return (
     <main className="p-6 sm:p-8 lg:p-12 bg-white min-h-screen">
-      {/* Introduction Section */}
+      {}
       <section className="mb-12 text-center px-4">
-        {/* <h1 className="text-4xl font-bold mb-6 text-gray-800">My Project Showcase</h1> */}
+        {}
         <div className="mx-auto text-gray-700 space-y-4 leading-relaxed max-w-3xl">
-         
           <p>
             From full-stack applications to innovative experiments, these projects showcase my skills, creativity, and passion for building meaningful solutions. Dive in and explore!
           </p>
         </div>
       </section>
-
-      {/* Project Grid */}
+      {}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {projects.length > 0 ? (
           projects.map((project) => (
@@ -128,7 +113,7 @@ export default function PortfolioShowcase() {
               className="cursor-pointer bg-white border-2 border-purple-300 rounded-lg p-2 shadow-lg hover:shadow-xl transition-all ease-in-out duration-300"
               whileHover={{ scale: 1.05 }}
             >
-              {/* Mockup Image */}
+              {}
               <div className="relative h-48 bg-gray-100 rounded-lg mb-4 overflow-hidden">
                 <img
                   src={project.mockup}
@@ -136,16 +121,13 @@ export default function PortfolioShowcase() {
                   className="w-full h-full object-cover"
                 />
               </div>
-
-              {/* Title & Logo */}
+              {}
               <div className="flex items-center mb-4 space-x-3">
                 <h2 className="text-xl font-semibold text-gray-800">{project.title}</h2>
               </div>
-
-              {/* Description */}
+              {}
               <p className="text-sm text-gray-600 mb-4">{project.description}</p>
-
-              {/* Details Links */}
+              {}
               <div className="flex flex-wrap gap-2">
                 {project.details.map((detail, index) =>
                   detail.link ? (

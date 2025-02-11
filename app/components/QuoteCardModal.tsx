@@ -131,7 +131,6 @@ export default function QuoteCardModal({ quote = "", author = "Cizan", isOpen, o
         <h2 className="text-2xl font-bold mb-4 text-black text-center">Customize Your Quote Card</h2>
 
         <div className="text-black">
-          {/* Preset Styles */}
           <div className="flex gap-2 overflow-x-auto mb-4">
             {presetStyles.map((preset, index) => (
               <button
@@ -144,7 +143,6 @@ export default function QuoteCardModal({ quote = "", author = "Cizan", isOpen, o
             ))}
           </div>
 
-          {/* Preset Colors */}
           <div className="flex gap-2 overflow-x-auto mb-4">
             {presetColors.map((color, index) => (
               <button
@@ -158,7 +156,6 @@ export default function QuoteCardModal({ quote = "", author = "Cizan", isOpen, o
             ))}
           </div>
 
-          {/* Predefined Backgrounds */}
           <div className="flex gap-2 overflow-x-auto mb-4">
             {predefinedImages.map((image, index) => (
               <motion.div
@@ -175,7 +172,6 @@ export default function QuoteCardModal({ quote = "", author = "Cizan", isOpen, o
             ))}
           </div>
 
-          {/* Quote Card Preview */}
           <div className="flex flex-col lg:flex-row gap-6">
             <div className="flex-1 bg-gray-700 p-0.5">
               <div
@@ -208,7 +204,6 @@ export default function QuoteCardModal({ quote = "", author = "Cizan", isOpen, o
               </div>
             </div>
 
-            {/* Customization Controls */}
             <div className="flex-1 space-y-4">
               <div>
                 <label className="block text-gray-700">Font</label>
@@ -290,7 +285,6 @@ export default function QuoteCardModal({ quote = "", author = "Cizan", isOpen, o
         </div>
       </motion.div>
 
-      {/* Download Message Modal */}
       {showDownloadMessage && (
         <motion.div
           className="fixed inset-0 z-60 bg-black bg-opacity-75 flex items-center justify-center"

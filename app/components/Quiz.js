@@ -3,17 +3,12 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
-import "katex/dist/katex.min.css"; // For math support
-
+import "katex/dist/katex.min.css"; 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import katex from "katex";
-
-// Enable LaTeX support in the editor
 if (typeof window !== "undefined") {
   window.katex = katex;
 }
-
-// Define Quill editor toolbar options
 const toolbarOptions = [
   [{ header: [1, 2, 3, false] }],
   ["bold", "italic", "underline", "strike"],
@@ -26,7 +21,6 @@ const toolbarOptions = [
   ["formula"],
   ["clean"],
 ];
-
 export default function QuizModal({ onClose, onSubmit, quizData }) {
   const [formData, setFormData] = useState({
     questionType: "",
@@ -36,11 +30,9 @@ export default function QuizModal({ onClose, onSubmit, quizData }) {
     explanation: "",
     difficulty: 3,
   });
-
-  const [types, setTypes] = useState([]); // Store question types dynamically
+  const [types, setTypes] = useState([]); 
   const [loadingTypes, setLoadingTypes] = useState(true);
   const [difficultyError, setDifficultyError] = useState("");
-
   useEffect(() => {
     const fetchQuestionTypes = async () => {
       try {
@@ -55,17 +47,13 @@ export default function QuizModal({ onClose, onSubmit, quizData }) {
         setLoadingTypes(false);
       }
     };
-
     fetchQuestionTypes();
   }, []);
-
-  // Pre-fill form when editing
   useEffect(() => {
     if (quizData) {
       setFormData(quizData);
     }
   }, [quizData]);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (formData.difficulty < 1 || formData.difficulty > 5) {
@@ -75,28 +63,21 @@ export default function QuizModal({ onClose, onSubmit, quizData }) {
     onSubmit(formData);
     onClose();
   };
-
   const handleOptionChange = (index, value) => {
     const newOptions = [...formData.options];
     newOptions[index] = value;
     setFormData({ ...formData, options: newOptions });
   };
-
   const toggleCorrectAnswer = (index) => {
     const selectedOption = formData.options[index];
-
     const updatedCorrectAnswers = formData.correctAnswers.includes(selectedOption)
       ? formData.correctAnswers.filter((ans) => ans !== selectedOption)
       : [...formData.correctAnswers, selectedOption];
-
     setFormData({ ...formData, correctAnswers: updatedCorrectAnswers });
   };
-
-
   const addOption = () => {
     setFormData({ ...formData, options: [...formData.options, ""] });
   };
-
   const handleDifficultyChange = (e) => {
     const value = Number(e.target.value);
     if (value < 1 || value > 5) {
@@ -106,7 +87,6 @@ export default function QuizModal({ onClose, onSubmit, quizData }) {
     }
     setFormData({ ...formData, difficulty: value });
   };
-
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
       <motion.div
@@ -120,8 +100,7 @@ export default function QuizModal({ onClose, onSubmit, quizData }) {
           {quizData ? "Edit Quiz Question" : "Add New Quiz Question"}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-6 max-h-[80vh] overflow-y-auto">
-
-          {/* Question Type */}
+          {}
           <div>
             <label className="block mb-2 text-lg">Question Type</label>
             <select
@@ -137,8 +116,7 @@ export default function QuizModal({ onClose, onSubmit, quizData }) {
               )}
             </select>
           </div>
-
-          {/* Question Text */}
+          {}
           <div>
             <label className="block mb-2 text-lg">Question Text</label>
             <ReactQuill
@@ -149,8 +127,7 @@ export default function QuizModal({ onClose, onSubmit, quizData }) {
               required
             />
           </div>
-
-          {/* Options & Correct Answers */}
+          {}
           <div className="my-9">
             <label className="block mb-2 text-lg">Options</label>
             {formData.options.map((option, index) => (
@@ -164,11 +141,10 @@ export default function QuizModal({ onClose, onSubmit, quizData }) {
                 />
                 <input
                   type="checkbox"
-                  checked={formData.correctAnswers.includes(option)} // Match by value, not index
+                  checked={formData.correctAnswers.includes(option)} 
                   onChange={() => toggleCorrectAnswer(index)}
                   className="w-5 h-5"
                 />
-
               </div>
             ))}
             <button
@@ -179,8 +155,7 @@ export default function QuizModal({ onClose, onSubmit, quizData }) {
               Add Option
             </button>
           </div>
-
-          {/* Explanation */}
+          {}
           <div>
             <label className="block mb-2 text-lg">Explanation</label>
             <ReactQuill
@@ -191,8 +166,7 @@ export default function QuizModal({ onClose, onSubmit, quizData }) {
               required
             />
           </div>
-
-          {/* Difficulty */}
+          {}
           <div>
             <label className="block mb-2 text-lg">Difficulty (1-5)</label>
             <input
@@ -206,8 +180,7 @@ export default function QuizModal({ onClose, onSubmit, quizData }) {
             />
             {difficultyError && <p className="text-red-500 text-sm mt-1">{difficultyError}</p>}
           </div>
-
-          {/* Buttons */}
+          {}
           <div className="flex justify-end gap-6">
             <button type="button" onClick={onClose} className="px-6 py-3 text-gray-700 hover:bg-gray-200 rounded-lg transition-colors">
               Cancel
