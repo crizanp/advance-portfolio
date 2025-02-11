@@ -13,15 +13,15 @@ const COMMANDS = {
     'education    - Show educational background\n' +
     'clear        - Clear terminal\n' +
     'gui          - Switch to GUI mode',
-  
+
   about: "Senior Full Stack Developer with expertise in web applications, trading systems, and automation solutions.",
-  
+
   skills: "Technical Skills:\n\n" +
     "Frontend: React.js, Next.js, TypeScript\n" +
     "Backend: Node.js, PHP, MongoDB\n" +
     "Platforms: WordPress, Magento, Shopify\n" +
     "Tools: Git, Docker, AWS",
-  
+
   projects: "Major Projects:\n\n" +
     "1. E-commerce Platform\n" +
     "2. Trading Bot System\n" +
@@ -30,31 +30,31 @@ const COMMANDS = {
     "5. Custom Admin Panel\n" +
     "6. Professional Blog Platform\n\n" +
     "Type 'project <number>' for details",
-  
+
   contact: "Email: srijan@example.com\nGitHub: github.com/srijan\nLinkedIn: linkedin.com/in/srijan",
-  
+
   experience: "Senior Full Stack Developer at IGH Digital\n2020 - Present\n\n" +
     "- Led development of enterprise applications\n" +
     "- Built trading systems and automation tools\n" +
     "- Developed custom e-commerce solutions",
-  
+
   education: "Bachelor of Computer Engineering\nGraduated with Honors",
 };
 
 const PROJECT_DETAILS = {
   1: "E-commerce Platform\n\n" +
-     "A scalable e-commerce solution with:\n" +
-     "- Advanced inventory management\n" +
-     "- Real-time analytics\n" +
-     "- Payment integration\n\n" +
-     "Tech: Next.js, Node.js, MongoDB, Stripe",
-  
+    "A scalable e-commerce solution with:\n" +
+    "- Advanced inventory management\n" +
+    "- Real-time analytics\n" +
+    "- Payment integration\n\n" +
+    "Tech: Next.js, Node.js, MongoDB, Stripe",
+
   2: "Trading Bot System\n\n" +
-     "Automated trading system featuring:\n" +
-     "- Real-time market analysis\n" +
-     "- Risk management\n" +
-     "- Performance tracking\n\n" +
-     "Tech: Node.js, WebSocket, Trading APIs",
+    "Automated trading system featuring:\n" +
+    "- Real-time market analysis\n" +
+    "- Risk management\n" +
+    "- Performance tracking\n\n" +
+    "Tech: Node.js, WebSocket, Trading APIs",
 };
 
 const skills = {
@@ -129,20 +129,26 @@ export default function About() {
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-2 pb-9">
-        
+
 
       <div className="max-w-4xl mx-auto px-4">
-      <button
-        onClick={() => setIsTerminalMode(!isTerminalMode)}
-        className="fixed right-6 p-3 bg-gray-800 hover:bg-gray-700 rounded-full transition-all duration-200 shadow-lg z-50 group"
-        aria-label={isTerminalMode ? "Switch to GUI Mode" : "Switch to Terminal Mode"}
-      >
-        {isTerminalMode ? (
-          <LayoutGrid className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
-        ) : (
-          <Terminal className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
-        )}
-      </button>
+        <button
+          onClick={() => setIsTerminalMode(!isTerminalMode)}
+          className="fixed right-6 p-3 bg-gray-800 hover:bg-gray-700 rounded-full transition-all duration-200 shadow-lg z-50 group flex items-center gap-2"
+          aria-label={isTerminalMode ? "Switch to GUI Mode" : "Switch to Linux Mode"}
+        >
+          {isTerminalMode ? (
+            <>
+              <span className="text-white text-sm font-medium pr-1">GUI Mode</span>
+              <LayoutGrid className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+            </>
+          ) : (
+            <>
+              <span className="text-white text-sm font-medium pr-1">Linux Mode</span>
+              <Terminal className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
+            </>
+          )}
+        </button>
         {isTerminalMode ? (
           <div className="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden shadow-xl">
             <div className="bg-gray-800 p-2 flex items-center space-x-2">
@@ -151,7 +157,7 @@ export default function About() {
               <div className="w-3 h-3 rounded-full bg-green-500" />
               <span className="text-gray-400 text-sm ml-2">srijan@portfolio:~</span>
             </div>
-            <div 
+            <div
               ref={terminalRef}
               className="p-4 h-[600px] overflow-y-auto font-mono text-gray-200"
             >
@@ -181,9 +187,9 @@ export default function About() {
             <div className="p-8">
               <section className="mb-8">
                 <p className="text-gray-700 leading-relaxed">
-                  Senior Full Stack Developer with extensive experience in building complex web applications, 
+                  Senior Full Stack Developer with extensive experience in building complex web applications,
                   trading systems, and automation solutions. Specialized in developing scalable e-commerce platforms,
-                  custom admin systems, and innovative fintech solutions. Proven expertise in React.js, Next.js, 
+                  custom admin systems, and innovative fintech solutions. Proven expertise in React.js, Next.js,
                   and Node.js development with strong focus on performance and user experience.
                 </p>
               </section>
@@ -197,7 +203,7 @@ export default function About() {
                       <p className="text-gray-600 text-sm mb-3">{project.description}</p>
                       <div className="flex flex-wrap gap-2">
                         {project.tech.map((tech, techIndex) => (
-                          <span 
+                          <span
                             key={techIndex}
                             className="px-2 py-1 bg-gray-50 text-gray-700 rounded-md text-xs border border-gray-200"
                           >
@@ -258,7 +264,7 @@ export default function About() {
               <section>
                 <h3 className="text-2xl font-semibold text-gray-900 mb-4">Contact</h3>
                 <p className="text-gray-700">
-                  Available for consulting on complex web applications, trading systems, and automation solutions. 
+                  Available for consulting on complex web applications, trading systems, and automation solutions.
                   Specialized in building scalable, high-performance applications and innovative technical solutions.
                 </p>
               </section>
