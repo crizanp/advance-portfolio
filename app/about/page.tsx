@@ -1,58 +1,151 @@
-'use client';
+import React, { useState, useRef, useEffect } from 'react';
+import { Terminal } from 'lucide-react';
 
-const skills = {
-  frontend: ['React.js', 'Next.js', 'JavaScript (ES6+)', 'TypeScript', 'Tailwind CSS', 'HTML5/CSS3'],
-  backend: ['Node.js', 'PHP', 'RESTful APIs', 'MongoDB', 'MySQL'],
-  platforms: ['WordPress', 'Magento', 'Shopify', 'Telegram Bot API'],
-  tools: ['Git', 'Docker', 'AWS', 'Agile/Scrum', 'CI/CD']
+const COMMANDS = {
+  help: 'Available commands:\n\n' +
+    'about        - View my professional summary\n' +
+    'skills       - List technical skills\n' +
+    'projects     - View major projects\n' +
+    'contact      - Get contact information\n' +
+    'experience   - Show work experience\n' +
+    'education    - Show educational background\n' +
+    'clear        - Clear terminal\n' +
+    'gui          - Switch to GUI mode',
+  
+  about: "Senior Full Stack Developer with expertise in web applications, trading systems, and automation solutions.",
+  
+  skills: "Technical Skills:\n\n" +
+    "Frontend: React.js, Next.js, TypeScript\n" +
+    "Backend: Node.js, PHP, MongoDB\n" +
+    "Platforms: WordPress, Magento, Shopify\n" +
+    "Tools: Git, Docker, AWS",
+  
+  projects: "Major Projects:\n\n" +
+    "1. E-commerce Platform\n" +
+    "2. Trading Bot System\n" +
+    "3. Telegram Mini Apps\n" +
+    "4. Investment Research Tools\n" +
+    "5. Custom Admin Panel\n" +
+    "6. Professional Blog Platform\n\n" +
+    "Type 'project <number>' for details",
+  
+  contact: "Email: srijan@example.com\nGitHub: github.com/srijan\nLinkedIn: linkedin.com/in/srijan",
+  
+  experience: "Senior Full Stack Developer at IGH Digital\n2020 - Present\n\n" +
+    "- Led development of enterprise applications\n" +
+    "- Built trading systems and automation tools\n" +
+    "- Developed custom e-commerce solutions",
+  
+  education: "Bachelor of Computer Engineering\nGraduated with Honors",
 };
 
-const projects = [
-  {
-    title: 'E-commerce Platform',
-    description: 'Built scalable e-commerce solution with advanced inventory management, payment integration, and real-time analytics.',
-    tech: ['Next.js', 'Node.js', 'MongoDB', 'Stripe API']
-  },
-  {
-    title: 'Trading Bot System',
-    description: 'Developed automated trading system with real-time market analysis and risk management features.',
-    tech: ['Node.js', 'WebSocket', 'Trading APIs', 'MongoDB']
-  },
-  {
-    title: 'Telegram Mini Apps & Automation',
-    description: 'Created multiple Telegram mini applications and automation bots for business process optimization.',
-    tech: ['Telegram Bot API', 'Node.js', 'MongoDB', 'WebSocket']
-  },
-  {
-    title: 'Investment Research Tools',
-    description: 'Engineered comprehensive research platform for investment analysis with data visualization.',
-    tech: ['React.js', 'Node.js', 'Financial APIs', 'D3.js']
-  },
-  {
-    title: 'Custom Admin Dashboard',
-    description: 'Designed and implemented fully customizable admin panel with role-based access control and analytics.',
-    tech: ['React.js', 'Node.js', 'MongoDB', 'JWT']
-  },
-  {
-    title: 'Professional Blogging Platform',
-    description: 'Built feature-rich blogging platform with SEO optimization and content management system.',
-    tech: ['Next.js', 'MongoDB', 'AWS S3', 'SEO Tools']
-  }
-];
+const PROJECT_DETAILS = {
+  1: "E-commerce Platform\n\n" +
+     "A scalable e-commerce solution with:\n" +
+     "- Advanced inventory management\n" +
+     "- Real-time analytics\n" +
+     "- Payment integration\n\n" +
+     "Tech: Next.js, Node.js, MongoDB, Stripe",
+  
+  2: "Trading Bot System\n\n" +
+     "Automated trading system featuring:\n" +
+     "- Real-time market analysis\n" +
+     "- Risk management\n" +
+     "- Performance tracking\n\n" +
+     "Tech: Node.js, WebSocket, Trading APIs",
+  // ... add details for other projects
+};
 
 export default function About() {
-  return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 sm:py-16">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <article className="bg-white rounded-xl shadow-sm overflow-hidden">
-          {/* Header Section */}
-          <header className="p-8 border-b border-gray-100">
-            <h1 className="text-3xl sm:text-4xl font-bold text-gray-900">Srijan Pokhrel</h1>
-            <h2 className="text-xl text-gray-600 mt-2">Senior Full Stack Developer</h2>
-            <p className="text-gray-600 mt-1">IGH Digital</p>
-          </header>
+  const [isTerminalMode, setIsTerminalMode] = useState(false);
+  const [terminalHistory, setTerminalHistory] = useState(['Welcome! Type "help" for available commands']);
+  const [currentCommand, setCurrentCommand] = useState('');
+  const terminalRef = useRef(null);
+  const inputRef = useRef(null);
 
-          <div className="p-8">
+  useEffect(() => {
+    if (terminalRef.current) {
+      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    }
+  }, [terminalHistory]);
+
+  const handleCommand = (cmd) => {
+    const cleanCmd = cmd.trim().toLowerCase();
+    const [mainCmd, ...args] = cleanCmd.split(' ');
+
+    let response = '';
+
+    if (mainCmd === 'clear') {
+      setTerminalHistory([]);
+      return;
+    }
+
+    if (mainCmd === 'project' && args[0]) {
+      response = PROJECT_DETAILS[args[0]] || 'Project not found. Type "projects" to see available projects.';
+    } else {
+      response = COMMANDS[mainCmd] || 'Command not found. Type "help" for available commands.';
+    }
+
+    setTerminalHistory(prev => [...prev, `$ ${cmd}`, response]);
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleCommand(currentCommand);
+      setCurrentCommand('');
+    }
+  };
+
+  return (
+    <main className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 py-12">
+      <div className="max-w-4xl mx-auto px-4">
+        {/* Mode Toggle */}
+        <button
+          onClick={() => setIsTerminalMode(!isTerminalMode)}
+          className="fixed top-4 right-4 p-2 bg-gray-700 rounded-full hover:bg-gray-600 transition-colors"
+        >
+          <Terminal className="w-6 h-6 text-gray-200" />
+        </button>
+
+        {isTerminalMode ? (
+          // Terminal Interface
+          <div className="bg-gray-900 rounded-lg border border-gray-700 overflow-hidden shadow-xl">
+            <div className="bg-gray-800 p-2 flex items-center space-x-2">
+              <div className="w-3 h-3 rounded-full bg-red-500" />
+              <div className="w-3 h-3 rounded-full bg-yellow-500" />
+              <div className="w-3 h-3 rounded-full bg-green-500" />
+              <span className="text-gray-400 text-sm ml-2">srijan@portfolio:~</span>
+            </div>
+            <div 
+              ref={terminalRef}
+              className="p-4 h-[600px] overflow-y-auto font-mono text-gray-200"
+            >
+              {terminalHistory.map((line, i) => (
+                <div key={i} className="mb-2">{line}</div>
+              ))}
+              <div className="flex items-center">
+                <span className="text-green-400 mr-2">$</span>
+                <input
+                  ref={inputRef}
+                  type="text"
+                  value={currentCommand}
+                  onChange={(e) => setCurrentCommand(e.target.value)}
+                  onKeyPress={handleKeyPress}
+                  className="flex-1 bg-transparent outline-none"
+                  autoFocus
+                />
+              </div>
+            </div>
+          </div>
+        ) : (
+          // Regular GUI Content
+          <article className="bg-gray-800 rounded-xl shadow-xl overflow-hidden border border-gray-700">
+            {/* Your existing about page content here */}
+            <header className="p-8 border-b border-gray-700">
+              <h1 className="text-4xl font-bold text-gray-100">Srijan Pokhrel</h1>
+              <h2 className="text-xl text-gray-400 mt-2">Senior Full Stack Developer</h2>
+            </header>
+            <div className="p-8">
             {/* Professional Summary */}
             <section className="mb-8">
               <p className="text-gray-700 leading-relaxed">
@@ -130,7 +223,7 @@ export default function About() {
               <h3 className="text-xl font-semibold text-gray-900 mb-4">Education</h3>
               <div>
                 <h4 className="font-medium text-gray-900">Bachelor of Computer Engineering</h4>
-                <p className="text-gray-600">Graduated with Honors</p>
+                <p className="text-gray-600">Graduated from Tribhuwan University</p>
               </div>
             </section>
 
@@ -142,8 +235,8 @@ export default function About() {
                 Specialized in building scalable, high-performance applications and innovative technical solutions.
               </p>
             </section>
-          </div>
-        </article>
+          </div>          </article>
+        )}
       </div>
     </main>
   );
