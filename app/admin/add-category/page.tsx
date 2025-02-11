@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie"; // Import js-cookie to get the token
+import Cookies from "js-cookie"; 
 
 export default function AddCategory() {
   const [name, setName] = useState("");
@@ -12,20 +12,19 @@ export default function AddCategory() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // Get token from cookies
     const token = Cookies.get("token");
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`,  // Add the token in the Authorization header
+        "Authorization": `Bearer ${token}`,  
       },
       body: JSON.stringify({ name, description }),
     });
 
     if (res.ok) {
-      router.push("/admin"); // Redirect to admin dashboard after successful submission
+      router.push("/admin"); 
     }
   };
 

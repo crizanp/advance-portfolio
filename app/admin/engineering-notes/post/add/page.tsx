@@ -33,7 +33,6 @@ export default function AddPostToSubject() {
     fetchSemesters();
   }, []);
 
-  // Fetch subjects when a semester is selected
   useEffect(() => {
     if (selectedSemester) {
       const semester = semesters.find((sem) => sem.name === selectedSemester);
@@ -43,7 +42,7 @@ export default function AddPostToSubject() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Start loading when submitting
+    setLoading(true); 
 
     if (!title || !content || !selectedSemester || !selectedSubject) {
       alert("Please fill all required fields.");
@@ -57,7 +56,6 @@ export default function AddPostToSubject() {
     };
 
     try {
-      // Send POST request to add the post using names
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/semesters/${encodeURIComponent(selectedSemester)}/subjects/${encodeURIComponent(selectedSubject)}`,
         {
@@ -77,27 +75,26 @@ export default function AddPostToSubject() {
       setContent("");
       setSelectedSemester("");
       setSelectedSubject("");
-      router.push("/admin"); // Optionally, redirect to another page
+      router.push("/admin"); 
     } catch (error) {
       alert("Failed to add post.");
       console.error("Error adding post:", error);
     } finally {
-      setLoading(false); // Stop loading after submission
+      setLoading(false); 
     }
   };
 
-  // Custom toolbar options for the Quill editor
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, false] }],
       [{ font: [] }],
-      ["bold", "italic", "underline", "strike"], // Text formatting options
-      [{ color: [] }, { background: [] }], // Text color and background color
+      ["bold", "italic", "underline", "strike"],
+      [{ color: [] }, { background: [] }], 
       [{ list: "ordered" }, { list: "bullet" }],
-      [{ align: [] }], // Text alignment
-      ["blockquote", "code-block"], // Blockquote and Code Block options
-      ["link", "image"], // Links and images
-      ["clean"], // Remove formatting
+      [{ align: [] }], 
+      ["blockquote", "code-block"], 
+      ["link", "image"], 
+      ["clean"], 
     ],
     clipboard: {
       matchVisual: false,

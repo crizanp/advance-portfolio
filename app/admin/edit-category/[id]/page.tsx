@@ -1,12 +1,12 @@
-"use client";  // Add this to make the component a Client Component
+"use client"; 
 
 import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 
 export default function EditCategory() {
-  const { id } = useParams();  // Get the ID from the URL params
-  const router = useRouter();   // Use useRouter for navigation after form submission
+  const { id } = useParams();  
+  const router = useRouter();  
   const [category, setCategory] = useState({ name: '', description: '' });
 
   useEffect(() => {
@@ -40,7 +40,7 @@ export default function EditCategory() {
     });
 
     if (res.ok) {
-      router.push('/admin');  // Redirect to the admin page after successful edit
+      router.push('/admin'); 
     }
   };
 

@@ -3,21 +3,20 @@
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Cookies from "js-cookie";
-import dynamic from "next/dynamic"; // For dynamic import of React Quill
-import slugify from "slugify"; // Slugify library to automatically generate slugs
+import dynamic from "next/dynamic";
+import slugify from "slugify";
 
-// Dynamic import of React Quill to prevent SSR issues
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-import "react-quill/dist/quill.snow.css"; // React Quill CSS
+import "react-quill/dist/quill.snow.css"; 
 
 export default function EditPost() {
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState(""); // HTML editor content
+  const [content, setContent] = useState(""); 
   const [imageUrl, setImageUrl] = useState("");
   const [slug, setSlug] = useState("");
   const [category, setCategory] = useState("");
-  const [categories, setCategories] = useState([]); // Store fetched categories
-  const [tags, setTags] = useState(""); // Store tags as a comma-separated string
+  const [categories, setCategories] = useState([]); 
+  const [tags, setTags] = useState(""); 
   const router = useRouter();
   const { id } = useParams();
 
@@ -37,7 +36,7 @@ export default function EditPost() {
         setImageUrl(data.imageUrl);
         setSlug(data.slug);
         setCategory(data.category);
-        setTags(data.tags ? data.tags.join(", ") : ""); // Join tags into a comma-separated string
+        setTags(data.tags ? data.tags.join(", ") : ""); 
       } else {
         console.log("Error fetching post:", res.statusText);
       }
@@ -63,10 +62,9 @@ export default function EditPost() {
     fetchCategories();
   }, [id]);
 
-  // Automatically generate slug when title changes
   useEffect(() => {
     if (title) {
-      setSlug(slugify(title, { lower: true, strict: true })); // Generate slug based on title
+      setSlug(slugify(title, { lower: true, strict: true }));
     }
   }, [title]);
 
@@ -80,7 +78,7 @@ export default function EditPost() {
       imageUrl,
       slug,
       category,
-      tags: tags.split(",").map((tag) => tag.trim()), // Convert tags to array
+      tags: tags.split(",").map((tag) => tag.trim()), 
     };
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/${id}`, {
@@ -99,27 +97,25 @@ export default function EditPost() {
     }
   };
 
-  // Custom toolbar options for React Quill
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, false] }],
       [{ font: [] }],
-      ["bold", "italic", "underline", "strike"], // Text formatting options
-      [{ color: [] }, { background: [] }], // Text color and background color
+      ["bold", "italic", "underline", "strike"], 
+      [{ color: [] }, { background: [] }],
       [{ list: "ordered" }, { list: "bullet" }],
-      [{ script: "sub" }, { script: "super" }], // Superscript/subscript
-      [{ indent: "-1" }, { indent: "+1" }], // Indentation
-      [{ align: [] }], // Text alignment
-      ["blockquote", "code-block"], // Blockquote option
-      ["link", "image", "video"], // Links, images, videos
-      ["clean"], // Remove formatting
+      [{ script: "sub" }, { script: "super" }], 
+      [{ indent: "-1" }, { indent: "+1" }], 
+      [{ align: [] }],
+      ["blockquote", "code-block"], 
+      ["link", "image", "video"], 
+      ["clean"], 
     ],
     clipboard: {
       matchVisual: false,
     },
   };
 
-  // Quill formats (to support custom options like images and videos)
   const formats = [
     "header",
     "font",
@@ -169,7 +165,7 @@ export default function EditPost() {
             type="text"
             className="w-full p-2 border border-gray-300 rounded mt-2"
             value={slug}
-            onChange={(e) => setSlug(e.target.value)} // Editable slug
+            onChange={(e) => setSlug(e.target.value)}
           />
         </div>
 
@@ -188,12 +184,12 @@ export default function EditPost() {
         <div className="mb-16">
           <label className="block text-gray-700">Content</label>
           <ReactQuill
-            className="w-full h-60" // Increase the height
+            className="w-full h-60" 
             theme="snow"
             value={content}
             onChange={setContent}
-            modules={modules} // Custom toolbar options
-            formats={formats} // Supported formats
+            modules={modules} 
+            formats={formats} 
           />
         </div>
 

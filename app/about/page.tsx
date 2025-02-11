@@ -31,7 +31,7 @@ const COMMANDS = {
     "6. Professional Blog Platform\n\n" +
     "Type 'project <number>' for details",
 
-  contact: "Email: srijan@example.com\nGitHub: github.com/srijan\nLinkedIn: linkedin.com/in/srijan",
+  contact: "Email: srijanpokhrel1@gmail.com\nGitHub: github.com/crizanp\nLinkedIn: linkedin.com/in/srijanpokhrel",
 
   experience: "Senior Full Stack Developer at IGH Digital\n2020 - Present\n\n" +
     "- Led development of enterprise applications\n" +
@@ -111,6 +111,11 @@ export default function About() {
       return;
     }
 
+    if (mainCmd === 'gui') {
+      setIsTerminalMode(false);
+      return;
+    }
+
     if (mainCmd === 'project' && args[0]) {
       response = PROJECT_DETAILS[args[0]] || 'Project not found. Type "projects" to see available projects.';
     } else {
@@ -128,29 +133,27 @@ export default function About() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-gray-50 to-white pt-2 pb-9">
-
-
-      <div className="max-w-4xl mx-auto px-4">
+    <main className={`min-h-screen ${isTerminalMode ? 'bg-gray-900' : 'bg-gradient-to-b from-gray-50 to-white'} pt-2 pb-9`}>
+      <div className="max-w-4xl mx-auto sm:px-4">
         <button
           onClick={() => setIsTerminalMode(!isTerminalMode)}
-          className="fixed right-6 p-3 bg-gray-800 hover:bg-gray-700 rounded-full transition-all duration-200 shadow-lg z-50 group flex items-center gap-2"
+          className="fixed right-4 p-2 bg-gray-800 hover:bg-gray-700 rounded-full transition-all duration-200 shadow-lg z-50 group flex items-center gap-2"
           aria-label={isTerminalMode ? "Switch to GUI Mode" : "Switch to Linux Mode"}
         >
           {isTerminalMode ? (
             <>
-              <span className="text-white text-sm font-medium pr-1">GUI Mode</span>
+              <span className="hidden md:inline-block text-white text-sm font-medium pr-1">GUI Mode</span>
               <LayoutGrid className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
             </>
           ) : (
             <>
-              <span className="text-white text-sm font-medium pr-1">Linux Mode</span>
+              <span className="hidden md:inline-block text-white text-sm font-medium pr-1">Linux Mode</span>
               <Terminal className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
             </>
           )}
         </button>
         {isTerminalMode ? (
-          <div className="bg-gray-900 rounded-lg border border-gray-800 overflow-hidden shadow-xl">
+          <div className="bg-black rounded-lg border border-gray-800 overflow-hidden shadow-xl">
             <div className="bg-gray-800 p-2 flex items-center space-x-2">
               <div className="w-3 h-3 rounded-full bg-red-500" />
               <div className="w-3 h-3 rounded-full bg-yellow-500" />
@@ -179,7 +182,7 @@ export default function About() {
             </div>
           </div>
         ) : (
-          <article className="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 mt-5">
+          <article className="bg-white sm:rounded-xl shadow-lg overflow-hidden border border-gray-200 mt-5">
             <header className="p-8 border-b border-gray-200">
               <h1 className="text-4xl font-bold text-gray-900">Srijan Pokhrel</h1>
               <h2 className="text-xl text-gray-600 mt-2">Senior Full Stack Developer</h2>
