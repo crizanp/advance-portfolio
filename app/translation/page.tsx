@@ -1,7 +1,18 @@
 // app/translate/page.tsx
 import TranslationPage from './TranslationPage'
-export { metadata, jsonLd } from './metadata'
+import { metadata } from './metadata'
+import { jsonLd } from './metadata'
+
+export { metadata };
 
 export default function Page() {
-  return <TranslationPage />
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <TranslationPage />
+    </>
+  )
 }
