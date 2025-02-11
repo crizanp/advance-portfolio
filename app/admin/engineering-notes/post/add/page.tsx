@@ -1,24 +1,19 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation"; // for navigation after successful post
-import dynamic from "next/dynamic"; // For dynamic import of React Quill
-import "react-quill/dist/quill.snow.css"; // React Quill CSS
-
-// Dynamic import of React Quill to prevent SSR issues
+import { useRouter } from "next/navigation"; 
+import dynamic from "next/dynamic"; 
+import "react-quill/dist/quill.snow.css"; 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-
 export default function AddPostToSubject() {
-  const [semesters, setSemesters] = useState([]); // Store semesters
-  const [selectedSemester, setSelectedSemester] = useState(""); // Selected semester name
-  const [subjects, setSubjects] = useState([]); // Store subjects for the selected semester
-  const [selectedSubject, setSelectedSubject] = useState(""); // Selected subject name
-  const [title, setTitle] = useState(""); // Post title
-  const [content, setContent] = useState(""); // HTML editor content (rich text editor)
-  const [loading, setLoading] = useState(false); // Loading state
-  const router = useRouter(); // For navigation after form submission
-
+  const [semesters, setSemesters] = useState([]); 
+  const [selectedSemester, setSelectedSemester] = useState(""); 
+  const [subjects, setSubjects] = useState([]); 
+  const [selectedSubject, setSelectedSubject] = useState(""); 
+  const [title, setTitle] = useState(""); 
+  const [content, setContent] = useState(""); 
+  const [loading, setLoading] = useState(false); 
+  const router = useRouter(); 
   useEffect(() => {
-    // Fetch the list of semesters
     async function fetchSemesters() {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/semesters`);
@@ -29,32 +24,26 @@ export default function AddPostToSubject() {
         console.error("Error fetching semesters:", error);
       }
     }
-
     fetchSemesters();
   }, []);
-
   useEffect(() => {
     if (selectedSemester) {
       const semester = semesters.find((sem) => sem.name === selectedSemester);
       setSubjects(semester?.subjects || []);
     }
   }, [selectedSemester, semesters]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true); 
-
     if (!title || !content || !selectedSemester || !selectedSubject) {
       alert("Please fill all required fields.");
       setLoading(false);
       return;
     }
-
     const postData = {
       title,
       content,
     };
-
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/semesters/${encodeURIComponent(selectedSemester)}/subjects/${encodeURIComponent(selectedSubject)}`,
@@ -66,11 +55,8 @@ export default function AddPostToSubject() {
           body: JSON.stringify(postData),
         }
       );
-
       if (!res.ok) throw new Error("Failed to add post");
-
       alert("Post added successfully!");
-      // Reset form fields
       setTitle("");
       setContent("");
       setSelectedSemester("");
@@ -83,7 +69,6 @@ export default function AddPostToSubject() {
       setLoading(false); 
     }
   };
-
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, false] }],
@@ -100,8 +85,6 @@ export default function AddPostToSubject() {
       matchVisual: false,
     },
   };
-
-  // Supported formats in the text editor
   const formats = [
     "header",
     "font",
@@ -118,12 +101,11 @@ export default function AddPostToSubject() {
     "image",
     "code-block",
   ];
-
   return (
     <div className="container mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
       <h1 className="text-3xl font-bold mb-6 text-center">Add Post to Subject</h1>
       <form onSubmit={handleSubmit} className="mx-auto max-w-4xl">
-        {/* Semester Selection */}
+        {}
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2">Select Semester</label>
           <select
@@ -140,8 +122,7 @@ export default function AddPostToSubject() {
             ))}
           </select>
         </div>
-
-        {/* Subject Selection */}
+        {}
         {selectedSemester && (
           <div className="mb-4">
             <label className="block text-gray-700 font-bold mb-2">Select Subject</label>
@@ -160,8 +141,7 @@ export default function AddPostToSubject() {
             </select>
           </div>
         )}
-
-        {/* Post Title */}
+        {}
         <div className="mb-4">
           <label className="block text-gray-700 font-bold mb-2">Post Title</label>
           <input
@@ -172,8 +152,7 @@ export default function AddPostToSubject() {
             className="w-full p-2 border border-gray-300 rounded"
           />
         </div>
-
-        {/* Post Content (Rich Text Editor) */}
+        {}
         <div className="mb-8">
           <label className="block text-gray-700 font-bold mb-2">Post Content</label>
           <ReactQuill
@@ -185,8 +164,7 @@ export default function AddPostToSubject() {
             formats={formats}
           />
         </div>
-
-        {/* Submit Button */}
+        {}
         <button
           type="submit"
           className={`w-full bg-blue-600 text-white py-2 mt-9 px-4 rounded hover:bg-blue-700 transition ${

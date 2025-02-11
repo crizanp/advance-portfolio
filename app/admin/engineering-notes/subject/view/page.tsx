@@ -1,7 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-
-// Modal component for delete confirmation
 function DeleteConfirmationModal({ subjectName, onDelete, onClose }) {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -26,16 +24,13 @@ function DeleteConfirmationModal({ subjectName, onDelete, onClose }) {
     </div>
   );
 }
-
 export default function ViewSubjects() {
-  const [semesters, setSemesters] = useState([]); // Store all semesters
-  const [selectedSemester, setSelectedSemester] = useState(""); // Selected semester (by name)
-  const [subjects, setSubjects] = useState([]); // Store subjects for the selected semester
-  const [showDeleteModal, setShowDeleteModal] = useState(false); // Modal visibility
-  const [subjectToDelete, setSubjectToDelete] = useState(null); // Subject to delete (by name)
-
+  const [semesters, setSemesters] = useState([]); 
+  const [selectedSemester, setSelectedSemester] = useState(""); 
+  const [subjects, setSubjects] = useState([]); 
+  const [showDeleteModal, setShowDeleteModal] = useState(false); 
+  const [subjectToDelete, setSubjectToDelete] = useState(null); 
   useEffect(() => {
-    // Fetch the list of semesters on page load
     async function fetchSemesters() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/semesters`);
       const data = await res.json();
@@ -43,8 +38,6 @@ export default function ViewSubjects() {
     }
     fetchSemesters();
   }, []);
-
-  // Fetch subjects when a semester is selected
   useEffect(() => {
     async function fetchSubjects() {
       if (selectedSemester) {
@@ -55,8 +48,6 @@ export default function ViewSubjects() {
     }
     fetchSubjects();
   }, [selectedSemester]);
-
-  // Handle delete subject
   const handleDelete = async (subjectName) => {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/semesters/${selectedSemester}/subject/${subjectName}`,
@@ -67,20 +58,17 @@ export default function ViewSubjects() {
         },
       }
     );
-
     if (res.ok) {
       alert("Subject deleted successfully!");
       setSubjects(subjects.filter((sub) => sub.name !== subjectName));
-      setShowDeleteModal(false); // Close the modal
+      setShowDeleteModal(false); 
     } else {
       alert("Failed to delete subject");
     }
   };
-
   return (
     <div className="container mx-auto max-w-4xl mt-10 p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">View Subjects</h1>
-
       <div className="mb-6">
         <label className="block text-lg font-medium text-gray-700 mb-2">Select Semester</label>
         <select
@@ -97,7 +85,6 @@ export default function ViewSubjects() {
           ))}
         </select>
       </div>
-
       {subjects.length > 0 ? (
         <table className="min-w-full bg-white border border-gray-200">
           <thead>
@@ -136,13 +123,12 @@ export default function ViewSubjects() {
       ) : (
         <p className="text-center text-gray-500">No subjects available</p>
       )}
-
-      {/* Delete Confirmation Modal */}
+      {}
       {showDeleteModal && (
         <DeleteConfirmationModal
           subjectName={subjectToDelete}
           onDelete={handleDelete}
-          onClose={() => setShowDeleteModal(false)} // Close the modal
+          onClose={() => setShowDeleteModal(false)} 
         />
       )}
     </div>

@@ -1,14 +1,14 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Modal from "./editModal"; // Import the Modal component
+import Modal from "./editModal"; 
 
 export default function ViewAllQuizzes() {
   const [quizzes, setQuizzes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedQuiz, setSelectedQuiz] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [sortBy, setSortBy] = useState("none"); // State for sorting
+  const [sortBy, setSortBy] = useState("none"); 
   const router = useRouter();
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function ViewAllQuizzes() {
 
   const handleEdit = (quiz) => {
     setSelectedQuiz(quiz);
-    setIsModalOpen(true); // Open modal for editing
+    setIsModalOpen(true); 
   };
 
   const handleDelete = async (quizId) => {

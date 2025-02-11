@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Cookies from "js-cookie";  // Import cookies library
-
+import Cookies from "js-cookie"; 
 export default function AdminLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -22,10 +21,8 @@ export default function AdminLogin() {
 
     const data = await res.json();
     if (res.ok) {
-      // Store token in cookies instead of localStorage
-      Cookies.set("token", data.token, { expires: 1 });  // Token expires in 1 day
+      Cookies.set("token", data.token, { expires: 1 });  
 
-      // Redirect to admin page
       router.push("/admin");
     } else {
       setError(data.message);

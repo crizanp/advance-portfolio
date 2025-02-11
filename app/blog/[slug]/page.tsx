@@ -41,9 +41,8 @@ const CopyableQuote = ({ quoteContent, children, handleGenerateCard }) => {
       </blockquote>
       <div className="flex justify-center mt-3 pb-2">
         <button
-          className={`text-center text-xs px-3 mr-1 py-2 rounded-md font-semibold shadow-sm transition-colors duration-200 ${
-            copied ? "bg-blue-100 text-blue-800" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-          }`}
+          className={`text-center text-xs px-3 mr-1 py-2 rounded-md font-semibold shadow-sm transition-colors duration-200 ${copied ? "bg-blue-100 text-blue-800" : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
           onClick={handleCopyQuote}
         >
           {copied ? "Copied!" : "Copy Quote"}
@@ -61,7 +60,6 @@ const CopyableQuote = ({ quoteContent, children, handleGenerateCard }) => {
 
 const customParseOptions = (headingList, handleGenerateCard) => ({
   replace: (domNode) => {
-    // Handle headings (h1, h2, h3)
     if (["h1", "h2", "h3"].includes(domNode.name)) {
       const headingText = getRawTextFromDomNode(domToReact(domNode.children));
       if (!headingText.trim()) return null;
@@ -81,7 +79,6 @@ const customParseOptions = (headingList, handleGenerateCard) => ({
       );
     }
 
-    // Handle unordered list (ul) and list items (li)
     if (domNode.name === "ul") {
       return (
         <ul className="list-disc pl-6 my-4 text-gray-800">
@@ -94,7 +91,6 @@ const customParseOptions = (headingList, handleGenerateCard) => ({
       return <li className="text-gray-800">{domToReact(domNode.children)}</li>;
     }
 
-    // Handle paragraph (p)
     if (domNode.name === "p") {
       return (
         <p className="text-gray-700 leading-relaxed my-4">
@@ -103,7 +99,6 @@ const customParseOptions = (headingList, handleGenerateCard) => ({
       );
     }
 
-    // Handle anchor (a) tags
     if (domNode.name === "a") {
       const href = domNode.attribs?.href || "#";
       return (
@@ -118,7 +113,6 @@ const customParseOptions = (headingList, handleGenerateCard) => ({
       );
     }
 
-    // Handle blockquote
     if (domNode.name === "blockquote") {
       const quoteContent = getRawTextFromDomNode(domToReact(domNode.children));
       return (
@@ -128,7 +122,6 @@ const customParseOptions = (headingList, handleGenerateCard) => ({
       );
     }
 
-    // Handle code block
     if (domNode.attribs?.class === "ql-syntax") {
       const codeContent = getRawTextFromDomNode(domToReact(domNode.children));
       const language = domNode.attribs["data-language"] || "javascript";
@@ -143,9 +136,8 @@ const customParseOptions = (headingList, handleGenerateCard) => ({
               <code dangerouslySetInnerHTML={{ __html: highlightedCode }} />
             </pre>
             <button
-              className={`absolute top-2 right-2 text-xs px-2 py-1 rounded-md font-semibold shadow-sm transition-colors duration-200 ${
-                copied ? "bg-blue-100 text-blue-800" : "bg-gray-200 text-gray-700 hover:bg-gray-300"
-              }`}
+              className={`absolute top-2 right-2 text-xs px-2 py-1 rounded-md font-semibold shadow-sm transition-colors duration-200 ${copied ? "bg-blue-100 text-blue-800" : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
               onClick={() => {
                 navigator.clipboard.writeText(codeContent);
                 setCopied(true);
@@ -182,10 +174,10 @@ export default function BlogDetail({ params }) {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts/slug/${slug}`);
         if (!response.ok) throw new Error("Post not found");
         const postData = await response.json();
-        
+
         const headingList = [];
         parse(postData.content, customParseOptions(headingList, handleGenerateCard));
-        
+
         setPost(postData);
         setTableOfContents(headingList);
       } catch (err) {
@@ -207,10 +199,10 @@ export default function BlogDetail({ params }) {
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
-    return isNaN(date.getTime()) ? "" : date.toLocaleDateString("en-US", { 
-      year: "numeric", 
-      month: "long", 
-      day: "numeric" 
+    return isNaN(date.getTime()) ? "" : date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
     });
   };
 
@@ -254,91 +246,87 @@ export default function BlogDetail({ params }) {
             Published {formatDate(post.createdAt)}
           </p>
         )}
-<div className="relative">
-  {/* Desktop Share Buttons (Left sticky) */}
-  <motion.div 
-    initial={{ x: -20, opacity: 0 }}
-    animate={{ x: 0, opacity: 1 }}
-    className="hidden md:block fixed left-4 top-1/2 -translate-y-1/2 z-10"
-  >
-    <div className="flex flex-col gap-4 items-center bg-white p-3 rounded-2xl shadow-lg">
-      <span className="text-sm font-medium text-purple-600 flex items-center gap-1">
-        <FiShare2 /> Share
-      </span>
-      <div className="flex flex-col gap-3">
-        <a
-          href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${window.location.origin}/blog/${post.slug}`)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 hover:text-blue-700 transition-colors"
-        >
-          <FaFacebook size={24} />
-        </a>
-        <a
-          href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`${window.location.origin}/blog/${post.slug}`)}&text=${encodeURIComponent(post.title)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-400 hover:text-blue-500 transition-colors"
-        >
-          <FaTwitter size={24} />
-        </a>
-        <a
-          href={`https://www.linkedin.com/shareArticle?url=${encodeURIComponent(`${window.location.origin}/blog/${post.slug}`)}&title=${encodeURIComponent(post.title)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-700 hover:text-blue-800 transition-colors"
-        >
-          <FaLinkedin size={24} />
-        </a>
-        <button
-          onClick={() => {
-            navigator.clipboard.writeText(`${window.location.origin}/blog/${post.slug}`);
-            // Add toast notification here if needed
-          }}
-          className="text-gray-600 hover:text-gray-700 transition-colors"
-        >
-          <FaLink size={20} />
-        </button>
-      </div>
-    </div>
-  </motion.div>
+        <div className="relative">
+          <motion.div
+            initial={{ x: -20, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            className="hidden md:block fixed left-4 top-1/2 -translate-y-1/2 z-10"
+          >
+            <div className="flex flex-col gap-4 items-center bg-white p-3 rounded-2xl shadow-lg">
+              <span className="text-sm font-medium text-purple-600 flex items-center gap-1">
+                <FiShare2 /> Share
+              </span>
+              <div className="flex flex-col gap-3">
+                <a
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${window.location.origin}/blog/${post.slug}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-700 transition-colors"
+                >
+                  <FaFacebook size={24} />
+                </a>
+                <a
+                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`${window.location.origin}/blog/${post.slug}`)}&text=${encodeURIComponent(post.title)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-400 hover:text-blue-500 transition-colors"
+                >
+                  <FaTwitter size={24} />
+                </a>
+                <a
+                  href={`https://www.linkedin.com/shareArticle?url=${encodeURIComponent(`${window.location.origin}/blog/${post.slug}`)}&title=${encodeURIComponent(post.title)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-700 hover:text-blue-800 transition-colors"
+                >
+                  <FaLinkedin size={24} />
+                </a>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(`${window.location.origin}/blog/${post.slug}`);
+                  }}
+                  className="text-gray-600 hover:text-gray-700 transition-colors"
+                >
+                  <FaLink size={20} />
+                </button>
+              </div>
+            </div>
+          </motion.div>
 
-  {/* Mobile Share Buttons (Above image) */}
-  <div className="md:hidden mb-4">
-    <div className="flex items-center gap-4 bg-white p-3 rounded-lg shadow-md">
-      <span className="text-sm font-medium text-purple-600 flex items-center gap-1">
-        <FiShare2 /> Share
-      </span>
-      <div className="flex gap-3">
-        <a
-          href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${window.location.origin}/blog/${post.slug}`)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-600 hover:text-blue-700 transition-colors"
-        >
-          <FaFacebook size={24} />
-        </a>
-        <a
-          href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`${window.location.origin}/blog/${post.slug}`)}&text=${encodeURIComponent(post.title)}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-blue-400 hover:text-blue-500 transition-colors"
-        >
-          <FaTwitter size={24} />
-        </a>
-        <button
-          onClick={() => {
-            navigator.clipboard.writeText(`${window.location.origin}/blog/${post.slug}`);
-            // Add toast notification here if needed
-          }}
-          className="text-gray-600 hover:text-gray-700 transition-colors"
-        >
-          <FaLink size={20} />
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
+          <div className="md:hidden mb-4">
+            <div className="flex items-center gap-4 bg-white p-3 rounded-lg shadow-md">
+              <span className="text-sm font-medium text-purple-600 flex items-center gap-1">
+                <FiShare2 /> Share
+              </span>
+              <div className="flex gap-3">
+                <a
+                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${window.location.origin}/blog/${post.slug}`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-600 hover:text-blue-700 transition-colors"
+                >
+                  <FaFacebook size={24} />
+                </a>
+                <a
+                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`${window.location.origin}/blog/${post.slug}`)}&text=${encodeURIComponent(post.title)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-blue-400 hover:text-blue-500 transition-colors"
+                >
+                  <FaTwitter size={24} />
+                </a>
+                <button
+                  onClick={() => {
+                    navigator.clipboard.writeText(`${window.location.origin}/blog/${post.slug}`);
+                  }}
+                  className="text-gray-600 hover:text-gray-700 transition-colors"
+                >
+                  <FaLink size={20} />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
         {post.imageUrl && (
           <div className="mb-8">
             <img

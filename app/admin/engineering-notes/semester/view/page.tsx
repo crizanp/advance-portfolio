@@ -33,7 +33,7 @@ export default function ViewSemester() {
   const [loading, setLoading] = useState(true);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [semesterToDelete, setSemesterToDelete] = useState(null);
-  const router = useRouter(); // To navigate on successful edit or delete
+  const router = useRouter(); 
 
   // Fetch all semesters on page load
   useEffect(() => {
@@ -73,7 +73,7 @@ export default function ViewSemester() {
         throw new Error("Failed to delete semester");
       }
       setSemesters(semesters.filter((sem) => sem.name !== semesterName));
-      setShowDeleteModal(false); // Close the modal
+      setShowDeleteModal(false); 
       alert("Semester deleted successfully!");
     } catch (error) {
       alert(error.message);
@@ -129,12 +129,11 @@ export default function ViewSemester() {
         </>
       )}
 
-      {/* Delete Confirmation Modal */}
       {showDeleteModal && (
         <DeleteConfirmationModal
           semesterName={semesterToDelete}
           onDelete={handleDelete}
-          onClose={() => setShowDeleteModal(false)} // Close the modal
+          onClose={() => setShowDeleteModal(false)}
         />
       )}
     </div>

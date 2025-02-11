@@ -1,12 +1,9 @@
 "use client";
 import { useEffect, useState } from "react";
-
 export default function AddSemester() {
   const [semesterName, setSemesterName] = useState("");
-  const [semesters, setSemesters] = useState([]); // Store semesters
-  const [loading, setLoading] = useState(false); // Loading state for the semesters
-
-  // Function to fetch all semesters
+  const [semesters, setSemesters] = useState([]); 
+  const [loading, setLoading] = useState(false); 
   const fetchSemesters = async () => {
     setLoading(true);
     try {
@@ -27,16 +24,11 @@ export default function AddSemester() {
       setLoading(false);
     }
   };
-
-  // Fetch semesters when the component mounts
   useEffect(() => {
     fetchSemesters();
   }, []);
-
-  // Function to handle the form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/semesters`, {
         method: "POST",
@@ -50,12 +42,11 @@ export default function AddSemester() {
       }
       alert("Semester added successfully!");
       setSemesterName("");
-      fetchSemesters(); // Fetch updated semesters after adding
+      fetchSemesters(); 
     } catch (error) {
       alert(error.message);
     }
   };
-
   return (
     <div className="container mx-auto p-6">
       <div className="bg-white shadow-md rounded-lg p-6 mb-8">
@@ -82,10 +73,8 @@ export default function AddSemester() {
           </button>
         </form>
       </div>
-
       <div className="bg-white shadow-md rounded-lg p-6">
         <h2 className="text-2xl font-bold mb-4 text-gray-800">View All Semesters</h2>
-
         {loading ? (
           <p className="text-center text-gray-500">Loading semesters...</p>
         ) : (

@@ -32,7 +32,7 @@
     ".next/types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "app/admin/edit-category/[id].js", "app/404/page.js", "app/components/error.js", "app/components/PDFConverter.js", "app/admin/quiz/page.js"  ],
+, "app/admin/edit-category/[id].js", "app/404/page.js", "app/components/error.js", "app/components/PDFConverter.js", "app/admin/quiz/page.js", "app/codecleaner/page.js"  ],
   "exclude": [
     "node_modules"
   ]

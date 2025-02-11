@@ -1,14 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
-
 export default function AddSubject() {
-  const [semesters, setSemesters] = useState([]); // Store the list of semesters
-  const [selectedSemester, setSelectedSemester] = useState(""); // Selected semester name
-  const [subjectName, setSubjectName] = useState(""); // Subject name input
-  const [loading, setLoading] = useState(false); // Loading state during fetch/post
-
+  const [semesters, setSemesters] = useState([]); 
+  const [selectedSemester, setSelectedSemester] = useState(""); 
+  const [subjectName, setSubjectName] = useState(""); 
+  const [loading, setLoading] = useState(false); 
   useEffect(() => {
-    // Fetch the list of semesters
     async function fetchSemesters() {
       try {
         const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/semesters`);
@@ -19,14 +16,11 @@ export default function AddSubject() {
         alert(error.message);
       }
     }
-
     fetchSemesters();
   }, []);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true); // Set loading to true while processing
-
+    setLoading(true); 
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/semesters/${selectedSemester}/subject`,
@@ -38,27 +32,25 @@ export default function AddSubject() {
           body: JSON.stringify({ subjectName }),
         }
       );
-
       if (res.ok) {
         alert("Subject added successfully!");
-        setSubjectName(""); // Clear the input
+        setSubjectName(""); 
       } else {
         throw new Error("Failed to add subject");
       }
     } catch (error) {
       alert(error.message);
     } finally {
-      setLoading(false); // Set loading to false after process completes
+      setLoading(false); 
     }
   };
-
   return (
     <div className="container mx-auto max-w-md mt-10 p-6 bg-white rounded-lg shadow-md">
       <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">
         Add Subject to Semester
       </h1>
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Semester Selection */}
+        {}
         <div className="mb-4">
           <label className="block text-lg font-medium text-gray-700">Select Semester</label>
           <select
@@ -75,8 +67,7 @@ export default function AddSubject() {
             ))}
           </select>
         </div>
-
-        {/* Subject Name Input */}
+        {}
         <div className="mb-4">
           <label className="block text-lg font-medium text-gray-700">Subject Name</label>
           <input
@@ -87,8 +78,7 @@ export default function AddSubject() {
             required
           />
         </div>
-
-        {/* Submit Button */}
+        {}
         <button
           type="submit"
           className={`w-full py-2 px-4 text-white font-semibold rounded-lg shadow-md ${
