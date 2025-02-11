@@ -1,7 +1,18 @@
-// app/translate/page.tsx
+// app/codecleaner/page.tsx
 import CodeCleaner from './codecleaner'
-export { metadata, jsonLd } from './metsdata'
+import { metadata } from './metadata'
+import { jsonLd } from './metadata'
+
+export { metadata };
 
 export default function Page() {
-  return <CodeCleaner />
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <CodeCleaner />
+    </>
+  )
 }
