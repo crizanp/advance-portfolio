@@ -57,7 +57,7 @@ export default function Navbar() {
         <div className="md:hidden bg-white border-t border-gray-100">
           <div className="px-4 py-3 space-y-1">
             <MobileNavLink href="/category">Categories</MobileNavLink>
-            <NavLink href="/translation">Nepali Unicode</NavLink>
+            <MobileNavLink href="/translation">Nepali Unicode</MobileNavLink>
             {}
             <MobileNavLink href="/category/reading">Readings</MobileNavLink>
             <MobileNavLink href="/about">About</MobileNavLink>
