@@ -42,6 +42,12 @@ const engineeringSubjects = [
     color: "bg-red-100"
   },
   {
+    name: "Object Oriented Programming",
+    icon: "🎯",
+    description: "Encapsulation, inheritance, polymorphism, and design patterns",
+    color: "bg-lime-100"
+  },
+  {
     name: "Computer Organization",
     icon: "🧩",
     description: "CPU design, memory hierarchy, and I/O systems",
@@ -88,8 +94,10 @@ const engineeringSubjects = [
     icon: "🔌",
     description: "Real-time systems and hardware-software integration",
     color: "bg-amber-100"
-  }
+  },
+  
 ];
+
 
 const examStructure = [
   {
