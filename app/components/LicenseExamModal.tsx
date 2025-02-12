@@ -244,7 +244,7 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
     }
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-50">
-            <div className="bg-white rounded-lg p-4 sm:p-6 w-full h-[95vh] max-w-2xl mx-2 overflow-y-auto">
+            <div className="bg-white rounded-lg p-4 sm:p-6 w-full h-[90vh] max-w-2xl mx-2 overflow-y-auto">
                 <div className="flex justify-between items-center mb-4">
                     <h3 className="text-lg sm:text-xl font-bold text-purple-900 truncate">
                         {topic} - {selectedSubtopic}
@@ -289,7 +289,7 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                     </div>
                 )}
 
-{loading ? (
+                {loading ? (
                     <div className="text-center py-6">
                         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-900 mx-auto"></div>
                     </div>
@@ -306,7 +306,7 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                         <div className="space-y-4">
                             {questions.map((question, index) => (
                                 <div key={question._id} className="border-b pb-4">
-                                    <p className="text-sm sm:text-base font-medium mb-2 text-gray-800">
+                                    <p className="text-sm sm:text-base font-medium mb-2 mt-3 text-gray-800">
                                         <span className="font-semibold">{index + 1}.</span>
                                         <span dangerouslySetInnerHTML={{
                                             __html: cleanHtml(question.questionText).replace(/\*(.*?)\*/g, "<b>$1</b>")
@@ -398,7 +398,7 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                                 exit={{ opacity: 0, x: -50 }}
                                 transition={{ duration: 0.2 }}
                             >
-                                <p className="text-sm sm:text-base font-medium mb-3 pl-3 text-gray-800">
+                                <p className="text-base sm:text-lg font-medium my-4 pl-3 text-gray-800">
                                     <span dangerouslySetInnerHTML={{ __html: cleanHtml(questions[currentQuestion].questionText) }}></span>
                                 </p>
                                 <div className="grid gap-2">
@@ -413,7 +413,7 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                                                     : "bg-gray-50 hover:bg-gray-100 text-gray-700"
                                                     }`}
                                             >
-                                               <span className="text-sm sm:text-base font-medium mb-3 "> {option.text}</span>
+                                                <span className="text-sm sm:text-base-sm font-medium mb-3 "> {option.text}</span>
                                             </button>
                                         );
                                     })}
