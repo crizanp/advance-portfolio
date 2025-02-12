@@ -31,9 +31,10 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
     const [showResults, setShowResults] = useState(false);
     const [loading, setLoading] = useState(true);
     const [showWarning, setShowWarning] = useState(false);
-    const [timeLeft, setTimeLeft] = useState<number>(600); // 10 minutes default
+    const [timeLeft, setTimeLeft] = useState<number>(600);
     const [expandedExplanations, setExpandedExplanations] = useState<Set<number>>(new Set());
     const [allSelections, setAllSelections] = useState<{ [key: string]: string[] }>({});
+    const [subtopicsLoading, setSubtopicsLoading] = useState(true);
 
     const toggleExplanation = (index: number) => {
         const newSet = new Set(expandedExplanations);
@@ -43,6 +44,7 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
 
     useEffect(() => {
         const fetchSubtopics = async () => {
+            setSubtopicsLoading(true);
             try {
                 const response = await fetch(
                     `${process.env.NEXT_PUBLIC_API_URL}/bct-question-types/${topic}`
@@ -51,6 +53,8 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                 setSubtopics(data.subTopics || []);
             } catch (error) {
                 console.error("Error fetching subtopics:", error);
+            } finally {
+                setSubtopicsLoading(false); // Set loading to false after fetch completes
             }
         };
         fetchSubtopics();
@@ -209,48 +213,55 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
     if (!selectedSubtopic) {
         return (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-                <div className="bg-white rounded-xl p-8 max-w-md w-full relative">
+                <div className="bg-white rounded-lg p-6 mx-4 w-full max-w-md relative">
                     <button
                         onClick={onClose}
-                        className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition-colors"
+                        className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
                     >
-                        <XMarkIcon className="h-6 w-6" />
+                        <XMarkIcon className="h-5 w-5" />
                     </button>
-                    <h3 className="text-2xl font-bold text-purple-900 mb-6">Select Subtopic</h3>
-                    <div className="space-y-4">
-                        {subtopics.map((subtopic) => (
-                            <button
-                                key={subtopic.name}
-                                onClick={() => setSelectedSubtopic(subtopic.name)}
-                                className="w-full bg-purple-100 hover:bg-purple-200 text-purple-900 p-3 rounded-lg transition-colors"
-                            >
-                                <p className="font-semibold">{subtopic.name}</p>
-                            </button>
-                        ))}
-                    </div>
+                    <h3 className="text-xl font-bold text-purple-900 mb-4">Select Subtopic</h3>
+                    {subtopicsLoading ? (
+                        <div className="text-center py-4">
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-900 mx-auto"></div>
+                        </div>
+                    ) : (
+                        <div className="space-y-3">
+                            {subtopics.map((subtopic) => (
+                                <button
+                                    key={subtopic.name}
+                                    onClick={() => setSelectedSubtopic(subtopic.name)}
+                                    className="w-full bg-purple-100 hover:bg-purple-200 text-purple-900 p-2 rounded-md transition-colors text-sm sm:text-base"
+                                >
+                                    {subtopic.name}
+                                </button>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         );
     }
-
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-                <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-2xl font-bold text-purple-900">{topic} - {selectedSubtopic}</h3>
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-50">
+            <div className="bg-white rounded-lg p-4 sm:p-6 w-full h-[95vh] max-w-2xl mx-2 overflow-y-auto">
+                <div className="flex justify-between items-center mb-4">
+                    <h3 className="text-lg sm:text-xl font-bold text-purple-900 truncate">
+                        {topic} - {selectedSubtopic}
+                    </h3>
                     <button
                         onClick={handleClose}
-                        className="text-gray-500 hover:text-gray-700 transition-colors"
+                        className="text-gray-500 hover:text-gray-700"
                     >
-                        <XMarkIcon className="h-6 w-6" />
+                        <XMarkIcon className="h-5 w-5 sm:h-6 sm:w-6" />
                     </button>
                 </div>
-                <div className="flex justify-between items-center mb-4">
-                    <div className="text-sm text-gray-600">
-                        Time Remaining: <span className="font-semibold">{formatTime(timeLeft)}</span>
+
+                <div className="flex justify-between items-center mb-3">
+                    <div className="text-xs sm:text-sm text-gray-600">
+                        Time: <span className="font-semibold">{formatTime(timeLeft)}</span>
                     </div>
                 </div>
-
                 {showWarning && (
                     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
                         <div className="bg-white rounded-lg p-6 max-w-sm w-full shadow-lg">
@@ -278,32 +289,30 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                     </div>
                 )}
 
-                {loading ? (
-                    <div className="text-center py-8">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-900 mx-auto"></div>
+{loading ? (
+                    <div className="text-center py-6">
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-900 mx-auto"></div>
                     </div>
                 ) : showResults ? (
-                    <div className="space-y-6">
-                        <div className="bg-purple-100 p-6 rounded-xl text-center">
-                            <h4 className="text-xl font-bold text-purple-900 mb-2">
+                    <div className="space-y-4">
+                        <div className="bg-purple-100 p-4 rounded-lg text-center">
+                            <h4 className="text-lg sm:text-xl font-bold text-purple-900 mb-1">
                                 {timeLeft === 0 ? "Time's Up! " : ""}Quiz Complete!
                             </h4>
-                            <p className="text-3xl font-bold text-purple-900">
-                                Score: {score}/{questions.length}
+                            <p className="text-2xl sm:text-3xl font-bold text-purple-900">
+                                {score}/{questions.length}
                             </p>
                         </div>
-                        <div className="space-y-6">
+                        <div className="space-y-4">
                             {questions.map((question, index) => (
-                                <div key={question._id} className="border-b pb-6">
-                                    <p className="font-medium mb-4 text-gray-800">
+                                <div key={question._id} className="border-b pb-4">
+                                    <p className="text-sm sm:text-base font-medium mb-2 text-gray-800">
                                         <span className="font-semibold">{index + 1}.</span>
-                                        <span
-                                            dangerouslySetInnerHTML={{
-                                                __html: cleanHtml(question.questionText).replace(/\*(.*?)\*/g, "<b>$1</b>")
-                                            }}
-                                        ></span>
+                                        <span dangerouslySetInnerHTML={{
+                                            __html: cleanHtml(question.questionText).replace(/\*(.*?)\*/g, "<b>$1</b>")
+                                        }}></span>
                                     </p>
-                                    <div className="grid gap-2">
+                                    <div className="grid gap-1 sm:gap-2">
                                         {question.options.map((option) => (
                                             <div
                                                 key={option.text}
@@ -365,14 +374,14 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                     </div>
                 ) : questions.length > 0 ? (
                     <>
-                        <div className="mb-6">
-                            <div className="flex justify-between text-sm text-gray-600 mb-2">
-                                <span>Question {currentQuestion + 1} of {questions.length}</span>
-                                <span>Subtopic: {selectedSubtopic}</span>
+                        <div className="mb-4">
+                            <div className="flex justify-between text-xs sm:text-sm text-gray-600 mb-1">
+                                <span>Q{currentQuestion + 1}/{questions.length}</span>
+                                <span>{selectedSubtopic}</span>
                             </div>
-                            <div className="h-2 bg-gray-200 rounded-full">
+                            <div className="h-1.5 bg-gray-200 rounded-full">
                                 <motion.div
-                                    className="h-2 bg-purple-600 rounded-full"
+                                    className="h-1.5 bg-purple-600 rounded-full"
                                     initial={{ width: 0 }}
                                     animate={{
                                         width: `${((currentQuestion + 1) / questions.length) * 100}%`
@@ -389,10 +398,10 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                                 exit={{ opacity: 0, x: -50 }}
                                 transition={{ duration: 0.2 }}
                             >
-                                <p className="text-lg font-medium mb-4 text-gray-800">
+                                <p className="text-sm sm:text-base font-medium mb-3 pl-3 text-gray-800">
                                     <span dangerouslySetInnerHTML={{ __html: cleanHtml(questions[currentQuestion].questionText) }}></span>
                                 </p>
-                                <div className="grid gap-3">
+                                <div className="grid gap-2">
                                     {questions[currentQuestion].options.map((option) => {
                                         const isSelected = selectedAnswers.includes(option.text);
                                         return (
@@ -404,37 +413,37 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                                                     : "bg-gray-50 hover:bg-gray-100 text-gray-700"
                                                     }`}
                                             >
-                                                {option.text}
+                                               <span className="text-sm sm:text-base font-medium mb-3 "> {option.text}</span>
                                             </button>
                                         );
                                     })}
                                     {questions[currentQuestion].correctAnswers.length > 1 && (
-                                        <div className="text-sm text-gray-600 mb-4">Note: Select all correct answers</div>
+                                        <div className="text-xs sm:text-sm text-gray-600">Select all correct answers</div>
                                     )}
                                 </div>
                             </motion.div>
                         </AnimatePresence>
-                        <div className="mt-6 flex space-x-4">
+                        <div className="mt-4 flex flex-col sm:flex-row gap-2">
                             <button
                                 onClick={handleNextQuestion}
                                 disabled={selectedAnswers.length === 0}
-                                className="w-full sm:w-auto bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 disabled:bg-gray-300 transition-colors"
+                                className="w-full bg-purple-600 text-white p-2 sm:p-3 rounded-md hover:bg-purple-700 disabled:bg-gray-300 text-sm sm:text-base"
                             >
-                                {currentQuestion === questions.length - 1 ? "Finish Quiz" : "Next Question"}
+                                {currentQuestion === questions.length - 1 ? "Finish" : "Next"}
                             </button>
                             {!showResults && (
                                 <button
                                     onClick={handleSkipQuestion}
-                                    className="w-full sm:w-auto bg-gray-200 text-gray-700 p-3 rounded-lg hover:bg-gray-300 transition-colors"
+                                    className="w-full bg-gray-200 text-gray-700 p-2 sm:p-3 rounded-md hover:bg-gray-300 text-sm sm:text-base"
                                 >
-                                    Skip Question
+                                    Skip
                                 </button>
                             )}
                         </div>
                     </>
                 ) : (
-                    <div className="text-center py-8 text-gray-600">
-                        No questions available for this subtopic
+                    <div className="text-center py-4 text-sm sm:text-base text-gray-600">
+                        No questions available
                     </div>
                 )}
             </div>

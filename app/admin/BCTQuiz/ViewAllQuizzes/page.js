@@ -27,18 +27,24 @@ export default function BCTViewAllQuizzes() {
     fetchQuizzes();
   }, []);
 
-  // Handle sorting logic
+  // Handle sorting logic with null checks
   const sortedQuizzes = () => {
     let sorted = [...quizzes];
 
     if (sortBy === "type") {
-      sorted.sort((a, b) => a.questionType.localeCompare(b.questionType));
+      sorted.sort((a, b) => {
+        const typeA = a.questionType?.name || '';
+        const typeB = b.questionType?.name || '';
+        return typeA.localeCompare(typeB);
+      });
     } else if (sortBy === "type+subTopic") {
       sorted.sort((a, b) => {
-        if (a.questionType === b.questionType) {
-          return a.subTopic - b.subTopic;
+        const typeA = a.questionType?.name || '';
+        const typeB = b.questionType?.name || '';
+        if (typeA === typeB) {
+          return (a.subTopic || '').localeCompare(b.subTopic || '');
         }
-        return a.questionType.localeCompare(b.questionType);
+        return typeA.localeCompare(typeB);
       });
     }
 
@@ -102,7 +108,6 @@ export default function BCTViewAllQuizzes() {
     <div className="p-6 text-black">
       <h1 className="text-2xl font-bold mb-6">All Quizzes</h1>
 
-      {/* Sorting Controls */}
       <div className="mb-6 flex space-x-4">
         <label className="flex items-center space-x-2">
           <span className="text-gray-700">Sort By:</span>
@@ -118,16 +123,21 @@ export default function BCTViewAllQuizzes() {
         </label>
       </div>
 
-      {/* Quiz List */}
       <ul className="space-y-4">
         {sortedQuizzes().map((quiz) => (
           <li key={quiz._id} className="p-4 border-b-2 flex justify-between items-center">
             <div>
-              <p className="font-semibold">{quiz.questionText}</p>
-              <p className="text-sm text-gray-600">
-                Type: {quiz.questionType.name} -- subTopic: {quiz.subTopic}
+              <p className="font-semibold">
+                {quiz.questionText ? (
+                  <div dangerouslySetInnerHTML={{ __html: quiz.questionText }} />
+                ) : (
+                  <span className="text-gray-400">No question text</span>
+                )}
               </p>
-
+              <p className="text-sm text-gray-600">
+                Type: {quiz.questionType?.name || 'Unknown'} -- 
+                subTopic: {quiz.subTopic || 'Not specified'}
+              </p>
             </div>
             <div className="flex space-x-4">
               <button
@@ -147,7 +157,6 @@ export default function BCTViewAllQuizzes() {
         ))}
       </ul>
 
-      {/* Modal component */}
       <Modal
         isOpen={isModalOpen}
         closeModal={() => setIsModalOpen(false)}

@@ -6,8 +6,9 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import PuffLoader from "react-spinners/PuffLoader";
 import { QuizModal } from "../components/QuizModal";
-import { CpuChipIcon, CommandLineIcon, BookOpenIcon } from "@heroicons/react/24/outline";
+import { CpuChipIcon, CommandLineIcon, BookOpenIcon, DocumentTextIcon } from "@heroicons/react/24/outline";
 import { LicenseQuizModal } from "../components/LicenseExamModal";
+import { ClipboardListIcon } from "lucide-react";
 
 const engineeringSubjects = [
   {
@@ -91,23 +92,23 @@ const engineeringSubjects = [
 ];
 
 const examStructure = [
-  { 
-    section: "Core Subjects", 
+  {
+    section: "Core Subjects",
     topics: ["Digital Logic", "Computer Organization", "Operating Systems"],
     questions: 100,
-    time: "120 min" 
+    time: "120 min"
   },
-  { 
-    section: "Advanced Topics", 
+  {
+    section: "Advanced Topics",
     topics: ["AI/ML", "Computer Networks", "Embedded Systems"],
     questions: 80,
-    time: "90 min" 
+    time: "90 min"
   },
-  { 
-    section: "Professional Practice", 
+  {
+    section: "Professional Practice",
     topics: ["Software Engineering", "System Design", "Project Management"],
     questions: 60,
-    time: "90 min" 
+    time: "90 min"
   }
 ];
 
@@ -136,59 +137,58 @@ export default function EngineeringLicensePage() {
 
       <main className="min-h-screen bg-gradient-to-br from-white to-blue-50">
 
-        <section className="py-16 px-4 bg-gradient-to-r from-blue-50 to-indigo-50 text-gray-800">
-          <div className="max-w-7xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+        {/* Hero Section */}
+        <section className="py-8 xs:py-12 sm:py-16 px-4 bg-gradient-to-r from-blue-50 to-indigo-50 text-gray-700">
+          <div className="max-w-7xl mx-auto text-center px-4">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-4xl sm:text-5xl md:text-6xl font-bold mb-6 leading-tight"
+              className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold mb-4 xs:mb-6 leading-snug xs:leading-tight"
             >
-              NEC License Exam Preperation<br />
-              <span className="text-blue-600">Computer Engineering</span>
+              <span className="text-gray-700">NEC License Exam Preparation</span><br />
+              <span className="text-purple-600 text-xl xs:text-2xl sm:text-3xl md:text-4xl">Computer Engineering</span>
             </motion.h1>
-            <p className="text-xs sm:text-sm md:text-base text-gray-700 max-w-2xl mx-auto mb-8">
+            <p className="text-xs xs:text-sm sm:text-base text-gray-700 max-w-2xl mx-auto mb-6 xs:mb-8">
               Trusted by 85% of top engineering firms for licensure preparation. Access 15 specialized modules with adaptive practice tests and real-time performance tracking.
             </p>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-12">
-              <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
-                <h3 className="text-xl sm:text-2xl font-bold mb-3 text-gray-900">95% Pass Rate</h3>
-                <p className="text-sm sm:text-base text-gray-600">First-time test takers</p>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
-                <h3 className="text-xl sm:text-2xl font-bold mb-3 text-gray-900">2000+ Problems</h3>
-                <p className="text-sm sm:text-base text-gray-600">With industry-standard solutions</p>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
-                <h3 className="text-xl sm:text-2xl font-bold mb-3 text-gray-900">NEC Aligned</h3>
-                <p className="text-sm sm:text-base text-gray-600">Updated 2024 exam specifications</p>
-              </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-8 xs:mt-12">
+              {[
+                ["95% Pass Rate", "First-time test takers"],
+                ["2000+ Problems", "With industry-standard solutions"],
+                ["NEC Aligned", "Updated 2024 exam specifications"]
+              ].map(([title, subtitle], idx) => (
+                <div key={idx} className="bg-white p-4 xs:p-6 rounded-xl shadow-md border border-gray-100">
+                  <h3 className="text-lg xs:text-xl sm:text-2xl font-bold mb-1 xs:mb-2 text-gray-700">{title}</h3>
+                  <p className="text-xs xs:text-sm text-gray-600">{subtitle}</p>
+                </div>
+              ))}
             </div>
           </div>
         </section>
 
         {/* Subject Categories */}
-        <section className="py-16 px-4">
+        <section className="py-12 xs:py-16 px-4">
           <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl font-bold text-center text-blue-900 mb-12">
+            {/* <h2 className="text-2xl xs:text-3xl font-bold text-center text-blue-900 mb-8 xs:mb-12">
               Exam Subject Domains
-            </h2>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            </h2> */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 xs:gap-4">
               {engineeringSubjects.map((subject) => (
                 <motion.div
                   key={subject.name}
                   whileHover={{ scale: 1.02 }}
-                  className={`${subject.color} p-6 rounded-xl shadow-md transition-all cursor-pointer hover:shadow-lg`}
+                  className={`${subject.color} p-4 xs:p-6 rounded-xl shadow-md transition-all cursor-pointer hover:shadow-lg`}
                   onClick={() => setSelectedTopic(subject.name)}
                 >
-                  <div className="text-3xl mb-3">{subject.icon}</div>
-                  <h3 className="text-lg font-bold text-gray-900 mb-2">{subject.name}</h3>
-                  <p className="text-sm text-gray-600">{subject.description}</p>
-                  <div className="mt-3 text-blue-600 hover:text-blue-800 text-sm flex items-center gap-1">
+                  <div className="text-2xl xs:text-3xl mb-2 xs:mb-3">{subject.icon}</div>
+                  <h3 className="text-base xs:text-lg font-bold text-gray-900 mb-1 xs:mb-2">{subject.name}</h3>
+                  <p className="text-xs xs:text-sm text-gray-600">{subject.description}</p>
+                  <div className="mt-2 xs:mt-3 text-blue-600 hover:text-blue-800 text-xs xs:text-sm flex items-center gap-1">
                     Start Practice
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
+                      className="h-3 w-3 xs:h-4 xs:w-4"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -209,35 +209,35 @@ export default function EngineeringLicensePage() {
         </section>
 
         {/* Exam Structure */}
-        <section className="py-16 bg-white">
+        {/* <section className="py-12 xs:py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center text-blue-900 mb-12">
+            <h2 className="text-2xl xs:text-3xl font-bold text-center text-blue-900 mb-8 xs:mb-12">
               Exam Blueprint
             </h2>
 
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 xs:gap-6">
               {examStructure.map((section, idx) => (
-                <div key={idx} className="bg-blue-50 p-6 rounded-xl border border-blue-200">
-                  <div className="flex items-center gap-3 mb-4">
-                    <CpuChipIcon className="w-8 h-8 text-blue-700" />
-                    <h3 className="text-xl font-bold text-blue-900">
+                <div key={idx} className="bg-blue-50 p-4 xs:p-6 rounded-xl border border-blue-200">
+                  <div className="flex items-center gap-2 xs:gap-3 mb-3 xs:mb-4">
+                    <CpuChipIcon className="w-6 h-6 xs:w-8 xs:h-8 text-blue-700" />
+                    <h3 className="text-lg xs:text-xl font-bold text-blue-900">
                       {section.section}
                     </h3>
                   </div>
-                  <div className="space-y-3">
-                    <div className="flex justify-between items-center bg-white p-3 rounded-lg">
-                      <span className="text-gray-600">Questions</span>
-                      <span className="font-bold text-blue-700">{section.questions}</span>
+                  <div className="space-y-2 xs:space-y-3">
+                    <div className="flex justify-between items-center bg-white p-2 xs:p-3 rounded-lg">
+                      <span className="text-xs xs:text-sm text-gray-600">Questions</span>
+                      <span className="font-bold text-blue-700 text-sm xs:text-base">{section.questions}</span>
                     </div>
-                    <div className="flex justify-between items-center bg-white p-3 rounded-lg">
-                      <span className="text-gray-600">Duration</span>
-                      <span className="font-bold text-blue-700">{section.time}</span>
+                    <div className="flex justify-between items-center bg-white p-2 xs:p-3 rounded-lg">
+                      <span className="text-xs xs:text-sm text-gray-600">Duration</span>
+                      <span className="font-bold text-blue-700 text-sm xs:text-base">{section.time}</span>
                     </div>
-                    <div className="mt-4">
-                      <p className="text-sm font-semibold text-gray-600 mb-2">Key Topics:</p>
-                      <ul className="list-disc list-inside space-y-1 text-sm text-gray-700">
+                    <div className="mt-3 xs:mt-4">
+                      <p className="text-xs xs:text-sm font-semibold text-gray-600 mb-1 xs:mb-2">Key Topics:</p>
+                      <ul className="list-disc list-inside space-y-1 text-xs xs:text-sm text-gray-700">
                         {section.topics.map((topic, tIdx) => (
-                          <li key={tIdx} className="pl-2">{topic}</li>
+                          <li key={tIdx} className="pl-1 xs:pl-2">{topic}</li>
                         ))}
                       </ul>
                     </div>
@@ -246,44 +246,48 @@ export default function EngineeringLicensePage() {
               ))}
             </div>
           </div>
-        </section>
+        </section> */}
 
         {/* Additional Resources */}
-        <section className="py-16 bg-blue-50">
+        <section className="py-12 xs:py-16 bg-blue-50">
           <div className="max-w-7xl mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold text-blue-900 mb-8">
+            <h2 className="text-2xl xs:text-3xl font-bold text-blue-900 mb-6 xs:mb-8">
               Enhanced Preparation Tools
             </h2>
-            <div className="grid md:grid-cols-3 gap-8">
-              <div className="bg-white p-8 rounded-xl shadow-lg">
-                <CommandLineIcon className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-                <h3 className="text-xl font-bold mb-3">Code Simulation</h3>
-                <p className="text-gray-600 mb-4">Interactive coding environment with compiler integration</p>
-                <button className="text-blue-600 hover:text-blue-800 font-medium">
-                  Try Sandbox →
-                </button>
-              </div>
-              <div className="bg-white p-8 rounded-xl shadow-lg">
-                <BookOpenIcon className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-                <h3 className="text-xl font-bold mb-3">Reference Library</h3>
-                <p className="text-gray-600 mb-4">Access to 50+ technical manuals and standards</p>
-                <button className="text-blue-600 hover:text-blue-800 font-medium">
-                  Explore Resources →
-                </button>
-              </div>
-              <div className="bg-white p-8 rounded-xl shadow-lg">
-                <svg xmlns="http://www.w3.org/2000/svg" className="w-12 h-12 text-blue-600 mx-auto mb-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                <h3 className="text-xl font-bold mb-3">Performance Analytics</h3>
-                <p className="text-gray-600 mb-4">Detailed competency matrix and progress tracking</p>
-                <button className="text-blue-600 hover:text-blue-800 font-medium">
-                  View Dashboard →
-                </button>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 xs:gap-6">
+              {[
+                {
+                  icon: <BookOpenIcon className="w-8 h-8 xs:w-12 xs:h-12 text-blue-600 mx-auto mb-3 xs:mb-4" />,
+                  title: "NEC Computer Syllabus",
+                  text: "Comprehensive coverage of topics with structured modules",
+                  buttonText: "View Syllabus →"
+                },
+                {
+                  icon: <ClipboardListIcon className="w-8 h-8 xs:w-12 xs:h-12 text-blue-600 mx-auto mb-3 xs:mb-4" />,
+                  title: "Reference Notes",
+                  text: "Well-curated notes with key concepts and explanations",
+                  buttonText: "Read Notes →"
+                },
+                {
+                  icon: <DocumentTextIcon className="w-8 h-8 xs:w-12 xs:h-12 text-blue-600 mx-auto mb-3 xs:mb-4" />,
+                  title: "Past Questions",
+                  text: "Practice with real exam questions and solutions",
+                  buttonText: "Practice Now →"
+                }
+              ].map((resource, idx) => (
+                <div key={idx} className="bg-white p-4 xs:p-6 rounded-xl shadow-lg">
+                  {resource.icon}
+                  <h3 className="text-lg xs:text-xl font-bold mb-2 xs:mb-3 text-gray-700">{resource.title}</h3>
+                  <p className="text-xs xs:text-sm text-gray-600 mb-3 xs:mb-4">{resource.text}</p>
+                  <button className="text-blue-600 hover:text-blue-800 font-medium text-xs xs:text-sm">
+                    {resource.buttonText}
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
         </section>
+
       </main>
     </>
   );
