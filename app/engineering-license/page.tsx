@@ -249,44 +249,52 @@ export default function EngineeringLicensePage() {
         </section> */}
 
         {/* Additional Resources */}
-        <section className="py-12 xs:py-16 bg-blue-50">
-          <div className="max-w-7xl mx-auto px-4 text-center">
-            <h2 className="text-2xl xs:text-3xl font-bold text-blue-900 mb-6 xs:mb-8">
-              Enhanced Preparation Tools
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 xs:gap-6">
-              {[
-                {
-                  icon: <BookOpenIcon className="w-8 h-8 xs:w-12 xs:h-12 text-blue-600 mx-auto mb-3 xs:mb-4" />,
-                  title: "NEC Computer Syllabus",
-                  text: "Comprehensive coverage of topics with structured modules",
-                  buttonText: "View Syllabus →"
-                },
-                {
-                  icon: <ClipboardListIcon className="w-8 h-8 xs:w-12 xs:h-12 text-blue-600 mx-auto mb-3 xs:mb-4" />,
-                  title: "Reference Notes",
-                  text: "Well-curated notes with key concepts and explanations",
-                  buttonText: "Read Notes →"
-                },
-                {
-                  icon: <DocumentTextIcon className="w-8 h-8 xs:w-12 xs:h-12 text-blue-600 mx-auto mb-3 xs:mb-4" />,
-                  title: "Past Questions",
-                  text: "Practice with real exam questions and solutions",
-                  buttonText: "Practice Now →"
-                }
-              ].map((resource, idx) => (
-                <div key={idx} className="bg-white p-4 xs:p-6 rounded-xl shadow-lg">
-                  {resource.icon}
-                  <h3 className="text-lg xs:text-xl font-bold mb-2 xs:mb-3 text-gray-700">{resource.title}</h3>
-                  <p className="text-xs xs:text-sm text-gray-600 mb-3 xs:mb-4">{resource.text}</p>
-                  <button className="text-blue-600 hover:text-blue-800 font-medium text-xs xs:text-sm">
-                    {resource.buttonText}
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+        import Link from 'next/link';
+
+<section className="py-12 xs:py-16 bg-blue-50">
+  <div className="max-w-7xl mx-auto px-4 text-center">
+    <h2 className="text-2xl xs:text-3xl font-bold text-blue-900 mb-6 xs:mb-8">
+      Enhanced Preparation Tools
+    </h2>
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 xs:gap-6">
+      {[
+        {
+          icon: <BookOpenIcon className="w-8 h-8 xs:w-12 xs:h-12 text-blue-600 mx-auto mb-3 xs:mb-4" />,
+          title: "NEC Computer Syllabus",
+          text: "Comprehensive coverage of topics with structured modules",
+          buttonText: "View Syllabus →",
+          href: "/nec-license-exam-computer-engineering-syllabus.pdf" 
+        },
+        {
+          icon: <ClipboardListIcon className="w-8 h-8 xs:w-12 xs:h-12 text-blue-600 mx-auto mb-3 xs:mb-4" />,
+          title: "Reference Notes",
+          text: "Well-curated notes with key concepts and explanations",
+          buttonText: "Read Notes →",
+          href: "#" 
+        },
+        {
+          icon: <DocumentTextIcon className="w-8 h-8 xs:w-12 xs:h-12 text-blue-600 mx-auto mb-3 xs:mb-4" />,
+          title: "Past Questions",
+          text: "Practice with real exam questions and solutions",
+          buttonText: "Practice Now →",
+          href: "#" 
+        }
+      ].map((resource, idx) => (
+        <div key={idx} className="bg-white p-4 xs:p-6 rounded-xl shadow-lg">
+          {resource.icon}
+          <h3 className="text-lg xs:text-xl font-bold mb-2 xs:mb-3 text-gray-700">{resource.title}</h3>
+          <p className="text-xs xs:text-sm text-gray-600 mb-3 xs:mb-4">{resource.text}</p>
+          <Link
+            href={resource.href}
+            className="text-blue-600 hover:text-blue-800 font-medium text-xs xs:text-sm"
+          >
+            {resource.buttonText}
+          </Link>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
 
       </main>
     </>
