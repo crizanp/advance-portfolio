@@ -17,6 +17,12 @@ const engineeringSubjects = [
     color: "bg-blue-100"
   },
   {
+    name: "Electronics",
+    icon: "⚡",
+    description: "Fundamentals of AC Amplifier and semiconductors",
+    color: "bg-pink-100"
+  },
+  {
     name: "Digital Logic",
     icon: "🖥️",
     description: "Boolean algebra, combinational and sequential circuits",

@@ -54,7 +54,7 @@ export default function BCTViewAllQuizzes() {
     const confirmed = window.confirm("Are you sure you want to delete this quiz?");
     if (confirmed) {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/quizzes/${quizId}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bct-quizzes/${quizId}`, {
           method: "DELETE",
         });
 
