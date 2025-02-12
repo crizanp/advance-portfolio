@@ -243,7 +243,7 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
         );
     }
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 ">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-[999]">
             <div className="bg-white rounded-lg p-4 sm:p-6 w-full h-[90vh] max-w-2xl mx-2 overflow-y-auto">
                 {/* Modal content */}
                 <div className="flex justify-between items-center mb-4">
