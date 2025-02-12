@@ -213,14 +213,14 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
     if (!selectedSubtopic) {
         return (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-                <div className="bg-white rounded-lg p-6 mx-4 w-full max-w-md relative">
-                    <button
-                        onClick={onClose}
-                        className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
-                    >
-                        <XMarkIcon className="h-5 w-5" />
-                    </button>
-                    <h3 className="text-xl font-bold text-purple-900 mb-4">Select Subtopic</h3>
+            <div className="bg-white rounded-lg p-6 mx-4 w-full max-w-md relative max-h-[90vh] overflow-y-auto">
+                <button
+                    onClick={onClose}
+                    className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
+                >
+                    <XMarkIcon className="h-5 w-5" />
+                </button>
+                <h3 className="text-xl font-bold text-purple-900 mb-4">Select Subtopic</h3>
                     {subtopicsLoading ? (
                         <div className="text-center py-4">
                             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-900 mx-auto"></div>
@@ -244,9 +244,10 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
     }
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-50">
-            <div className="bg-white rounded-lg p-4 sm:p-6 w-full h-[90vh] max-w-2xl mx-2 overflow-y-auto">
-                {/* Modal content */}
-                <div className="flex justify-between items-center mb-4">
+        <div className="bg-white rounded-lg flex flex-col w-full h-[90vh] max-w-2xl mx-2">
+            {/* Fixed Header */}
+            <div className="p-4 sm:p-6 border-b">
+                <div className="flex justify-between items-center">
                     <h3 className="text-lg sm:text-xl font-bold text-purple-900 truncate">
                         {topic} - {selectedSubtopic}
                     </h3>
@@ -257,38 +258,30 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                         <XMarkIcon className="h-5 w-5 sm:h-6 sm:w-6" />
                     </button>
                 </div>
-
-                <div className="flex justify-between items-center mb-3">
+                <div className="flex justify-between items-center mt-3">
                     <div className="text-xs sm:text-sm text-gray-600">
                         Time: <span className="font-semibold">{formatTime(timeLeft)}</span>
                     </div>
                 </div>
-                {showWarning && (
-                    <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-                        <div className="bg-white rounded-lg p-6 max-w-sm w-full shadow-lg">
-                            <h3 className="text-lg font-semibold text-purple-600 mb-3">
-                                Changes will not be saved. Proceed anyway?
-                            </h3>
-                            <div className="flex justify-center">
-                                <button
-                                    onClick={() => setShowWarning(false)}
-                                    className="bg-gray-200 mx-4 text-gray-700 p-2 rounded-md hover:bg-gray-300 text-sm"
-                                >
-                                    Cancel
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        setShowWarning(false);
-                                        onClose();
-                                    }}
-                                    className="bg-purple-600 text-white p-2 rounded-md hover:bg-purple-700 text-sm"
-                                >
-                                    Proceed Anyway
-                                </button>
-                            </div>
+                {!showResults && questions.length > 0 && (
+                    <div className="mt-4">
+                        <div className="flex justify-between text-xs sm:text-sm text-gray-600 mb-1">
+                            <span>Q{currentQuestion + 1}/{questions.length}</span>
+                            <span>{selectedSubtopic}</span>
+                        </div>
+                        <div className="h-1.5 bg-gray-200 rounded-full">
+                            <motion.div
+                                className="h-1.5 bg-purple-600 rounded-full"
+                                initial={{ width: 0 }}
+                                animate={{
+                                    width: `${((currentQuestion + 1) / questions.length) * 100}%`
+                                }}
+                                transition={{ duration: 0.3 }}
+                            />
                         </div>
                     </div>
                 )}
+            </div>
 
                 {loading ? (
                     <div className="text-center py-6">
