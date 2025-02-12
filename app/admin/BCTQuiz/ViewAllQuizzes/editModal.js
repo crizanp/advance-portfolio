@@ -18,14 +18,14 @@ const toolbarOptions = [
   ["clean"],
 ];
 
-const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
+const Modal = ({ isOpen, closeModal, quiz, updateQuiz, handleDelete }) => {
   const [formData, setFormData] = useState({
     questionType: "",
     questionText: "",
     options: ["", ""],
     correctAnswers: [],
     explanation: "",
-    subTopic: ""  // Changed from number to string to match the backend model
+    subTopic: "", // Changed from number to string to match the backend model
   });
 
   const [types, setTypes] = useState([]);
@@ -45,17 +45,17 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bct-question-types`);
         const data = await response.json();
         setTypes(data);
-  
+
         if (data.length > 0) {
           const firstType = data[0];
           const firstSubTopic = firstType.subTopics[0]?.name || "";
-          
+
           setSelectedType(firstType);
           setSubtopics(firstType.subTopics);
-          setFormData(prev => ({
+          setFormData((prev) => ({
             ...prev,
             questionType: firstType.name,
-            subTopic: firstSubTopic
+            subTopic: firstSubTopic,
           }));
         }
       } catch (error) {
@@ -64,45 +64,48 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz }) => {
         setLoadingTypes(false);
       }
     };
-  
+
     fetchQuestionTypes();
   }, []);
+
   const handleQuestionTypeChange = (typeName) => {
     const newSelectedType = types.find((type) => type.name === typeName);
     if (newSelectedType) {
       const firstSubTopic = newSelectedType.subTopics[0]?.name || "";
-      
+
       setSelectedType(newSelectedType);
       setSubtopics(newSelectedType.subTopics);
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
         questionType: typeName,
-        subTopic: firstSubTopic
+        subTopic: firstSubTopic,
       }));
     }
   };
- // Update the quiz effect to properly set initial values
-useEffect(() => {
-  if (quiz && types.length > 0) {
-    const quizQuestionTypeName = quiz.questionType?.name;
-    const matchingType = types.find((type) => type.name === quizQuestionTypeName) || types[0];
-    
-    setSelectedType(matchingType);
-    setSubtopics(matchingType.subTopics);
-    
-    // If there's no existing subTopic, use the first one from the matching type
-    const subTopicToUse = quiz.subTopic || matchingType.subTopics[0]?.name || "";
-    
-    setFormData({
-      questionType: quizQuestionTypeName || types[0]?.name,
-      questionText: quiz.questionText,
-      options: quiz.options.map((option) => option.text),
-      correctAnswers: quiz.correctAnswers || [],
-      explanation: quiz.explanation,
-      subTopic: subTopicToUse
-    });
-  }
-}, [quiz, types]);
+
+  // Update the quiz effect to properly set initial values
+  useEffect(() => {
+    if (quiz && types.length > 0) {
+      const quizQuestionTypeName = quiz.questionType?.name;
+      const matchingType = types.find((type) => type.name === quizQuestionTypeName) || types[0];
+
+      setSelectedType(matchingType);
+      setSubtopics(matchingType.subTopics);
+
+      // If there's no existing subTopic, use the first one from the matching type
+      const subTopicToUse = quiz.subTopic || matchingType.subTopics[0]?.name || "";
+
+      setFormData({
+        questionType: quizQuestionTypeName || types[0]?.name,
+        questionText: quiz.questionText,
+        options: quiz.options.map((option) => option.text),
+        correctAnswers: quiz.correctAnswers || [],
+        explanation: quiz.explanation,
+        subTopic: subTopicToUse,
+      });
+    }
+  }, [quiz, types]);
+
   const handleOptionChange = (index, value) => {
     const newOptions = [...formData.options];
     newOptions[index] = value;
@@ -124,9 +127,7 @@ useEffect(() => {
 
   const removeOption = (index) => {
     const updatedOptions = formData.options.filter((_, i) => i !== index);
-    const updatedAnswers = formData.correctAnswers.filter(
-      (ans) => ans !== formData.options[index]
-    );
+    const updatedAnswers = formData.correctAnswers.filter((ans) => ans !== formData.options[index]);
 
     setFormData({
       ...formData,
@@ -139,30 +140,27 @@ useEffect(() => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handlesubTopicChange = (e) => {
-    const value = Number(e.target.value);
-    if (value < 1 || value > 5) {
-      setsubTopicError("subTopic must be between 1 and 5.");
-    } else {
-      setsubTopicError("");
-    }
-    setFormData({ ...formData, subTopic: value });
-  };
-
   const handleSave = () => {
-    const selectedSubTopic = selectedType.subTopics.find(
-      (sub) => sub.name === formData.subTopic
-    );
-  
+    const selectedSubTopic = selectedType.subTopics.find((sub) => sub.name === formData.subTopic);
+
     const updatedData = {
       ...formData,
       subTopic: formData.subTopic, // Send the actual name instead of a number
       options: formData.options.map((text) => ({ text })),
     };
-  
+
     updateQuiz(quiz._id, updatedData);
     closeModal();
   };
+
+  const handleDeleteClick = () => {
+    const confirmed = window.confirm("Are you sure you want to delete this quiz?");
+    if (confirmed) {
+      handleDelete(quiz._id);
+      closeModal();
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -176,42 +174,43 @@ useEffect(() => {
         <h2 className="text-2xl font-bold mb-6 text-center text-purple-600">Edit Quiz Question</h2>
 
         <form className="space-y-6">
-         {/* Question Type Select */}
-<div>
-  <label className="block mb-2 text-lg">Question Type</label>
-  <select
-    value={formData.questionType}
-    onChange={(e) => handleQuestionTypeChange(e.target.value)}
-    className="w-full p-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
-    disabled={loadingTypes}
-  >
-    {loadingTypes ? (
-      <option>Loading...</option>
-    ) : (
-      types.map((type) => (
-        <option key={type._id} value={type.name}>
-          {type.name}
-        </option>
-      ))
-    )}
-  </select>
-</div>
+          {/* Question Type Select */}
+          <div>
+            <label className="block mb-2 text-lg">Question Type</label>
+            <select
+              value={formData.questionType}
+              onChange={(e) => handleQuestionTypeChange(e.target.value)}
+              className="w-full p-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+              disabled={loadingTypes}
+            >
+              {loadingTypes ? (
+                <option>Loading...</option>
+              ) : (
+                types.map((type) => (
+                  <option key={type._id} value={type.name}>
+                    {type.name}
+                  </option>
+                ))
+              )}
+            </select>
+          </div>
 
-{/* Subtopic Select */}
-<div>
-  <label className="block mb-2 text-lg">Subtopic</label>
-  <select
-    value={formData.subTopic}
-    onChange={(e) => setFormData(prev => ({ ...prev, subTopic: e.target.value }))}
-    className="w-full p-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
-  >
-    {subtopics.map((subtopic) => (
-      <option key={subtopic._id} value={subtopic.name}>
-        {subtopic.name}
-      </option>
-    ))}
-  </select>
-</div>
+          {/* Subtopic Select */}
+          <div>
+            <label className="block mb-2 text-lg">Subtopic</label>
+            <select
+              value={formData.subTopic}
+              onChange={(e) => setFormData((prev) => ({ ...prev, subTopic: e.target.value }))}
+              className="w-full p-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+            >
+              {subtopics.map((subtopic) => (
+                <option key={subtopic._id} value={subtopic.name}>
+                  {subtopic.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
           {/* Question Text Editor */}
           <div>
             <label className="block mb-2 text-lg">Question Text</label>
@@ -290,6 +289,13 @@ useEffect(() => {
               className="px-6 py-3 text-gray-700 hover:bg-gray-200 rounded-lg transition-colors"
             >
               Cancel
+            </button>
+            <button
+              type="button"
+              onClick={handleDeleteClick}
+              className="px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+            >
+              Delete
             </button>
             <button
               type="button"
