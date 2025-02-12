@@ -1,7 +1,3 @@
-
-//admin paanel
-
-
 import { useState, useEffect } from 'react';
 
 export default function BCTQuestionTypeModal({ onClose }) {
@@ -39,7 +35,7 @@ export default function BCTQuestionTypeModal({ onClose }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           name: newType,
-          subtopics: subtopics.filter(st => st.trim() !== '') // Remove empty subtopics
+          subtopics: subtopics.filter(st => st.trim() !== ''), // Remove empty subtopics
         }),
       });
 
@@ -55,9 +51,12 @@ export default function BCTQuestionTypeModal({ onClose }) {
   };
 
   const handleDelete = async (id) => {
+    const confirmed = window.confirm('Are you sure you want to delete this question type?');
+    if (!confirmed) return;
+
     try {
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}/bct-question-types/${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       });
       fetchQuestionTypes();
     } catch (error) {
@@ -80,8 +79,8 @@ export default function BCTQuestionTypeModal({ onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-      <div className="bg-white p-6 rounded-lg w-96">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white p-6 rounded-lg w-96 max-h-[90vh] overflow-y-auto">
         <h2 className="text-xl font-bold mb-4">Manage Question Types</h2>
 
         <form onSubmit={handleSubmit} className="mb-4">
