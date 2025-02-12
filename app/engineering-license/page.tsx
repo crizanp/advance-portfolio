@@ -145,7 +145,7 @@ export default function EngineeringLicensePage() {
               animate={{ opacity: 1, y: 0 }}
               className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold mb-4 xs:mb-6 leading-snug xs:leading-tight"
             >
-              <span className="text-gray-700">NEC License Exam Preparation</span><br />
+              <p className="text-gray-700 text-3xl xs:text-3xl sm:text-4xl md:text-5xl mb-2">NEC License Exam Preparation</p>
               <span className="text-purple-600 text-xl xs:text-2xl sm:text-3xl md:text-4xl">Computer Engineering</span>
             </motion.h1>
             <p className="text-xs xs:text-sm sm:text-base text-gray-700 max-w-2xl mx-auto mb-6 xs:mb-8">
