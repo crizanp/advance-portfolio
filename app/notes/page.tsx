@@ -81,29 +81,13 @@ export default function NotesPage() {
           transition={{ duration: 0.5 }}
           className="max-full mx-auto"
         >
-          <h1 className="text-4xl py-2 sm:text-5xl font-bold mb-6 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-            Computer Engineering Resources
-          </h1>
+
           <div className="space-y-6 text-gray-700 leading-relaxed text-lg">
             <p className=" p-6 rounded-xl transition-shadow">
               Computer Engineering combines hardware and software expertise to create 
               innovative solutions. Our curriculum is designed to provide both 
               foundational knowledge.
               <div className="grid md:grid-cols-2 gap-6">
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-purple-50 hover:shadow-md transition-shadow">
-                <h3 className="text-purple-700 font-semibold mb-3">Core Focus Areas</h3>
-                <p className="text-gray-600">
-                  Digital systems, computer architecture, software engineering, 
-                  and network systems form the backbone of our program.
-                </p>
-              </div>
-              <div className="bg-white p-6 rounded-xl shadow-sm border border-purple-50 hover:shadow-md transition-shadow">
-                <h3 className="text-purple-700 font-semibold mb-3">Beyond the Classroom</h3>
-                <p className="text-gray-600">
-                  Engage in research projects, internships, and hackathons to 
-                  apply theoretical knowledge in practical scenarios.
-                </p>
-              </div>
             </div>
             </p>
             
