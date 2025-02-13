@@ -1,26 +1,119 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter, useParams } from "next/navigation";
 import dynamic from "next/dynamic";
 import "react-quill/dist/quill.snow.css";
 import Cookies from "js-cookie";
+import type ReactQuill from 'react-quill';
 
-const ReactQuill = dynamic(() => import("react-quill"), { 
-  ssr: false,
-  loading: () => <div className="h-64 w-full bg-gray-100 animate-pulse" />
-});
+// Define types
+interface PostData {
+  title: string;
+  content: string;
+  slug: string;
+}
+
+interface DataTransferItem {
+  type: string;
+  getAsFile(): File | null;
+}
+
+// Dynamic import with types
+const ReactQuillComponent = dynamic(
+  () => import("react-quill"),
+  { 
+    ssr: false,
+    loading: () => <div className="h-64 w-full bg-gray-100 animate-pulse rounded" />
+  }
+) as typeof ReactQuill;
+
+// Image compression utility function
+const compressImage = async (base64Str: string, maxWidth = 800): Promise<string> => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.src = base64Str;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return resolve(base64Str);
+
+      let width = img.width;
+      let height = img.height;
+      
+      if (width > maxWidth) {
+        height = Math.round((height * maxWidth) / width);
+        width = maxWidth;
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      ctx.drawImage(img, 0, 0, width, height);
+      const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+      resolve(compressedBase64);
+    };
+  });
+};
 
 export default function EditPost() {
-  const [post, setPost] = useState(null);
+  const [post, setPost] = useState<PostData | null>(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   
+  const quillRef = useRef<ReactQuill | null>(null);
   const router = useRouter();
-  const { semesterName, subjectName, slug } = useParams();
+  const params = useParams();
+  const semesterName = params.semesterName as string;
+  const subjectName = params.subjectName as string;
+  const slug = params.slug as string;
   const token = Cookies.get("token");
+
+  const handlePaste = useCallback(async (e: ClipboardEvent) => {
+    const clipboard = e.clipboardData;
+    if (!clipboard || !quillRef.current) return;
+
+    const items = Array.from(clipboard.items) as DataTransferItem[];
+    const imageItem = items.find(item => item.type.indexOf('image') !== -1);
+
+    if (imageItem) {
+      e.preventDefault();
+      const file = imageItem.getAsFile();
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        try {
+          if (typeof event.target?.result !== 'string') return;
+          const compressedBase64 = await compressImage(event.target.result);
+          
+          const quill = quillRef.current?.getEditor();
+          const range = quill?.getSelection(true);
+          if (range) {
+            quill?.insertEmbed(range.index, 'image', compressedBase64);
+          }
+        } catch (err) {
+          setError('Failed to process image. Please try again.');
+        }
+      };
+      
+      reader.readAsDataURL(file);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (quillRef.current) {
+      const editor = quillRef.current.getEditor();
+      const container = editor.root;
+      
+      container.addEventListener('paste', handlePaste);
+      
+      return () => {
+        container.removeEventListener('paste', handlePaste);
+      };
+    }
+  }, [handlePaste]);
 
   useEffect(() => {
     if (!token) {
@@ -41,32 +134,34 @@ export default function EditPost() {
             },
           }
         );
+
         if (!res.ok) {
           const error = await res.text();
           throw new Error(error || 'Failed to fetch post');
         }
+
         const postData = await res.json();
         setPost(postData);
         setTitle(postData.title);
         setContent(postData.content);
       } catch (error) {
         console.error('Fetch error:', error);
-        setError(error.message);
+        setError(error instanceof Error ? error.message : 'An error occurred');
       } finally {
         setLoading(false);
       }
     }
+
     fetchPost();
   }, [semesterName, subjectName, slug, token, router]);
 
-  const handleUpdate = async (e) => {
+  const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     setError(null);
 
-    // Check content size before sending
     const contentSize = new Blob([content]).size;
-    if (contentSize > 10 * 1024 * 1024) { // 10MB limit example
+    if (contentSize > 10 * 1024 * 1024) {
       setError("Content size too large. Please reduce image sizes or use fewer images.");
       setIsSubmitting(false);
       return;
@@ -96,7 +191,7 @@ export default function EditPost() {
       router.push(`/admin/engineering-notes/post/view`);
     } catch (error) {
       console.error("Update error:", error);
-      setError(error.message);
+      setError(error instanceof Error ? error.message : 'Failed to update post');
     } finally {
       setIsSubmitting(false);
     }
@@ -114,10 +209,38 @@ export default function EditPost() {
         ["link", "image"],
         ["clean"],
       ],
+      handlers: {
+        image: function() {
+          const input = document.createElement('input');
+          input.setAttribute('type', 'file');
+          input.setAttribute('accept', 'image/*');
+          input.click();
+
+          input.onchange = async () => {
+            const file = input.files?.[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onload = async (e) => {
+                try {
+                  if (typeof e.target?.result !== 'string') return;
+                  const compressedBase64 = await compressImage(e.target.result);
+                  const quill = quillRef.current?.getEditor();
+                  const range = quill?.getSelection(true);
+                  if (range) {
+                    quill?.insertEmbed(range.index, 'image', compressedBase64);
+                  }
+                } catch (err) {
+                  setError('Failed to process image. Please try again.');
+                }
+              };
+              reader.readAsDataURL(file);
+            }
+          };
+        }
+      }
     },
     clipboard: {
-      // Match any HTML content
-      matchVisual: true,
+      matchVisual: false,
     }
   };
 
@@ -183,8 +306,8 @@ export default function EditPost() {
               Post Content
             </label>
             <div className="h-96 border rounded">
-              <ReactQuill
-                id="content"
+              <ReactQuillComponent
+                ref={quillRef}
                 theme="snow"
                 value={content}
                 onChange={setContent}
@@ -194,6 +317,9 @@ export default function EditPost() {
                 readOnly={isSubmitting}
               />
             </div>
+            <p className="mt-2 text-sm text-gray-600">
+              Tip: You can paste images directly or use the image button to upload them
+            </p>
           </div>
 
           <button
