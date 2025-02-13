@@ -244,11 +244,11 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
     }
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-2 sm:p-4 z-[999]">
-            <div className="bg-white rounded-lg p-4 sm:p-6 w-full h-[90vh] max-w-2xl mx-2 overflow-y-auto">
+            <div className="bg-white rounded-xl p-4 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                 {/* Modal content */}
                 <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg sm:text-xl font-bold text-purple-900 truncate">
-                        {topic} - {selectedSubtopic}
+                    <h3 className="text-lg sm:text-xl font-bold mx-auto text-purple-900 truncate">
+                        {topic}
                     </h3>
                     <button
                         onClick={handleClose}
@@ -256,12 +256,6 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                     >
                         <XMarkIcon className="h-5 w-5 sm:h-6 sm:w-6" />
                     </button>
-                </div>
-
-                <div className="flex justify-between items-center mb-3">
-                    <div className="text-xs sm:text-sm text-gray-600">
-                        Time: <span className="font-semibold">{formatTime(timeLeft)}</span>
-                    </div>
                 </div>
                 {showWarning && (
                     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
@@ -375,12 +369,23 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                     </div>
                 ) : questions.length > 0 ? (
                     <>
-                        <div className="mb-4">
+                        <div className="py-4 bg-purple-100 sm:p-6 p-2">
+                            <div className="flex justify-between items-center mb-4">
+                                <h3 className="text-lg sm:text-xl font-bold text-purple-900 truncate">
+                                    {selectedSubtopic}
+                                </h3>
+                                
+                            </div>
+                            <div className="flex justify-between items-center mb-3 bg-purple-100">
+                                <div className="text-xs sm:text-sm text-gray-600">
+                                    Time: <span className="font-semibold">{formatTime(timeLeft)}</span>
+                                </div>
+                            </div>
                             <div className="flex justify-between text-xs sm:text-sm text-gray-600 mb-1">
                                 <span>Q{currentQuestion + 1}/{questions.length}</span>
                                 <span>{selectedSubtopic}</span>
                             </div>
-                            <div className="h-1.5 bg-gray-200 rounded-full">
+                            <div className="h-1.5 bg-whote border border-purple-500 rounded-full">
                                 <motion.div
                                     className="h-1.5 bg-purple-600 rounded-full"
                                     initial={{ width: 0 }}
