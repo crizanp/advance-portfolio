@@ -9,7 +9,7 @@ import { FaTwitter, FaLink } from 'react-icons/fa';
 
 // Constants for chunked loading
 const CHUNK_SIZE = 10000;
-const LOADING_DELAY = 100;
+const LOADING_INTERVAL = 20000; // 20 seconds
 
 interface NepaliWordsData {
   nepaliWords: string[];
@@ -22,11 +22,12 @@ const TranslationPage = () => {
   const [copyMessage, setCopyMessage] = useState<string | null>(null);
   const [showShare, setShowShare] = useState(false);
   const [isInitialLoading, setIsInitialLoading] = useState(true);
-  const [isLoadingMore, setIsLoadingMore] = useState(false);
   const [loadedWordsCount, setLoadedWordsCount] = useState(0);
+  const [totalWords, setTotalWords] = useState(0);
   const [nepaliDictionaryTrie] = useState(() => new Trie());
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const loadingTimeoutRef = useRef<NodeJS.Timeout>();
+  const wordsDataRef = useRef<string[]>([]);
+  const loadingIntervalRef = useRef<NodeJS.Timeout>();
 
   // Initialize with common conversions
   useEffect(() => {
@@ -40,53 +41,57 @@ const TranslationPage = () => {
     initializeBasicDictionary();
   }, [nepaliDictionaryTrie]);
 
-  // Progressive loading of dictionary
+  // Load dictionary data
   useEffect(() => {
-    const loadDictionaryChunk = async () => {
+    const loadDictionaryData = async () => {
       try {
         const response = await fetch('./NepaliWords.json');
         const data: NepaliWordsData = await response.json();
-        const words = data.nepaliWords;
-        
-        const loadChunk = (startIndex: number) => {
-          if (startIndex >= words.length) {
-            setIsLoadingMore(false);
-            return;
-          }
-
-          const endIndex = Math.min(startIndex + CHUNK_SIZE, words.length);
-          const chunk = words.slice(startIndex, endIndex);
-
-          chunk.forEach(word => {
-            const romanized = Sanscript.t(word, "devanagari", "itrans").toLowerCase();
-            nepaliDictionaryTrie.insert(romanized, word);
-          });
-
-          setLoadedWordsCount(endIndex);
-
-          loadingTimeoutRef.current = setTimeout(() => {
-            loadChunk(endIndex);
-          }, LOADING_DELAY);
-        };
-
-        setIsLoadingMore(true);
-        loadChunk(loadedWordsCount);
+        wordsDataRef.current = data.nepaliWords;
+        setTotalWords(data.nepaliWords.length);
       } catch (error) {
         console.error("Failed to load dictionary:", error);
-        setIsLoadingMore(false);
       }
     };
 
     if (!isInitialLoading && loadedWordsCount === 0) {
-      loadDictionaryChunk();
+      loadDictionaryData();
+    }
+  }, [isInitialLoading, loadedWordsCount]);
+
+  // Progressive loading with interval
+  useEffect(() => {
+    const loadNextChunk = () => {
+      if (loadedWordsCount >= totalWords || !wordsDataRef.current.length) {
+        if (loadingIntervalRef.current) {
+          clearInterval(loadingIntervalRef.current);
+        }
+        return;
+      }
+
+      const startIndex = loadedWordsCount;
+      const endIndex = Math.min(startIndex + CHUNK_SIZE, totalWords);
+      const chunk = wordsDataRef.current.slice(startIndex, endIndex);
+
+      chunk.forEach(word => {
+        const romanized = Sanscript.t(word, "devanagari", "itrans").toLowerCase();
+        nepaliDictionaryTrie.insert(romanized, word);
+      });
+
+      setLoadedWordsCount(endIndex);
+    };
+
+    if (totalWords > 0 && loadedWordsCount < totalWords) {
+      loadNextChunk(); // Load first chunk immediately
+      loadingIntervalRef.current = setInterval(loadNextChunk, LOADING_INTERVAL);
     }
 
     return () => {
-      if (loadingTimeoutRef.current) {
-        clearTimeout(loadingTimeoutRef.current);
+      if (loadingIntervalRef.current) {
+        clearInterval(loadingIntervalRef.current);
       }
     };
-  }, [isInitialLoading, loadedWordsCount, nepaliDictionaryTrie]);
+  }, [totalWords, loadedWordsCount, nepaliDictionaryTrie]);
 
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const input = e.target.value;
@@ -196,9 +201,10 @@ const TranslationPage = () => {
             <p className="text-gray-600 text-lg">
               Convert Romanized Nepali (like "kasto") to Unicode Devanagari (कस्तो) instantly
             </p>
-            {isLoadingMore && (
+            {loadedWordsCount > 0 && loadedWordsCount < totalWords && (
               <p className="text-sm text-gray-500 mt-2">
-                Loading dictionary: {loadedWordsCount} words loaded...
+                Loading dictionary: {loadedWordsCount} of {totalWords} words loaded
+                ({Math.round((loadedWordsCount / totalWords) * 100)}%)
               </p>
             )}
           </div>
