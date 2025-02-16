@@ -1,89 +1,142 @@
 "use client";
-import React, { useRef, useState, useMemo, useCallback, useEffect } from "react";
+import React, { useRef, useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
 import Sanscript from "@sanskrit-coders/sanscript";
 import Trie from "./utils/Trie";
 import { wordMappings } from "./utils/wordMappings";
 import { ClipboardDocumentIcon, ShareIcon, ArrowPathIcon, BookOpenIcon } from "@heroicons/react/24/outline";
-import { FaTwitter, FaFacebook, FaLinkedin, FaLink } from 'react-icons/fa';
+import { FaTwitter, FaLink } from 'react-icons/fa';
+
+// Constants for chunked loading
+const CHUNK_SIZE = 10000;
+const LOADING_DELAY = 100;
 
 interface NepaliWordsData {
   nepaliWords: string[];
 }
+
 const TranslationPage = () => {
   const [romanInput, setRomanInput] = useState("");
   const [unicodeOutput, setUnicodeOutput] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [copyMessage, setCopyMessage] = useState<string | null>(null);
   const [showShare, setShowShare] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [nepaliDictionaryTrie, setNepaliDictionaryTrie] = useState<Trie | null>(null);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const [loadedWordsCount, setLoadedWordsCount] = useState(0);
+  const [nepaliDictionaryTrie] = useState(() => new Trie());
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const loadingTimeoutRef = useRef<NodeJS.Timeout>();
+
+  // Initialize with common conversions
   useEffect(() => {
-    const loadData = async () => {
+    const initializeBasicDictionary = () => {
       const commonConversions = new Map(Object.entries(wordMappings));
-      const trie = new Trie();
-      commonConversions.forEach((nepali, roman) => trie.insert(roman, nepali));
-      setNepaliDictionaryTrie(trie);
-      setIsLoading(false); 
+      commonConversions.forEach((nepali, roman) => 
+        nepaliDictionaryTrie.insert(roman.toLowerCase(), nepali)
+      );
+      setIsInitialLoading(false);
+    };
+    initializeBasicDictionary();
+  }, [nepaliDictionaryTrie]);
+
+  // Progressive loading of dictionary
+  useEffect(() => {
+    const loadDictionaryChunk = async () => {
       try {
         const response = await fetch('./NepaliWords.json');
-        const words: NepaliWordsData = await response.json();
-        words.nepaliWords.forEach((word) => {
-          const romanizedWord = Sanscript.t(word, "devanagari", "itrans").toLowerCase();
-          if (!commonConversions.has(romanizedWord)) {
-            trie.insert(romanizedWord, word);
+        const data: NepaliWordsData = await response.json();
+        const words = data.nepaliWords;
+        
+        const loadChunk = (startIndex: number) => {
+          if (startIndex >= words.length) {
+            setIsLoadingMore(false);
+            return;
           }
-        });
-        setNepaliDictionaryTrie(trie);
+
+          const endIndex = Math.min(startIndex + CHUNK_SIZE, words.length);
+          const chunk = words.slice(startIndex, endIndex);
+
+          chunk.forEach(word => {
+            const romanized = Sanscript.t(word, "devanagari", "itrans").toLowerCase();
+            nepaliDictionaryTrie.insert(romanized, word);
+          });
+
+          setLoadedWordsCount(endIndex);
+
+          loadingTimeoutRef.current = setTimeout(() => {
+            loadChunk(endIndex);
+          }, LOADING_DELAY);
+        };
+
+        setIsLoadingMore(true);
+        loadChunk(loadedWordsCount);
       } catch (error) {
-        console.error("Failed to load additional data:", error);
+        console.error("Failed to load dictionary:", error);
+        setIsLoadingMore(false);
       }
     };
-    loadData();
-  }, []);
+
+    if (!isInitialLoading && loadedWordsCount === 0) {
+      loadDictionaryChunk();
+    }
+
+    return () => {
+      if (loadingTimeoutRef.current) {
+        clearTimeout(loadingTimeoutRef.current);
+      }
+    };
+  }, [isInitialLoading, loadedWordsCount, nepaliDictionaryTrie]);
+
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const input = e.target.value;
     setRomanInput(input);
+    
     const segments = input.split(/(\([^)]*\))/g);
     const converted = segments.map(segment => {
       if (segment.startsWith('(') && segment.endsWith(')')) {
-        return segment.slice(1, -1); 
+        return segment.slice(1, -1);
       }
       return Sanscript.t(segment, "itrans", "devanagari");
     }).join('');
+    
     setUnicodeOutput(converted);
-    const words = input.split(/\s+/); 
+
+    const words = input.split(/\s+/);
     const lastWord = words[words.length - 1]?.toLowerCase().replace(/[()]/g, '') || "";
-    const trieSuggestions = lastWord && nepaliDictionaryTrie 
-      ? nepaliDictionaryTrie.search(lastWord).slice(0, 3) 
-      : [];
+    const trieSuggestions = lastWord ? nepaliDictionaryTrie.search(lastWord).slice(0, 3) : [];
     setSuggestions(trieSuggestions);
   }, [nepaliDictionaryTrie]);
+
   const handleSuggestionClick = useCallback((suggestion: string) => {
     const words = romanInput.trim().split(/\s+/);
     words[words.length - 1] = suggestion;
     const newInput = words.join(" ") + " ";
     setRomanInput(newInput);
+    
     const segments = newInput.split(/(\([^)]*\))/g);
     const converted = segments.map(segment => {
       if (segment.startsWith('(') && segment.endsWith(')')) {
-        return segment.slice(1, -1); 
+        return segment.slice(1, -1);
       }
       return Sanscript.t(segment, "itrans", "devanagari");
     }).join('');
+    
     setUnicodeOutput(converted);
     setSuggestions([]);
     inputRef.current?.focus();
   }, [romanInput]);
+
   const copyToClipboard = useCallback(() => {
     navigator.clipboard.writeText(unicodeOutput);
     setCopyMessage("Copied to clipboard!");
     setTimeout(() => setCopyMessage(null), 3000);
   }, [unicodeOutput]);
+
   const shareContent = useCallback(() => {
     setShowShare(true);
   }, []);
+
   const ShareButton = () => (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -98,7 +151,7 @@ const TranslationPage = () => {
             href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(window.location.href)}&text=Check out this amazing Nepali Unicode Converter!`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 p-3 bg-blue-100 text-gray-600 rounded-lg hover:bg-blue-100"
+            className="flex items-center gap-2 p-3 bg-blue-100 text-gray-600 rounded-lg hover:bg-blue-200"
           >
             <FaTwitter className="w-5 h-5 text-blue-500" />
             <span>Share on Twitter</span>
@@ -114,7 +167,8 @@ const TranslationPage = () => {
       </div>
     </motion.div>
   );
-  if (isLoading) {
+
+  if (isInitialLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-purple-50 to-blue-50 flex items-center justify-center">
         <motion.div
@@ -125,7 +179,7 @@ const TranslationPage = () => {
       </div>
     );
   }
-  
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-purple-50 to-blue-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
@@ -134,7 +188,6 @@ const TranslationPage = () => {
           animate={{ opacity: 1, y: 0 }}
           className="bg-white rounded-2xl shadow-xl p-8 mb-8 border border-purple-100"
         >
-          {}
           <div className="text-center mb-10">
             <h1 className="text-4xl font-bold text-purple-600 mb-4">
               <BookOpenIcon className="h-10 w-10 inline-block mr-3" />
@@ -143,10 +196,16 @@ const TranslationPage = () => {
             <p className="text-gray-600 text-lg">
               Convert Romanized Nepali (like "kasto") to Unicode Devanagari (कस्तो) instantly
             </p>
+            {isLoadingMore && (
+              <p className="text-sm text-gray-500 mt-2">
+                Loading dictionary: {loadedWordsCount} words loaded...
+              </p>
+            )}
           </div>
+
           <div className="mb-10">
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">Features</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center p-4 bg-purple-50 rounded-lg text-gray-600">
                 <ArrowPathIcon className="h-6 w-6 text-purple-600 mr-3" />
                 <span>Real-time conversion with smart suggestions</span>
@@ -157,11 +216,13 @@ const TranslationPage = () => {
               </div>
             </div>
           </div>
+
           {copyMessage && (
             <div className="bg-green-100 text-green-800 px-4 py-2 rounded-lg mb-4 text-center">
               {copyMessage}
             </div>
           )}
+
           <div className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -193,6 +254,7 @@ const TranslationPage = () => {
                 )}
               </div>
             </div>
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Nepali Unicode Output
@@ -223,6 +285,7 @@ const TranslationPage = () => {
             </div>
           </div>
         </motion.div>
+
         <div className="bg-white rounded-2xl shadow-xl p-8 border border-purple-100">
           <h2 className="text-2xl font-semibold text-gray-800 mb-4">About Nepali Unicode</h2>
           <div className="space-y-4 text-gray-600">
@@ -236,7 +299,7 @@ const TranslationPage = () => {
               perfect for keeping English words or special notations in your text.
             </p>
             <p className="bg-yellow-50 p-4 rounded-lg border border-yellow-100">
-              This converter uses the ITRSANS standard and contains over 10,000+ Nepali words in its
+              This converter uses the ITRANS standard and contains over 10,000+ Nepali words in its
               dictionary for accurate conversions.
             </p>
           </div>
@@ -246,4 +309,5 @@ const TranslationPage = () => {
     </div>
   );
 };
+
 export default TranslationPage;

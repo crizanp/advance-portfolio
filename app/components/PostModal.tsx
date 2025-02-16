@@ -62,7 +62,7 @@ const CopyableQuote = ({ quoteContent, children, handleGenerateCard }) => {
   };
 
   return (
-    <div className="relative bg-gray-50 rounded-lg my-5 shadow-md border border-gray-200">
+    <div className="relative bg-gray-50 z-[700] rounded-lg my-5 shadow-md border border-gray-200">
       <FontAwesomeIcon
         icon={faQuoteLeft}
         className="text-blue-500 text-2xl absolute -top-3 left-3 bg-white p-1 rounded-full"
@@ -211,7 +211,7 @@ export default function PostModal({ slug, isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 overflow-y-hidden">
+    <div className="fixed inset-0 z-[600] flex items-center justify-center bg-gray-900/50 overflow-y-hidden">
       <div className="w-full  bg-white  shadow-xl overflow-y-auto max-h-[100vh] my-8 custom-scroll">
         <motion.div
           initial={{ opacity: 0 }}
@@ -388,7 +388,7 @@ export default function PostModal({ slug, isOpen, onClose }) {
                   />
                 </div>
                 <button
-                  className="absolute top-4 right-4 text-white hover:text-gray-200"
+                  className="absolute top-4 right-4 text-black hover:text-gray-200"
                   onClick={() => setIsImageModalOpen(false)}
                 >
                   <FontAwesomeIcon icon={faTimes} size="2x" />

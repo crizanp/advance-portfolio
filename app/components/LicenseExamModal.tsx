@@ -214,7 +214,7 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
         return (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-[999]">
                 <div className="bg-white rounded-lg p-6 mx-4 w-full max-w-md relative max-h-[90vh] overflow-y-auto">
-                <button
+                    <button
                         onClick={onClose}
                         className="absolute top-6 right-5 text-gray-500 hover:text-gray-700"
                     >
@@ -374,7 +374,7 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                                 <h3 className="text-lg sm:text-xl font-bold text-purple-900 truncate">
                                     {selectedSubtopic}
                                 </h3>
-                                
+
                             </div>
                             <div className="flex justify-between items-center mb-3 bg-purple-100">
                                 <div className="text-xs sm:text-sm text-gray-600">

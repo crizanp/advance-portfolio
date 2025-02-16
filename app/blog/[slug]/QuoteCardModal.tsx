@@ -115,7 +115,7 @@ export default function QuoteCardModal({ quote = "", author = "Cizan", isOpen, o
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black bg-opacity-75 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[800] bg-black bg-opacity-75 flex items-center justify-center p-4">
       <motion.div
         className="relative bg-white rounded-lg shadow-xl w-full max-w-3xl md:max-w-5xl h-full max-h-[90vh] overflow-y-auto p-6"
         initial={{ scale: 0.9, opacity: 0 }}

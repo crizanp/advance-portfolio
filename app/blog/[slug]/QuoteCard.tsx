@@ -32,7 +32,7 @@ export default function QuoteCardGenerator() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
+    <div className="min-h-screen z-[800] bg-gray-100 p-6">
       <h1 className="text-3xl font-bold text-center mb-6">Quote Card Generator</h1>
       <div className="flex flex-col md:flex-row gap-6">
         {/* Quote Card Preview */}

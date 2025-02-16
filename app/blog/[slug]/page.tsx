@@ -372,7 +372,7 @@ export default function BlogDetail({ params }) {
                 />
               </div>
               <button
-                className="absolute top-4 right-4 text-white hover:text-gray-200"
+                className="absolute top-4 right-4 text-black hover:text-gray-200"
                 onClick={() => setSelectedImage("")}
               >
                 <FontAwesomeIcon icon={faTimes} size="2x" />

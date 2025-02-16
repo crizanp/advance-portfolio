@@ -40,7 +40,7 @@ const Modal = ({ show, onClose, children }: ModalProps) => {
   }
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+      className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
