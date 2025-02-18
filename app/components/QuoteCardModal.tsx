@@ -10,7 +10,8 @@ import {
   AlignCenter, AlignRight, Minus,
   Plus, RotateCcw, Maximize2,
   Upload,
-  Search
+  Search,
+  Settings
 } from 'lucide-react';
 import ImageSearch from './ImageSearch';
 
@@ -54,9 +55,18 @@ interface QuoteCardModalProps {
 }
 
 export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = '', author: initialAuthor = '' }: QuoteCardModalProps) {
+  // Initialize state with the passed props
   const [quote, setQuote] = useState(initialQuote);
   const [author, setAuthor] = useState(initialAuthor);
   const [imageUploadMethod, setImageUploadMethod] = useState<'upload' | 'search'>('upload');
+
+  // Reset quote and author when they change from props
+  useEffect(() => {
+    if (isOpen) {
+      setQuote(initialQuote);
+      setAuthor(initialAuthor);
+    }
+  }, [initialQuote, initialAuthor, isOpen]);
 
   const [design, setDesign] = useState({
     gradient: GRADIENTS[0].value,
@@ -83,6 +93,18 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
   const [bgImage, setBgImage] = useState<string | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const quoteRef = useRef<HTMLDivElement>(null);
+  const authorRef = useRef<HTMLDivElement>(null);
+
+  // Update the refs when quote or author changes
+  useEffect(() => {
+    if (quoteRef.current) {
+      quoteRef.current.innerText = quote;
+    }
+    if (authorRef.current) {
+      authorRef.current.innerText = `— ${author}`;
+    }
+  }, [quote, author]);
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -106,9 +128,14 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
       reader.readAsDataURL(file);
     }
   };
+  
   const handleImageSelect = (imageUrl: string) => {
     setBgImage(imageUrl);
+    
+    // Switch to the image tab to make sure opacity controls are visible
+    setActiveTab('image');
   };
+  
   const handleDownload = async () => {
     if (cardRef.current) {
       try {
@@ -182,7 +209,7 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
 
         <div className="flex-1 overflow-hidden flex flex-col md:flex-row">
           {/* Preview Panel */}
-          <div className="flex-1 bg-gray-100 p-6 flex items-center justify-center">
+          <div className="flex-1 bg-gray-100 p-6 flex items-center justify-center overflow-auto">
             <motion.div
               ref={cardRef}
               className="w-full max-w-lg aspect-video rounded-lg overflow-hidden"
@@ -213,6 +240,7 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
                   )}
                   <div style={{ textAlign: design.textAlign }}>
                     <div
+                      ref={quoteRef}
                       contentEditable
                       suppressContentEditableWarning
                       onBlur={(e) => setQuote(e.currentTarget.innerText)}
@@ -231,9 +259,18 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
                       {quote}
                     </div>
                     <div
+                      ref={authorRef}
                       contentEditable
                       suppressContentEditableWarning
-                      onBlur={(e) => setAuthor(e.currentTarget.innerText)}
+                      onBlur={(e) => {
+                        // Remove the "—" prefix if user edited it
+                        const authorText = e.currentTarget.innerText;
+                        if (authorText.startsWith('—')) {
+                          setAuthor(authorText.substring(1).trim());
+                        } else {
+                          setAuthor(authorText);
+                        }
+                      }}
                       className="text-lg outline-none"
                       style={{
                         color: design.textColor,
@@ -249,7 +286,7 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
           </div>
 
           {/* Controls Panel */}
-          <div className="w-full md:w-80 bg-white border-l">
+          <div className="w-full md:w-80 bg-white border-l overflow-y-auto">
             <div className="p-4">
               <div className="flex gap-2 mb-6">
                 {[
@@ -471,6 +508,53 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
                         className="w-full h-10 rounded cursor-pointer"
                       />
                     </div>
+                    <div className="flex gap-2 mb-4">
+                      <button
+                        onClick={() => setDesign(prev => ({ ...prev, bold: !prev.bold }))}
+                        className={`flex-1 p-2 border rounded-lg ${design.bold ? 'bg-blue-50 border-blue-200' : 'hover:bg-gray-50'}`}
+                      >
+                        <Bold className="w-4 h-4 mx-auto" />
+                      </button>
+                      <button
+                        onClick={() => setDesign(prev => ({ ...prev, italic: !prev.italic }))}
+                        className={`flex-1 p-2 border rounded-lg ${design.italic ? 'bg-blue-50 border-blue-200' : 'hover:bg-gray-50'}`}
+                      >
+                        <Italic className="w-4 h-4 mx-auto" />
+                      </button>
+                      <button
+                        onClick={() => setDesign(prev => ({ ...prev, underline: !prev.underline }))}
+                        className={`flex-1 p-2 border rounded-lg ${design.underline ? 'bg-blue-50 border-blue-200' : 'hover:bg-gray-50'}`}
+                      >
+                        <Underline className="w-4 h-4 mx-auto" />
+                      </button>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Line Height
+                      </label>
+                      <input
+                        type="range"
+                        min="1"
+                        max="2"
+                        step="0.1"
+                        value={design.lineHeight}
+                        onChange={e => setDesign(prev => ({ ...prev, lineHeight: Number(e.target.value) }))}
+                        className="w-full"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Letter Spacing
+                      </label>
+                      <input
+                        type="range"
+                        min="-2"
+                        max="10"
+                        value={design.letterSpacing}
+                        onChange={e => setDesign(prev => ({ ...prev, letterSpacing: Number(e.target.value) }))}
+                        className="w-full"
+                      />
+                    </div>
                     <div className="flex items-center gap-2">
                       <input
                         type="checkbox"
@@ -486,7 +570,7 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
                   </>
                 )}
 
-{activeTab === 'image' && (
+                {activeTab === 'image' && (
                   <>
                     <div className="flex gap-2 mb-4 border-b pb-4">
                       <button
@@ -494,8 +578,8 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
                         className={`flex-1 p-2 rounded-lg flex flex-col items-center gap-1
                           ${imageUploadMethod === 'upload' ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
                       >
-                        <Upload className="w-5 h-5" />
-                        <span className="text-xs">Upload</span>
+                        <Settings className="w-5 h-5" />
+                        <span className="text-xs">Setting</span>
                       </button>
                       <button
                         onClick={() => setImageUploadMethod('search')}
@@ -508,7 +592,7 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
                     </div>
                     
                     {imageUploadMethod === 'upload' ? (
-                      <div>
+                      <><div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Upload Background Image
                         </label>
@@ -516,25 +600,11 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
                           type="file"
                           onChange={handleImageUpload}
                           accept="image/*"
-                          className="w-full"
+                          className="w-full p-2 mb-4"
                         />
-                      </div>
-                    ) : (
-                      <ImageSearch onSelectImage={handleImageSelect} />
-                    )}
-                    
-                    {bgImage && (
-                      <button
-                        onClick={() => setBgImage(null)}
-                        className="mt-2 text-sm text-red-600 hover:text-red-700"
-                      >
-                        Remove Image
-                      </button>
-                    )}
-                    
-                    <div>
+                      </div> <div className="mt-4">
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Overlay Opacity
+                        Text Overlay Opacity
                       </label>
                       <input
                         type="range"
@@ -544,7 +614,27 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
                         onChange={e => setDesign(prev => ({ ...prev, opacity: Number(e.target.value) / 100 }))}
                         className="w-full"
                       />
-                    </div>
+                    </div> <div className="mt-4 mb-4">
+                        <button
+                          onClick={() => setBgImage(null)}
+                          className="px-3 py-1 text-sm bg-red-100 text-red-600 rounded-md hover:bg-red-200 hover:text-red-700"
+                        >
+                          Remove Image
+                        </button>
+                      </div></>
+                      
+                    ) : (
+                      <div className="mb-4">
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Search for Background Image
+                        </label>
+                        <ImageSearch onSelectImage={handleImageSelect} />
+                      </div>
+                    )}
+                    
+                   
+                    
+                   
                   </>
                 )}
               </div>
