@@ -7,60 +7,63 @@ interface ImageSearchProps {
 }
 
 // Define the image item interface
-interface UnsplashImage {
+interface PicsumImage {
+  thumb_url: string;
   id: string;
-  urls: {
-    regular: string;
-    small: string;
-    thumb: string;
-  };
-  alt_description: string;
-  user: {
-    name: string;
-  };
+  download_url: string;
+  author: string;
+  width: number;
+  height: number;
 }
 
-// Image categories
+// Image categories - we'll use these as seeds for Picsum
 const CATEGORIES = [
   { name: 'Nature', query: 'nature' },
   { name: 'Abstract', query: 'abstract' },
-  { name: 'Gradient', query: 'gradient' },
   { name: 'Minimal', query: 'minimal' },
-  { name: 'Dark', query: 'dark background' },
-  { name: 'Light', query: 'light background' },
+  { name: 'Dark', query: 'dark' },
+  { name: 'Light', query: 'light' },
   { name: 'Texture', query: 'texture' },
   { name: 'Pattern', query: 'pattern' },
+  { name: 'Random', query: 'random' },
 ];
 
 const ImageSearch: React.FC<ImageSearchProps> = ({ onSelectImage }) => {
   const [query, setQuery] = useState('');
-  const [images, setImages] = useState<UnsplashImage[]>([]);
+  const [images, setImages] = useState<PicsumImage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
-  // Note: This is a mock function. In a real app, you would use your actual API key
+  // Function to get images from Lorem Picsum
   const searchImages = async (searchQuery: string) => {
     setIsLoading(true);
     setError(null);
     
     try {
-      // Using the Unsplash API (you'd need to replace this with your actual API endpoint)
-      // In a real implementation, use environment variables for the API key
-      const response = await fetch(
-        `https://api.unsplash.com/search/photos?query=${encodeURIComponent(searchQuery)}&per_page=20`,
-        {
-          headers: {
-            Authorization: 'Client-ID YOUR_UNSPLASH_API_KEY', // Replace with your actual API key
-          },
-        }
-      );
+      // Using Lorem Picsum API - no API key needed
+      // We're getting a list of images and then creating appropriate URLs
+      const response = await fetch('https://picsum.photos/v2/list?page=1&limit=20');
       
       if (!response.ok) {
         throw new Error('Failed to fetch images');
       }
       
-      const data = await response.json();
-      setImages(data.results);
+      const data: PicsumImage[] = await response.json();
+      
+      // For more variety based on the search query, we'll use the query as a seed
+      // This doesn't actually filter by content, just provides pseudo-randomization
+      const seed = searchQuery.length > 0 ? 
+        searchQuery.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) : 0;
+      
+      // Add seed to each image URL
+      const processedImages = data.map((img, index) => ({
+        ...img,
+        download_url: `https://picsum.photos/seed/${seed + index}/800/600`,
+        // Create thumbnails
+        thumb_url: `https://picsum.photos/seed/${seed + index}/200/150`
+      }));
+      
+      setImages(processedImages);
     } catch (err) {
       setError('Failed to load images. Please try again later.');
       console.error('Error fetching images:', err);
@@ -73,18 +76,14 @@ const ImageSearch: React.FC<ImageSearchProps> = ({ onSelectImage }) => {
   };
   
   // Generate placeholder images for demo purposes
-  const generatePlaceholderImages = (searchQuery: string): UnsplashImage[] => {
+  const generatePlaceholderImages = (searchQuery: string): any[] => {
     return Array(12).fill(0).map((_, index) => ({
       id: `placeholder-${index}`,
-      urls: {
-        regular: `/api/placeholder/800/600?text=${encodeURIComponent(searchQuery)}`,
-        small: `/api/placeholder/400/300?text=${encodeURIComponent(searchQuery)}`,
-        thumb: `/api/placeholder/200/150?text=${encodeURIComponent(searchQuery)}`
-      },
-      alt_description: `Placeholder image for ${searchQuery}`,
-      user: {
-        name: 'Placeholder'
-      }
+      download_url: `/api/placeholder/800/600?text=${encodeURIComponent(searchQuery)}`,
+      thumb_url: `/api/placeholder/200/150?text=${encodeURIComponent(searchQuery)}`,
+      author: 'Placeholder',
+      width: 800,
+      height: 600
     }));
   };
   
@@ -150,12 +149,12 @@ const ImageSearch: React.FC<ImageSearchProps> = ({ onSelectImage }) => {
           {images.map((image) => (
             <button
               key={image.id}
-              onClick={() => onSelectImage(image.urls.regular)}
+              onClick={() => onSelectImage(image.download_url)}
               className="relative group overflow-hidden rounded-lg"
             >
               <img
-                src={image.urls.thumb}
-                alt={image.alt_description || 'Image'}
+                src={image.thumb_url || image.download_url}
+                alt={`Image by ${image.author}`}
                 className="w-full h-24 object-cover transition-transform group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-30 transition-opacity"></div>
