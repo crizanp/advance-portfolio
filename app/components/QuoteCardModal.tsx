@@ -1,308 +1,576 @@
-"use client";
-import { useState, useRef, useEffect } from "react";
-import { motion } from "framer-motion";
-import { toPng } from "html-to-image";
-import { saveAs } from "file-saver";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTimes } from "@fortawesome/free-solid-svg-icons";
+import React, { useState, useRef, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { toPng } from 'html-to-image';
+import { saveAs } from 'file-saver';
+import { 
+  X, Image, Type, Layout, 
+  Palette, Download,
+  RefreshCcw, Bold,
+  Italic, Underline, AlignLeft,
+  AlignCenter, AlignRight, Minus,
+  Plus, RotateCcw, Maximize2,
+  Upload,
+  Search
+} from 'lucide-react';
+import ImageSearch from './ImageSearch';
 
-const predefinedImages = [
-  "",
-  "https://images.unsplash.com/photo-1653654650017-6b6c457b3a00?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDIzfHx8ZW58MHx8fHx8",
-  "https://images.unsplash.com/photo-1649336320848-d350bb92d685?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDJ8fHxlbnwwfHx8fHw%3D",
-  "https://images.unsplash.com/photo-1649770637836-4cb2971a17db?q=80&w=1866&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1651973985408-1a66baa62ee9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1649770638727-6056d269d587?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1651973999246-66f6701e91ba?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1649336321305-3fe272852c94?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://plus.unsplash.com/premium_photo-1673697240011-76f7f9220300?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1619995745882-f4128ac82ad6?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://plus.unsplash.com/premium_photo-1673306778968-5aab577a7365?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+// Define the allowed text align values to fix TypeScript error
+type TextAlignType = 'left' | 'center' | 'right' | 'justify';
+
+const GRADIENTS = [
+  { name: 'Classic', value: 'none' },
+  { name: 'Sunset', value: 'linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)' },
+  { name: 'Ocean', value: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)' },
+  { name: 'Forest', value: 'linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%)' },
+  { name: 'Royal', value: 'linear-gradient(135deg, #3b41c5 0%, #a981bb 100%)' },
+  { name: 'Night', value: 'linear-gradient(135deg, #000428 0%, #004e92 100%)' },
+  { name: 'Autumn', value: 'linear-gradient(135deg, #f6d365 0%, #fda085 100%)' }
 ];
 
-const presetStyles = [
-  { name: "Classic", bgColor: "#ffffff", textColor: "#000000", font: "serif" },
-  { name: "Dark Mode", bgColor: "#333333", textColor: "#ffffff", font: "monospace" },
-  { name: "Vintage", bgColor: "#f5f5dc", textColor: "#5a5a5a", font: "cursive" },
+const LAYOUTS = [
+  { name: 'Centered', align: 'center', justify: 'center' },
+  { name: 'Top', align: 'center', justify: 'start' },
+  { name: 'Bottom', align: 'center', justify: 'end' },
+  { name: 'Left', align: 'start', justify: 'center' },
+  { name: 'Right', align: 'end', justify: 'center' },
 ];
 
-const availableFonts = [
-  "Arial",
-  "Georgia",
-  "Helvetica",
-  "Times New Roman",
-  "Verdana",
-  "Courier New",
-  "Lucida Sans",
-  "Tahoma",
-  "Trebuchet MS",
-  "Comic Sans MS",
+const FONTS = [
+  { name: 'Classic', value: 'Georgia, serif' },
+  { name: 'Modern', value: 'Arial, sans-serif' },
+  { name: 'Elegant', value: 'Palatino, serif' },
+  { name: 'Clean', value: 'Helvetica, sans-serif' },
+  { name: 'Playful', value: 'Comic Sans MS, cursive' },
+  { name: 'Monospace', value: 'Courier New, monospace' },
+  { name: 'Impact', value: 'Impact, sans-serif' }
 ];
 
-const presetColors = [
-  { name: "Blue & White", bgColor: "#0000ff", textColor: "#ffffff" },
-  { name: "Black & Yellow", bgColor: "#000000", textColor: "#ffff00" },
-  { name: "Red & White", bgColor: "#ff0000", textColor: "#ffffff" },
-  { name: "Green & Black", bgColor: "#00ff00", textColor: "#000000" },
-];
+// Define props interface
+interface QuoteCardModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  quote?: string;
+  author?: string;
+}
 
-export default function QuoteCardModal({ quote = "", author = "Cizan", isOpen, onClose }) {
-  const [bgColor, setBgColor] = useState("#ffffff");
-  const [textColor, setTextColor] = useState("#000000");
-  const [font, setFont] = useState("sans-serif");
-  const [fontSize, setFontSize] = useState(24);
-  const [customAuthor, setCustomAuthor] = useState(author);
-  const [customQuote, setCustomQuote] = useState(quote);
+export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = '', author: initialAuthor = '' }: QuoteCardModalProps) {
+  const [quote, setQuote] = useState(initialQuote);
+  const [author, setAuthor] = useState(initialAuthor);
+  const [imageUploadMethod, setImageUploadMethod] = useState<'upload' | 'search'>('upload');
+
+  const [design, setDesign] = useState({
+    gradient: GRADIENTS[0].value,
+    layout: LAYOUTS[0],
+    font: FONTS[0].value,
+    fontSize: 24,
+    padding: 40,
+    bgColor: '#ffffff',
+    textColor: '#000000',
+    showQuotationMarks: true,
+    borderRadius: 8,
+    shadow: true,
+    opacity: 0.9,
+    textAlign: 'center' as TextAlignType, // Fixed TypeScript error by explicitly typing
+    letterSpacing: 0,
+    lineHeight: 1.4,
+    bold: false,
+    italic: false,
+    underline: false,
+    rotation: 0
+  });
+  
+  const [activeTab, setActiveTab] = useState('style');
   const [bgImage, setBgImage] = useState<string | null>(null);
-  const [imageFilter, setImageFilter] = useState({ brightness: 100, blur: 0 });
-  const [showDownloadMessage, setShowDownloadMessage] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setCustomAuthor(author);
-    setCustomQuote(quote);
-  }, [author, quote]);
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setIsFullscreen(false);
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, []);
 
-  useEffect(() => {
-    const baseFontSize = 24;
-    const adjustedFontSize = Math.max(12, baseFontSize - customQuote.length / 10);
-    setFontSize(adjustedFontSize);
-  }, [customQuote]);
-
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        if (event.target?.result) {
+          setBgImage(event.target.result as string);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  const handleImageSelect = (imageUrl: string) => {
+    setBgImage(imageUrl);
+  };
   const handleDownload = async () => {
     if (cardRef.current) {
-      const dataUrl = await toPng(cardRef.current);
-      saveAs(dataUrl, "quote-card.png");
-
-      const userAgent = navigator.userAgent || navigator.vendor;
-      const isSocialMediaBrowser = /FBAN|FBAV|Instagram/.test(userAgent);
-
-      if (isSocialMediaBrowser) {
-        setShowDownloadMessage(true);
+      try {
+        const dataUrl = await toPng(cardRef.current, { quality: 1.0 });
+        saveAs(dataUrl, `quote-card-${Date.now()}.png`);
+      } catch (error) {
+        console.error('Error generating image:', error);
       }
     }
   };
 
-  const handleBgImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        setBgImage(event.target?.result as string);
-      };
-      reader.readAsDataURL(e.target.files[0]);
-    }
-  };
-
-  const handlePredefinedImageClick = (imageUrl: string) => {
-    setBgImage(imageUrl);
-  };
-
-  const applyPresetStyle = (preset) => {
-    setBgColor(preset.bgColor);
-    setTextColor(preset.textColor);
-    setFont(preset.font);
-  };
-
-  const applyPresetColor = (color) => {
-    setBgColor(color.bgColor);
-    setTextColor(color.textColor);
-  };
-
-  const handleCloseMessage = () => {
-    setShowDownloadMessage(false);
+  const handleReset = () => {
+    setQuote(initialQuote);
+    setAuthor(initialAuthor);
+    setDesign({
+      gradient: GRADIENTS[0].value,
+      layout: LAYOUTS[0],
+      font: FONTS[0].value,
+      fontSize: 24,
+      padding: 40,
+      bgColor: '#ffffff',
+      textColor: '#000000',
+      showQuotationMarks: true,
+      borderRadius: 8,
+      shadow: true,
+      opacity: 0.9,
+      textAlign: 'center' as TextAlignType,
+      letterSpacing: 0,
+      lineHeight: 1.4,
+      bold: false,
+      italic: false,
+      underline: false,
+      rotation: 0
+    });
+    setBgImage(null);
   };
 
   if (!isOpen) return null;
 
+  const modalClass = isFullscreen 
+    ? "fixed inset-0 z-[800] bg-black"
+    : "fixed inset-0 z-[800] bg-black bg-opacity-75 flex items-center justify-center p-4";
+
   return (
-    <div className="fixed inset-0 z-[700] bg-black bg-opacity-75 flex items-center justify-center p-4">
+    <div className={modalClass}>
       <motion.div
-        className="relative bg-white rounded-lg shadow-xl w-full max-w-3xl md:max-w-5xl h-full max-h-[90vh] overflow-y-auto p-6 custom-scroll"
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
+        className={`bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col ${
+          isFullscreen ? 'w-full h-full' : 'w-full max-w-5xl h-[90vh]'
+        }`}
       >
-        <button
-          className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
-          onClick={onClose}
-        >
-          <FontAwesomeIcon icon={faTimes} size="2x" />
-        </button>
-        <h2 className="text-2xl font-bold mb-4 text-black text-center">Customize Your Quote Card</h2>
-
-        <div className="text-black">
-          <div className="flex gap-2 overflow-x-auto mb-4">
-            {presetStyles.map((preset, index) => (
-              <button
-                key={index}
-                className="bg-gray-200 px-3 py-1 rounded-lg shadow-sm text-sm"
-                onClick={() => applyPresetStyle(preset)}
-              >
-                {preset.name}
-              </button>
-            ))}
+        <div className="p-4 border-b flex items-center justify-between">
+          <h2 className="text-xl font-bold text-gray-800">Create Quote Card</h2>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={() => setIsFullscreen(!isFullscreen)}
+              className="p-1 hover:bg-gray-100 rounded-full"
+            >
+              <Maximize2 className="w-6 h-6" />
+            </button>
+            <button
+              onClick={onClose}
+              className="p-1 hover:bg-gray-100 rounded-full"
+            >
+              <X className="w-6 h-6" />
+            </button>
           </div>
+        </div>
 
-          <div className="flex gap-2 overflow-x-auto mb-4">
-            {presetColors.map((color, index) => (
-              <button
-                key={index}
-                className="px-3 py-1 rounded-lg shadow-sm text-sm"
-                style={{ backgroundColor: color.bgColor, color: color.textColor }}
-                onClick={() => applyPresetColor(color)}
-              >
-                {color.name}
-              </button>
-            ))}
-          </div>
-
-          <div className="flex gap-2 overflow-x-auto mb-4">
-            {predefinedImages.map((image, index) => (
-              <motion.div
-                key={index}
-                whileHover={{ scale: 1.1 }}
-                className="min-w-[60px] h-20 rounded-lg shadow-md cursor-pointer"
-                style={{
-                  backgroundImage: `url(${image})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                }}
-                onClick={() => handlePredefinedImageClick(image)}
-              />
-            ))}
-          </div>
-
-          <div className="flex flex-col lg:flex-row gap-6">
-            <div className="flex-1 bg-gray-700 p-0.5">
+        <div className="flex-1 overflow-hidden flex flex-col md:flex-row">
+          {/* Preview Panel */}
+          <div className="flex-1 bg-gray-100 p-6 flex items-center justify-center">
+            <motion.div
+              ref={cardRef}
+              className="w-full max-w-lg aspect-video rounded-lg overflow-hidden"
+              style={{
+                boxShadow: design.shadow ? '0 4px 6px rgba(0, 0, 0, 0.1)' : 'none',
+                borderRadius: `${design.borderRadius}px`,
+                transform: `rotate(${design.rotation}deg)`
+              }}
+            >
               <div
-                ref={cardRef}
-                className="w-full h-60 md:h-80 lg:h-full flex flex-col justify-center items-center p-6 shadow-lg overflow-hidden"
+                className="w-full h-full relative flex"
                 style={{
-                  backgroundColor: bgColor,
-                  backgroundImage: bgImage ? `url(${bgImage})` : undefined,
-                  backgroundSize: "cover",
-                  filter: `brightness(${imageFilter.brightness}%) blur(${imageFilter.blur}px)`,
-                  fontFamily: font,
-                  color: textColor,
+                  backgroundColor: design.bgColor,
+                  backgroundImage: bgImage ? `url(${bgImage})` : design.gradient,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  padding: `${design.padding}px`,
+                  alignItems: design.layout.align,
+                  justifyContent: design.layout.justify
                 }}
               >
-                <textarea
-                  value={customQuote}
-                  onChange={(e) => setCustomQuote(e.target.value)}
-                  className="text-center font-semibold w-full px-4 bg-transparent resize-none overflow-hidden outline-none"
-                  style={{ fontSize: `${fontSize}px`, color: textColor, lineHeight: "1.2em" }}
-                  rows={10}
-                />
-                <input
-                  type="text"
-                  value={customAuthor}
-                  onChange={(e) => setCustomAuthor(e.target.value)}
-                  className="mt-4 text-center bg-transparent resize-none outline-none"
-                  style={{ fontSize: `${Math.max(12, fontSize - 4)}px`, color: textColor }}
-                  placeholder="Enter author name"
-                />
+                <div 
+                  className="relative max-w-full"
+                  style={{ opacity: design.opacity }}
+                >
+                  {design.showQuotationMarks && (
+                    <span className="absolute -left-6 -top-6 text-6xl opacity-20">❝</span>
+                  )}
+                  <div style={{ textAlign: design.textAlign }}>
+                    <div
+                      contentEditable
+                      suppressContentEditableWarning
+                      onBlur={(e) => setQuote(e.currentTarget.innerText)}
+                      className="mb-4 outline-none"
+                      style={{
+                        color: design.textColor,
+                        fontFamily: design.font,
+                        fontSize: `${design.fontSize}px`,
+                        lineHeight: design.lineHeight,
+                        letterSpacing: `${design.letterSpacing}px`,
+                        fontWeight: design.bold ? 'bold' : 'normal',
+                        fontStyle: design.italic ? 'italic' : 'normal',
+                        textDecoration: design.underline ? 'underline' : 'none'
+                      }}
+                    >
+                      {quote}
+                    </div>
+                    <div
+                      contentEditable
+                      suppressContentEditableWarning
+                      onBlur={(e) => setAuthor(e.currentTarget.innerText)}
+                      className="text-lg outline-none"
+                      style={{
+                        color: design.textColor,
+                        fontFamily: design.font
+                      }}
+                    >
+                      — {author}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Controls Panel */}
+          <div className="w-full md:w-80 bg-white border-l">
+            <div className="p-4">
+              <div className="flex gap-2 mb-6">
+                {[
+                  { id: 'style', icon: Palette, label: 'Style' },
+                  { id: 'layout', icon: Layout, label: 'Layout' },
+                  { id: 'text', icon: Type, label: 'Text' },
+                  { id: 'image', icon: Image, label: 'Image' }
+                ].map(tab => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex-1 p-2 rounded-lg flex flex-col items-center gap-1
+                      ${activeTab === tab.id ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
+                  >
+                    <tab.icon className="w-5 h-5" />
+                    <span className="text-xs">{tab.label}</span>
+                  </button>
+                ))}
+              </div>
+
+              <div className="space-y-4">
+                {activeTab === 'style' && (
+                  <>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Background Color
+                      </label>
+                      <input
+                        type="color"
+                        value={design.bgColor}
+                        onChange={e => setDesign(prev => ({ ...prev, bgColor: e.target.value }))}
+                        className="w-full h-10 rounded cursor-pointer"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Gradient Style
+                      </label>
+                      <select
+                        value={design.gradient}
+                        onChange={e => setDesign(prev => ({ ...prev, gradient: e.target.value }))}
+                        className="w-full p-2 border rounded-lg"
+                      >
+                        {GRADIENTS.map(gradient => (
+                          <option key={gradient.name} value={gradient.value}>
+                            {gradient.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Border Radius
+                      </label>
+                      <input
+                        type="range"
+                        min="0"
+                        max="32"
+                        value={design.borderRadius}
+                        onChange={e => setDesign(prev => ({ ...prev, borderRadius: Number(e.target.value) }))}
+                        className="w-full"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Rotation
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => setDesign(prev => ({ ...prev, rotation: prev.rotation - 1 }))}
+                          className="p-2 border rounded-lg hover:bg-gray-50"
+                        >
+                          <RotateCcw className="w-4 h-4" />
+                        </button>
+                        <input
+                          type="range"
+                          min="-180"
+                          max="180"
+                          value={design.rotation}
+                          onChange={e => setDesign(prev => ({ ...prev, rotation: Number(e.target.value) }))}
+                          className="flex-1"
+                        />
+                        <button
+                          onClick={() => setDesign(prev => ({ ...prev, rotation: prev.rotation + 1 }))}
+                          className="p-2 border rounded-lg hover:bg-gray-50"
+                        >
+                          <RotateCcw className="w-4 h-4 transform scale-x-[-1]" />
+                        </button>
+                      </div>
+                    </div>
+                  </>
+                )}
+
+                {activeTab === 'layout' && (
+                  <>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Layout Position
+                      </label>
+                      <div className="grid grid-cols-2 gap-2">
+                        {LAYOUTS.map(layout => (
+                          <button
+                            key={layout.name}
+                            onClick={() => setDesign(prev => ({ ...prev, layout }))}
+                            className={`p-2 border rounded-lg text-sm
+                              ${design.layout.name === layout.name ? 'bg-blue-50 border-blue-200' : 'hover:bg-gray-50'}`}
+                          >
+                            {layout.name}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Text Alignment
+                      </label>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => setDesign(prev => ({ ...prev, textAlign: 'left' as TextAlignType }))}
+                          className={`flex-1 p-2 border rounded-lg ${design.textAlign === 'left' ? 'bg-blue-50 border-blue-200' : 'hover:bg-gray-50'}`}
+                        >
+                          <AlignLeft className="w-4 h-4 mx-auto" />
+                        </button>
+                        <button
+                          onClick={() => setDesign(prev => ({ ...prev, textAlign: 'center' as TextAlignType }))}
+                          className={`flex-1 p-2 border rounded-lg ${design.textAlign === 'center' ? 'bg-blue-50 border-blue-200' : 'hover:bg-gray-50'}`}
+                        >
+                          <AlignCenter className="w-4 h-4 mx-auto" />
+                        </button>
+                        <button
+                          onClick={() => setDesign(prev => ({ ...prev, textAlign: 'right' as TextAlignType }))}
+                          className={`flex-1 p-2 border rounded-lg ${design.textAlign === 'right' ? 'bg-blue-50 border-blue-200' : 'hover:bg-gray-50'}`}
+                        >
+                          <AlignRight className="w-4 h-4 mx-auto" />
+                        </button>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Padding
+                      </label>
+                      <input
+                        type="range"
+                        min="20"
+                        max="80"
+                        value={design.padding}
+                        onChange={e => setDesign(prev => ({ ...prev, padding: Number(e.target.value) }))}
+                        className="w-full"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        id="shadow"
+                        checked={design.shadow}
+                        onChange={e => setDesign(prev => ({ ...prev, shadow: e.target.checked }))}
+                        className="rounded border-gray-300"
+                      />
+                      <label htmlFor="shadow" className="text-sm font-medium text-gray-700">
+                        Enable Shadow
+                      </label>
+                    </div>
+                  </>
+                )}
+
+                {activeTab === 'text' && (
+                  <>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Font Style
+                      </label>
+                      <select
+                        value={design.font}
+                        onChange={e => setDesign(prev => ({ ...prev, font: e.target.value }))}
+                        className="w-full p-2 border rounded-lg"
+                      >
+                        {FONTS.map(font => (
+                          <option key={font.name} value={font.value}>
+                            {font.name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Font Size
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <button
+                          onClick={() => setDesign(prev => ({ ...prev, fontSize: Math.max(16, prev.fontSize - 1) }))}
+                          className="p-2 border rounded-lg hover:bg-gray-50"
+                        >
+                          <Minus className="w-4 h-4" />
+                        </button>
+                        <input
+                          type="range"
+                          min="16"
+                          max="48"
+                          value={design.fontSize}
+                          onChange={e => setDesign(prev => ({ ...prev, fontSize: Number(e.target.value) }))}
+                          className="flex-1"
+                        />
+                        <button
+                          onClick={() => setDesign(prev => ({ ...prev, fontSize: Math.min(48, prev.fontSize + 1) }))}
+                          className="p-2 border rounded-lg hover:bg-gray-50"
+                        >
+                          <Plus className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Text Color
+                      </label>
+                      <input
+                        type="color"
+                        value={design.textColor}
+                        onChange={e => setDesign(prev => ({ ...prev, textColor: e.target.value }))}
+                        className="w-full h-10 rounded cursor-pointer"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        id="quotationMarks"
+                        checked={design.showQuotationMarks}
+                        onChange={e => setDesign(prev => ({ ...prev, showQuotationMarks: e.target.checked }))}
+                        className="rounded border-gray-300"
+                      />
+                      <label htmlFor="quotationMarks" className="text-sm font-medium text-gray-700">
+                        Show Quotation Marks
+                      </label>
+                    </div>
+                  </>
+                )}
+
+{activeTab === 'image' && (
+                  <>
+                    <div className="flex gap-2 mb-4 border-b pb-4">
+                      <button
+                        onClick={() => setImageUploadMethod('upload')}
+                        className={`flex-1 p-2 rounded-lg flex flex-col items-center gap-1
+                          ${imageUploadMethod === 'upload' ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
+                      >
+                        <Upload className="w-5 h-5" />
+                        <span className="text-xs">Upload</span>
+                      </button>
+                      <button
+                        onClick={() => setImageUploadMethod('search')}
+                        className={`flex-1 p-2 rounded-lg flex flex-col items-center gap-1
+                          ${imageUploadMethod === 'search' ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
+                      >
+                        <Search className="w-5 h-5" />
+                        <span className="text-xs">Search</span>
+                      </button>
+                    </div>
+                    
+                    {imageUploadMethod === 'upload' ? (
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                          Upload Background Image
+                        </label>
+                        <input
+                          type="file"
+                          onChange={handleImageUpload}
+                          accept="image/*"
+                          className="w-full"
+                        />
+                      </div>
+                    ) : (
+                      <ImageSearch onSelectImage={handleImageSelect} />
+                    )}
+                    
+                    {bgImage && (
+                      <button
+                        onClick={() => setBgImage(null)}
+                        className="mt-2 text-sm text-red-600 hover:text-red-700"
+                      >
+                        Remove Image
+                      </button>
+                    )}
+                    
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Overlay Opacity
+                      </label>
+                      <input
+                        type="range"
+                        min="20"
+                        max="100"
+                        value={design.opacity * 100}
+                        onChange={e => setDesign(prev => ({ ...prev, opacity: Number(e.target.value) / 100 }))}
+                        className="w-full"
+                      />
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 
-            <div className="flex-1 space-y-4">
-              <div>
-                <label className="block text-gray-700">Font</label>
-                <select
-                  value={font}
-                  onChange={(e) => setFont(e.target.value)}
-                  className="w-full p-2 border rounded text-black"
+            <div className="border-t p-4 bg-gray-50 mt-auto">
+              <div className="flex gap-2">
+                <button
+                  onClick={handleReset}
+                  className="flex items-center justify-center gap-2 px-4 py-2 border rounded-lg hover:bg-gray-50"
                 >
-                  {availableFonts.map((font) => (
-                    <option key={font} value={font}>
-                      {font}
-                    </option>
-                  ))}
-                </select>
+                  <RefreshCcw className="w-4 h-4" />
+                  Reset
+                </button>
+                <button
+                  onClick={handleDownload}
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                >
+                  <Download className="w-4 h-4" />
+                  Download
+                </button>
               </div>
-              <div>
-                <label className="block text-gray-700">Font Size</label>
-                <input
-                  type="range"
-                  min="12"
-                  max="72"
-                  value={fontSize}
-                  onChange={(e) => setFontSize(Number(e.target.value))}
-                  className="w-full"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700">Background Color</label>
-                <input
-                  type="color"
-                  value={bgColor}
-                  onChange={(e) => setBgColor(e.target.value)}
-                  className="w-full p-2 rounded"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700">Text Color</label>
-                <input
-                  type="color"
-                  value={textColor}
-                  onChange={(e) => setTextColor(e.target.value)}
-                  className="w-full p-2 rounded"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700">Brightness</label>
-                <input
-                  type="range"
-                  min="50"
-                  max="150"
-                  value={imageFilter.brightness}
-                  onChange={(e) =>
-                    setImageFilter({ ...imageFilter, brightness: Number(e.target.value) })
-                  }
-                  className="w-full"
-                />
-              </div>
-              <div>
-                <label className="block text-gray-700">Blur</label>
-                <input
-                  type="range"
-                  min="0"
-                  max="10"
-                  value={imageFilter.blur}
-                  onChange={(e) =>
-                    setImageFilter({ ...imageFilter, blur: Number(e.target.value) })
-                  }
-                  className="w-full"
-                />
-              </div>
-              <button
-                onClick={handleDownload}
-                className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-              >
-                Download Quote Card
-              </button>
             </div>
           </div>
         </div>
       </motion.div>
-
-      {showDownloadMessage && (
-        <motion.div
-          className="fixed inset-0 z-60 bg-black bg-opacity-75 flex items-center justify-center"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-        >
-          <div className="bg-white p-4 m-4 rounded shadow-lg text-center">
-            <p className="text-black mb-4">Your quote card is ready! Please open via direct browser to download quote card without interrupt .</p>
-            <button
-              onClick={handleCloseMessage}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-            >
-              Close
-            </button>
-          </div>
-        </motion.div>
-      )}
     </div>
   );
 }
