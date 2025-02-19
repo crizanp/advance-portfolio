@@ -18,7 +18,6 @@ import {
 } from 'lucide-react';
 import ImageSearch from './ImageSearch';
 import BackgroundPresets from './BackgroundPresets';
-// Define the allowed text align values to fix TypeScript error
 type TextAlignType = 'left' | 'center' | 'right' | 'justify';
 const ImageAdjustments = ({ design, setDesign }) => {
   return (
@@ -107,12 +106,10 @@ interface QuoteCardModalProps {
 }
 
 export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = '', author: initialAuthor = '' }: QuoteCardModalProps) {
-  // Initialize state with the passed props
   const [quote, setQuote] = useState(initialQuote);
   const [author, setAuthor] = useState(initialAuthor);
   const [imageUploadMethod, setImageUploadMethod] = useState<'upload' | 'search'>('upload');
 
-  // Reset quote and author when they change from props
   useEffect(() => {
     if (isOpen) {
       setQuote(initialQuote);
@@ -132,15 +129,15 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
     borderRadius: 8,
     shadow: true,
     opacity: 0.9,
-    textAlign: 'center' as TextAlignType, // Fixed TypeScript error by explicitly typing
+    textAlign: 'center' as TextAlignType, 
     letterSpacing: 0,
     lineHeight: 1.4,
     bold: false,
     italic: false,
     underline: false,
     rotation: 0,
-  brightness: 120, // 20% brighter
-  darkness: 20, // 20% darker
+    brightness: 120, 
+    darkness: 20, 
 
   });
 
@@ -151,7 +148,6 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
   const quoteRef = useRef<HTMLDivElement>(null);
   const authorRef = useRef<HTMLDivElement>(null);
 
-  // Update the refs when quote or author changes
   useEffect(() => {
     if (quoteRef.current) {
       quoteRef.current.innerText = quote;
@@ -187,7 +183,6 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
   const handleImageSelect = (imageUrl: string) => {
     setBgImage(imageUrl);
 
-    // Switch to the image tab to make sure opacity controls are visible
     setActiveTab('image');
   };
 
@@ -224,8 +219,8 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
       italic: false,
       underline: false,
       rotation: 0,
-  brightness: 120, // 20% brighter
-  darkness: 20, // 20% darker
+      brightness: 120, 
+      darkness: 20, 
     });
     setBgImage(null);
   };
@@ -245,7 +240,6 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
         className={`bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col ${isFullscreen ? 'w-full h-full' : 'w-full max-w-5xl h-[90vh]'
           }`}
       >
-        {/* Header remains the same */}
         <div className="p-4 border-b flex items-center justify-between">
           <h2 className="text-xl font-bold text-gray-800">Create Quote Card</h2>
           <div className="flex items-center gap-2">
@@ -264,109 +258,104 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
           </div>
         </div>
 
-        {/* Main content area with improved mobile responsiveness */}
         <div className="flex-1 overflow-hidden flex flex-col md:flex-row">
-          {/* Preview Panel with improved mobile scaling */}
           <div className="flex-1 bg-gray-100 p-2 sm:p-4 md:p-6 flex items-center justify-center overflow-auto min-h-[50vh] md:min-h-0">
-  <motion.div
-    ref={cardRef}
-    className="w-full max-w-lg aspect-video rounded-lg overflow-hidden"
-    style={{
-      boxShadow: design.shadow ? '0 4px 6px rgba(0, 0, 0, 0.1)' : 'none',
-      borderRadius: `${design.borderRadius}px`,
-      transform: `rotate(${design.rotation}deg)`,
-      minHeight: '200px', // Ensure minimum height on mobile
-    }}
-  >
-    {/* Background Layer */}
-    <div
-      className="absolute inset-0"
-      style={{
-        backgroundColor: design.bgColor,
-        backgroundImage: bgImage ? `url(${bgImage})` : design.gradient,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        opacity: design.opacity, // Apply transparency to the background
-        filter: `
+            <motion.div
+              ref={cardRef}
+              className="w-full max-w-lg aspect-video rounded-lg overflow-hidden"
+              style={{
+                boxShadow: design.shadow ? '0 4px 6px rgba(0, 0, 0, 0.1)' : 'none',
+                borderRadius: `${design.borderRadius}px`,
+                transform: `rotate(${design.rotation}deg)`,
+                minHeight: '200px', 
+              }}
+            >
+              <div
+                className="absolute inset-0"
+                style={{
+                  backgroundColor: design.bgColor,
+                  backgroundImage: bgImage ? `url(${bgImage})` : design.gradient,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                  opacity: design.opacity, 
+                  filter: `
           brightness(${design.brightness || 100}%)
           contrast(${100 - (design.darkness || 0)}%)
-        `, // Apply brightness and darkness
-      }}
-    />
+        `, 
+                }}
+              />
 
-    {/* Content Layer */}
-    <div
-      className="w-full h-full relative flex"
-      style={{
-        padding: `${Math.max(20, design.padding)}px`, // Ensure minimum padding
-        alignItems: design.layout.align,
-        justifyContent: design.layout.justify,
-      }}
-    >
-      <div
-        className="relative max-w-full w-full"
-        style={{ opacity: 1 }} // Ensure text is always fully opaque
-      >
-        {design.showQuotationMarks && (
-          <span className="absolute -left-4 -top-4 text-4xl sm:text-6xl opacity-20">❝</span>
-        )}
-        <div
-          style={{
-            textAlign: design.textAlign,
-            maxWidth: '100%', // Ensure text doesn't overflow
-          }}
-        >
-          {/* Quote Text */}
-          <div
-            ref={quoteRef}
-            contentEditable
-            suppressContentEditableWarning
-            onBlur={(e) => setQuote(e.currentTarget.innerText)}
-            className="mb-4 outline-none break-words w-full min-h-[2em]"
-            style={{
-              color: design.textColor,
-              fontFamily: design.font,
-              fontSize: `${Math.max(16, design.fontSize)}px`, // Ensure minimum font size
-              lineHeight: design.lineHeight,
-              letterSpacing: `${design.letterSpacing}px`,
-              fontWeight: design.bold ? 'bold' : 'normal',
-              fontStyle: design.italic ? 'italic' : 'normal',
-              textDecoration: design.underline ? 'underline' : 'none',
-              wordWrap: 'break-word', // Ensure text wraps properly
-              overflowWrap: 'break-word',
-            }}
-          >
-            {quote}
-          </div>
+              {/* Content Layer */}
+              <div
+                className="w-full h-full relative flex"
+                style={{
+                  padding: `${Math.max(20, design.padding)}px`, 
+                  alignItems: design.layout.align,
+                  justifyContent: design.layout.justify,
+                }}
+              >
+                <div
+                  className="relative max-w-full w-full"
+                  style={{ opacity: 1 }} 
+                >
+                  {design.showQuotationMarks && (
+                    <span className="absolute -left-4 -top-4 text-4xl sm:text-6xl opacity-20">❝</span>
+                  )}
+                  <div
+                    style={{
+                      textAlign: design.textAlign,
+                      maxWidth: '100%', 
+                    }}
+                  >
+                    <div
+                      ref={quoteRef}
+                      contentEditable
+                      suppressContentEditableWarning
+                      onBlur={(e) => setQuote(e.currentTarget.innerText)}
+                      className="mb-4 outline-none break-words w-full min-h-[2em]"
+                      style={{
+                        color: design.textColor,
+                        fontFamily: design.font,
+                        fontSize: `${Math.max(16, design.fontSize)}px`,
+                        lineHeight: design.lineHeight,
+                        letterSpacing: `${design.letterSpacing}px`,
+                        fontWeight: design.bold ? 'bold' : 'normal',
+                        fontStyle: design.italic ? 'italic' : 'normal',
+                        textDecoration: design.underline ? 'underline' : 'none',
+                        wordWrap: 'break-word', 
+                        overflowWrap: 'break-word',
+                      }}
+                    >
+                      {quote}
+                    </div>
 
-          {/* Author Text */}
-          <div
-            ref={authorRef}
-            contentEditable
-            suppressContentEditableWarning
-            onBlur={(e) => {
-              const authorText = e.currentTarget.innerText;
-              if (authorText.startsWith('—')) {
-                setAuthor(authorText.substring(1).trim());
-              } else {
-                setAuthor(authorText);
-              }
-            }}
-            className="text-base sm:text-lg outline-none break-words w-full min-h-[1.5em]"
-            style={{
-              color: design.textColor,
-              fontFamily: design.font,
-              wordWrap: 'break-word',
-              overflowWrap: 'break-word',
-            }}
-          >
-            — {author}
+                    <div
+                      ref={authorRef}
+                      contentEditable
+                      suppressContentEditableWarning
+                      onBlur={(e) => {
+                        const authorText = e.currentTarget.innerText;
+                        if (authorText.startsWith('—')) {
+                          setAuthor(authorText.substring(1).trim());
+                        } else {
+                          setAuthor(authorText);
+                        }
+                      }}
+                      className="text-base sm:text-lg outline-none break-words w-full min-h-[1.5em]"
+                      style={{
+                        color: design.textColor,
+                        fontFamily: design.font,
+                        wordWrap: 'break-word',
+                        overflowWrap: 'break-word',
+                      }}
+                    >
+                      — {author}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
-        </div>
-      </div>
-    </div>
-  </motion.div>
-</div>
 
 
           {/* Controls Panel */}
@@ -708,7 +697,6 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
                           />
                         </div>
 
-                        {/* Add ImageAdjustments component */}
                         <div className="mt-4">
                           <ImageAdjustments
                             design={design}
@@ -734,7 +722,6 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
                           <ImageSearch onSelectImage={handleImageSelect} />
                         </div>
 
-                        {/* Add ImageAdjustments for search method too */}
                         {bgImage && (
                           <div className="mt-4">
                             <ImageAdjustments
