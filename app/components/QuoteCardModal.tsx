@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { toPng } from 'html-to-image';
 import { saveAs } from 'file-saver';
-import { 
-  X, Image, Type, Layout, 
+import {
+  X, Image, Type, Layout,
   Palette, Download,
   RefreshCcw, Bold,
   Italic, Underline, AlignLeft,
@@ -11,13 +11,65 @@ import {
   Plus, RotateCcw, Maximize2,
   Upload,
   Search,
-  Settings
+  Settings,
+  Sun,
+  Moon,
+  Droplet
 } from 'lucide-react';
 import ImageSearch from './ImageSearch';
-
+import BackgroundPresets from './BackgroundPresets';
 // Define the allowed text align values to fix TypeScript error
 type TextAlignType = 'left' | 'center' | 'right' | 'justify';
+const ImageAdjustments = ({ design, setDesign }) => {
+  return (
+    <div className="space-y-4">
+      <div>
+        <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+          <Droplet className="w-4 h-4" />
+          Opacity
+        </label>
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value={design.opacity * 100}
+          onChange={e => setDesign(prev => ({ ...prev, opacity: Number(e.target.value) / 100 }))}
+          className="w-full"
+        />
+      </div>
 
+      <div>
+        <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+          <Moon className="w-4 h-4" />
+          Darkness
+        </label>
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value={design.darkness || 0}
+          onChange={e => setDesign(prev => ({ ...prev, darkness: Number(e.target.value) }))}
+          className="w-full"
+        />
+      </div>
+
+      <div>
+        <label className="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
+          <Sun className="w-4 h-4" />
+          Brightness
+        </label>
+        <input
+          type="range"
+          min="0"
+          max="200"
+          value={design.brightness || 100}
+          onChange={e => setDesign(prev => ({ ...prev, brightness: Number(e.target.value) }))}
+          className="w-full"
+        />
+      </div>
+    </div>
+  );
+};
 const GRADIENTS = [
   { name: 'Classic', value: 'none' },
   { name: 'Sunset', value: 'linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)' },
@@ -72,7 +124,7 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
     gradient: GRADIENTS[0].value,
     layout: LAYOUTS[0],
     font: FONTS[0].value,
-    fontSize: 24,
+    fontSize: 14,
     padding: 40,
     bgColor: '#ffffff',
     textColor: '#000000',
@@ -86,9 +138,12 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
     bold: false,
     italic: false,
     underline: false,
-    rotation: 0
+    rotation: 0,
+  brightness: 120, // 20% brighter
+  darkness: 20, // 20% darker
+
   });
-  
+
   const [activeTab, setActiveTab] = useState('style');
   const [bgImage, setBgImage] = useState<string | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -128,14 +183,14 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
       reader.readAsDataURL(file);
     }
   };
-  
+
   const handleImageSelect = (imageUrl: string) => {
     setBgImage(imageUrl);
-    
+
     // Switch to the image tab to make sure opacity controls are visible
     setActiveTab('image');
   };
-  
+
   const handleDownload = async () => {
     if (cardRef.current) {
       try {
@@ -168,14 +223,16 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
       bold: false,
       italic: false,
       underline: false,
-      rotation: 0
+      rotation: 0,
+  brightness: 120, // 20% brighter
+  darkness: 20, // 20% darker
     });
     setBgImage(null);
   };
 
   if (!isOpen) return null;
 
-  const modalClass = isFullscreen 
+  const modalClass = isFullscreen
     ? "fixed inset-0 z-[800] bg-black"
     : "fixed inset-0 z-[800] bg-black bg-opacity-75 flex items-center justify-center p-4";
 
@@ -185,10 +242,10 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
-        className={`bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col ${
-          isFullscreen ? 'w-full h-full' : 'w-full max-w-5xl h-[90vh]'
-        }`}
+        className={`bg-white rounded-xl shadow-2xl overflow-hidden flex flex-col ${isFullscreen ? 'w-full h-full' : 'w-full max-w-5xl h-[90vh]'
+          }`}
       >
+        {/* Header remains the same */}
         <div className="p-4 border-b flex items-center justify-between">
           <h2 className="text-xl font-bold text-gray-800">Create Quote Card</h2>
           <div className="flex items-center gap-2">
@@ -207,86 +264,113 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
           </div>
         </div>
 
+        {/* Main content area with improved mobile responsiveness */}
         <div className="flex-1 overflow-hidden flex flex-col md:flex-row">
-          {/* Preview Panel */}
-          <div className="flex-1 bg-gray-100 p-6 flex items-center justify-center overflow-auto">
-            <motion.div
-              ref={cardRef}
-              className="w-full max-w-lg aspect-video rounded-lg overflow-hidden"
-              style={{
-                boxShadow: design.shadow ? '0 4px 6px rgba(0, 0, 0, 0.1)' : 'none',
-                borderRadius: `${design.borderRadius}px`,
-                transform: `rotate(${design.rotation}deg)`
-              }}
-            >
-              <div
-                className="w-full h-full relative flex"
-                style={{
-                  backgroundColor: design.bgColor,
-                  backgroundImage: bgImage ? `url(${bgImage})` : design.gradient,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  padding: `${design.padding}px`,
-                  alignItems: design.layout.align,
-                  justifyContent: design.layout.justify
-                }}
-              >
-                <div 
-                  className="relative max-w-full"
-                  style={{ opacity: design.opacity }}
-                >
-                  {design.showQuotationMarks && (
-                    <span className="absolute -left-6 -top-6 text-6xl opacity-20">❝</span>
-                  )}
-                  <div style={{ textAlign: design.textAlign }}>
-                    <div
-                      ref={quoteRef}
-                      contentEditable
-                      suppressContentEditableWarning
-                      onBlur={(e) => setQuote(e.currentTarget.innerText)}
-                      className="mb-4 outline-none"
-                      style={{
-                        color: design.textColor,
-                        fontFamily: design.font,
-                        fontSize: `${design.fontSize}px`,
-                        lineHeight: design.lineHeight,
-                        letterSpacing: `${design.letterSpacing}px`,
-                        fontWeight: design.bold ? 'bold' : 'normal',
-                        fontStyle: design.italic ? 'italic' : 'normal',
-                        textDecoration: design.underline ? 'underline' : 'none'
-                      }}
-                    >
-                      {quote}
-                    </div>
-                    <div
-                      ref={authorRef}
-                      contentEditable
-                      suppressContentEditableWarning
-                      onBlur={(e) => {
-                        // Remove the "—" prefix if user edited it
-                        const authorText = e.currentTarget.innerText;
-                        if (authorText.startsWith('—')) {
-                          setAuthor(authorText.substring(1).trim());
-                        } else {
-                          setAuthor(authorText);
-                        }
-                      }}
-                      className="text-lg outline-none"
-                      style={{
-                        color: design.textColor,
-                        fontFamily: design.font
-                      }}
-                    >
-                      — {author}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
+          {/* Preview Panel with improved mobile scaling */}
+          <div className="flex-1 bg-gray-100 p-2 sm:p-4 md:p-6 flex items-center justify-center overflow-auto min-h-[50vh] md:min-h-0">
+  <motion.div
+    ref={cardRef}
+    className="w-full max-w-lg aspect-video rounded-lg overflow-hidden"
+    style={{
+      boxShadow: design.shadow ? '0 4px 6px rgba(0, 0, 0, 0.1)' : 'none',
+      borderRadius: `${design.borderRadius}px`,
+      transform: `rotate(${design.rotation}deg)`,
+      minHeight: '200px', // Ensure minimum height on mobile
+    }}
+  >
+    {/* Background Layer */}
+    <div
+      className="absolute inset-0"
+      style={{
+        backgroundColor: design.bgColor,
+        backgroundImage: bgImage ? `url(${bgImage})` : design.gradient,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        opacity: design.opacity, // Apply transparency to the background
+        filter: `
+          brightness(${design.brightness || 100}%)
+          contrast(${100 - (design.darkness || 0)}%)
+        `, // Apply brightness and darkness
+      }}
+    />
+
+    {/* Content Layer */}
+    <div
+      className="w-full h-full relative flex"
+      style={{
+        padding: `${Math.max(20, design.padding)}px`, // Ensure minimum padding
+        alignItems: design.layout.align,
+        justifyContent: design.layout.justify,
+      }}
+    >
+      <div
+        className="relative max-w-full w-full"
+        style={{ opacity: 1 }} // Ensure text is always fully opaque
+      >
+        {design.showQuotationMarks && (
+          <span className="absolute -left-4 -top-4 text-4xl sm:text-6xl opacity-20">❝</span>
+        )}
+        <div
+          style={{
+            textAlign: design.textAlign,
+            maxWidth: '100%', // Ensure text doesn't overflow
+          }}
+        >
+          {/* Quote Text */}
+          <div
+            ref={quoteRef}
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => setQuote(e.currentTarget.innerText)}
+            className="mb-4 outline-none break-words w-full min-h-[2em]"
+            style={{
+              color: design.textColor,
+              fontFamily: design.font,
+              fontSize: `${Math.max(16, design.fontSize)}px`, // Ensure minimum font size
+              lineHeight: design.lineHeight,
+              letterSpacing: `${design.letterSpacing}px`,
+              fontWeight: design.bold ? 'bold' : 'normal',
+              fontStyle: design.italic ? 'italic' : 'normal',
+              textDecoration: design.underline ? 'underline' : 'none',
+              wordWrap: 'break-word', // Ensure text wraps properly
+              overflowWrap: 'break-word',
+            }}
+          >
+            {quote}
           </div>
 
+          {/* Author Text */}
+          <div
+            ref={authorRef}
+            contentEditable
+            suppressContentEditableWarning
+            onBlur={(e) => {
+              const authorText = e.currentTarget.innerText;
+              if (authorText.startsWith('—')) {
+                setAuthor(authorText.substring(1).trim());
+              } else {
+                setAuthor(authorText);
+              }
+            }}
+            className="text-base sm:text-lg outline-none break-words w-full min-h-[1.5em]"
+            style={{
+              color: design.textColor,
+              fontFamily: design.font,
+              wordWrap: 'break-word',
+              overflowWrap: 'break-word',
+            }}
+          >
+            — {author}
+          </div>
+        </div>
+      </div>
+    </div>
+  </motion.div>
+</div>
+
+
           {/* Controls Panel */}
-          <div className="w-full md:w-80 bg-white border-l overflow-y-auto">
+          <div className="w-full md:w-80 bg-white border-t md:border-t-0 md:border-l overflow-y-auto">
             <div className="p-4">
               <div className="flex gap-2 mb-6">
                 {[
@@ -572,11 +656,30 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
 
                 {activeTab === 'image' && (
                   <>
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Background Presets
+                      </label>
+                      <BackgroundPresets
+                        onSelectPreset={(style) => {
+                          setDesign(prev => ({
+                            ...prev,
+                            gradient: style.background || 'none',
+                            opacity: style.opacity || 1,
+                            bgColor: style.backgroundColor || prev.bgColor
+                          }));
+                          if (style.backgroundImage) {
+                            setBgImage(style.backgroundImage);
+                          } else {
+                            setBgImage(null);
+                          }
+                        }} currentStyle={undefined} onStyleChange={undefined} />
+                    </div>
                     <div className="flex gap-2 mb-4 border-b pb-4">
                       <button
                         onClick={() => setImageUploadMethod('upload')}
                         className={`flex-1 p-2 rounded-lg flex flex-col items-center gap-1
-                          ${imageUploadMethod === 'upload' ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
+          ${imageUploadMethod === 'upload' ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
                       >
                         <Settings className="w-5 h-5" />
                         <span className="text-xs">Setting</span>
@@ -584,57 +687,64 @@ export default function QuoteCardModal({ isOpen, onClose, quote: initialQuote = 
                       <button
                         onClick={() => setImageUploadMethod('search')}
                         className={`flex-1 p-2 rounded-lg flex flex-col items-center gap-1
-                          ${imageUploadMethod === 'search' ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
+          ${imageUploadMethod === 'search' ? 'bg-blue-50 text-blue-600' : 'text-gray-600 hover:bg-gray-50'}`}
                       >
                         <Search className="w-5 h-5" />
                         <span className="text-xs">Search</span>
                       </button>
                     </div>
-                    
+
                     {imageUploadMethod === 'upload' ? (
-                      <><div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Upload Background Image
-                        </label>
-                        <input
-                          type="file"
-                          onChange={handleImageUpload}
-                          accept="image/*"
-                          className="w-full p-2 mb-4"
-                        />
-                      </div> <div className="mt-4">
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Text Overlay Opacity
-                      </label>
-                      <input
-                        type="range"
-                        min="20"
-                        max="100"
-                        value={design.opacity * 100}
-                        onChange={e => setDesign(prev => ({ ...prev, opacity: Number(e.target.value) / 100 }))}
-                        className="w-full"
-                      />
-                    </div> <div className="mt-4 mb-4">
-                        <button
-                          onClick={() => setBgImage(null)}
-                          className="px-3 py-1 text-sm bg-red-100 text-red-600 rounded-md hover:bg-red-200 hover:text-red-700"
-                        >
-                          Remove Image
-                        </button>
-                      </div></>
-                      
+                      <>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Upload Background Image
+                          </label>
+                          <input
+                            type="file"
+                            onChange={handleImageUpload}
+                            accept="image/*"
+                            className="w-full p-2 mb-4"
+                          />
+                        </div>
+
+                        {/* Add ImageAdjustments component */}
+                        <div className="mt-4">
+                          <ImageAdjustments
+                            design={design}
+                            setDesign={setDesign}
+                          />
+                        </div>
+
+                        <div className="mt-4 mb-4">
+                          <button
+                            onClick={() => setBgImage(null)}
+                            className="px-3 py-1 text-sm bg-red-100 text-red-600 rounded-md hover:bg-red-200 hover:text-red-700"
+                          >
+                            Remove Image
+                          </button>
+                        </div>
+                      </>
                     ) : (
-                      <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          Search for Background Image
-                        </label>
-                        <ImageSearch onSelectImage={handleImageSelect} />
-                      </div>
+                      <>
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Search for Background Image
+                          </label>
+                          <ImageSearch onSelectImage={handleImageSelect} />
+                        </div>
+
+                        {/* Add ImageAdjustments for search method too */}
+                        {bgImage && (
+                          <div className="mt-4">
+                            <ImageAdjustments
+                              design={design}
+                              setDesign={setDesign}
+                            />
+                          </div>
+                        )}
+                      </>
                     )}
-                    
-                   
-                    
-                   
                   </>
                 )}
               </div>
