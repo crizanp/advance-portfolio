@@ -11,7 +11,7 @@ import Link from "next/link";
 import PuffLoader from "react-spinners/PuffLoader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLink, faTimes, faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
-import QuoteCardModal from "./QuoteCardModal";
+import QuoteCardModal from "../../components/QuoteCardModal";
 import { FaFacebook, FaTwitter, FaLinkedin, FaLink } from "react-icons/fa";
 import { FiShare2 } from "react-icons/fi";
 const getRawTextFromDomNode = (node) => {
