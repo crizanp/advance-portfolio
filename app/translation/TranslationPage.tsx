@@ -305,13 +305,13 @@ const TranslationPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-gray-900 py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-indigo-900 to-gray-900 py-12 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-gray-800 rounded-2xl shadow-2xl shadow-indigo-500/20 p-6 sm:p-8 mb-8 border border-indigo-500/30"
+          className="bg-gray-800 sm:rounded-2xl shadow-2xl shadow-indigo-500/20 p-6 sm:p-8 mb-8 border border-indigo-500/30"
         >
           <div className="text-center mb-10">
             <motion.div 
@@ -541,7 +541,7 @@ const TranslationPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-gray-800 rounded-2xl shadow-2xl shadow-indigo-500/20 p-6 sm:p-8 border border-indigo-500/30"
+          className="bg-gray-800 sm:rounded-2xl shadow-2xl shadow-indigo-500/20 p-6 sm:p-8 border border-indigo-500/30"
         >
           <h2 className="text-2xl font-semibold text-gray-200 mb-4">About Nepali Unicode</h2>
           <div className="space-y-4 text-gray-300">
