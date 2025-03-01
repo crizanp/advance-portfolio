@@ -2,7 +2,6 @@
 import TranslationPage from './TranslationPage'
 import { metadata } from './metadata'
 import { jsonLd } from './metadata'
-
 export { metadata };
 
 export default function Page() {
