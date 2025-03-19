@@ -99,7 +99,7 @@ const TitleSection = () => {
           >
             <h2 className="text-base sm:text-lg text-gray-300 mb-2 sm:mb-3">Hello, I'm Crijan Pokhrel</h2>
 
-            <h1 className="text-2xl sm:text-5xl md:text-6xl font-bold mb-3 sm:mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-bold mb-3 sm:mb-6">
               <span className="bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
                 I'm a{" "}
               </span>
