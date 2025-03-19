@@ -26,9 +26,9 @@ export default function Navbar() {
 
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex space-x-2 items-center">
-            <NavLink href="/category">Categories</NavLink>
-            <NavLink href="/translation">Nepali Unicode</NavLink>
             <NavLink href="/category/reading">Readings</NavLink>
+            <NavLink href="/translation">Nepali Unicode</NavLink>
+
             <NavLink href="/about">About</NavLink>
             <NavLink href="/contact">Contact</NavLink>
           </div>
@@ -55,9 +55,9 @@ export default function Navbar() {
       {isOpen && (
         <div className="md:hidden bg-gray-800 border-t border-gray-700">
           <div className="px-4 py-3 space-y-1">
-            <MobileNavLink href="/category" onClick={toggleMenu}>Categories</MobileNavLink>
+          <MobileNavLink href="/category/reading" onClick={toggleMenu}>Readings</MobileNavLink>
+
             <MobileNavLink href="/translation" onClick={toggleMenu}>Nepali Unicode</MobileNavLink>
-            <MobileNavLink href="/category/reading" onClick={toggleMenu}>Readings</MobileNavLink>
             <MobileNavLink href="/about" onClick={toggleMenu}>About</MobileNavLink>
             <MobileNavLink href="/contact" onClick={toggleMenu}>Contact</MobileNavLink>
           </div>

@@ -8,8 +8,8 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center space-y-6 md:space-y-0">
           {/* Footer Links */}
           <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6 text-center md:text-left">
-            <Link href="/about" className="hover:text-purple-400 transition-colors">
-              About
+            <Link href="/category" className="hover:text-purple-400 transition-colors">
+              Category
             </Link>
             <Link href="/codecleaner" className="hover:text-purple-400 transition-colors">
               Code Cleaner
