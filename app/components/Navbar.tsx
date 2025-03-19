@@ -6,10 +6,11 @@ import Image from 'next/image';
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const toggleMenu = () => setIsOpen(!isOpen);
+  <div className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-purple-600 to-transparent"></div>
 
   return (
-    <nav className="bg-gray-900 shadow-lg sticky top-0  backdrop-blur-sm">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <nav className="relative bg-gray-900 shadow-lg sticky top-0 backdrop-blur-sm">
+      <div className="absolute inset-x-0 -bottom-px h-[2px] bg-gradient-to-r from-transparent via-purple-600 to-transparent"></div>      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo and Branding */}
           <div className="flex items-center">
@@ -61,6 +62,7 @@ export default function Navbar() {
           </div>
         </div>
       )}
+
     </nav>
   );
 }

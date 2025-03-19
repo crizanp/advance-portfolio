@@ -120,10 +120,10 @@ export default function HomePage() {
           { }
           <TitleSection />
           { }
-          
+
         </div>
         <section className="py-16 md:py-20 relative overflow-hidden">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               { }
               <motion.div
@@ -256,36 +256,7 @@ export default function HomePage() {
             </div>
           </div>
         </section>
-        { }
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-          <motion.div
-            className="w-32 h-32 bg-blue-600 rounded-full opacity-20 absolute top-10 left-10"
-            animate={{ y: [0, -20, 20], rotate: [0, 360] }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-          <motion.div
-            className="w-24 h-24 bg-green-600 rounded-full opacity-20 absolute bottom-20 right-20"
-            animate={{ y: [0, 20, -20], rotate: [360, 0] }}
-            transition={{
-              duration: 6,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-          <motion.div
-            className="w-40 h-40 bg-red-600 rounded-full opacity-20 absolute top-1/2 left-1/3"
-            animate={{ scale: [1, 1.2, 1] }}
-            transition={{
-              duration: 7,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        </div>
+
       </main>
     </>
   );

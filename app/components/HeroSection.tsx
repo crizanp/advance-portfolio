@@ -38,13 +38,13 @@ const TitleSection = () => {
   }, []);
 
   return (
-    <section className="relative z-10 py-16 md:py-24 overflow-hidden bg-gray-900">
+    <section className="relative z-10 py-8 sm:py-12 md:py-24 overflow-hidden bg-gray-900">
       {/* Animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-full">
           {/* Gradient orbs */}
           <motion.div
-            className="absolute w-64 h-64 rounded-full bg-purple-600/20 blur-3xl"
+            className="absolute w-32 sm:w-64 h-32 sm:h-64 rounded-full bg-purple-600/20 blur-3xl"
             animate={{
               x: [0, 100, 0],
               y: [0, 50, 0],
@@ -57,7 +57,7 @@ const TitleSection = () => {
             style={{ top: '10%', left: '5%' }}
           />
           <motion.div
-            className="absolute w-96 h-96 rounded-full bg-blue-600/20 blur-3xl"
+            className="absolute w-48 sm:w-96 h-48 sm:h-96 rounded-full bg-blue-600/20 blur-3xl"
             animate={{
               x: [0, -70, 0],
               y: [0, 100, 0],
@@ -70,7 +70,7 @@ const TitleSection = () => {
             style={{ top: '30%', right: '10%' }}
           />
           <motion.div
-            className="absolute w-80 h-80 rounded-full bg-indigo-600/20 blur-3xl"
+            className="absolute w-40 sm:w-80 h-40 sm:h-80 rounded-full bg-indigo-600/20 blur-3xl"
             animate={{
               x: [0, 50, 0],
               y: [0, -50, 0],
@@ -88,8 +88,8 @@ const TitleSection = () => {
         <div className="absolute inset-0 bg-grid-white/[0.05] bg-[length:50px_50px]" />
       </div>
 
-      <div className="container mx-auto px-4 relative">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-8">
+      <div className="container mx-auto px-3 sm:px-4 relative">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-8">
           {/* Text content */}
           <motion.div
             className="md:w-1/2 text-left"
@@ -97,9 +97,9 @@ const TitleSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
           >
-            <h2 className="text-3xl font-bold text-purple-400 mb-2">Hello, I'm Crijan Pokhrel</h2>
+            <h2 className="text-base sm:text-lg text-gray-300 mb-2 sm:mb-3">Hello, I'm Crijan Pokhrel</h2>
 
-            <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            <h1 className="text-3xl sm:text-5xl md:text-6xl font-bold mb-3 sm:mb-6">
               <span className="bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
                 I'm a{" "}
               </span>
@@ -115,46 +115,40 @@ const TitleSection = () => {
               </motion.span>
             </h1>
 
-            <p className="text-lg text-gray-300 mb-8 max-w-lg">
+            <p className="text-base sm:text-lg text-gray-300 mb-4 sm:mb-8 max-w-lg">
               Turning ideas into digital experiences through code and creativity. Specializing in modern web technologies and passionate about creating impactful digital solutions.
             </p>
 
-            <div className="flex flex-wrap gap-4">
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
+            <div className="flex flex-nowrap gap-2 sm:gap-4 items-center">
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link
                   href="/projects"
-                  className="px-8 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-lg shadow-lg hover:from-purple-700 hover:to-blue-700 transition-all flex items-center gap-2"
+                  className="px-3 py-1.5 sm:px-6 sm:py-3 text-sm sm:text-base bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-md sm:rounded-lg shadow-md hover:from-purple-700 hover:to-blue-700 transition-all flex items-center gap-1 sm:gap-2"
                 >
-                  <RiPagesLine className="text-xl" />
+                  <RiPagesLine className="text-lg sm:text-xl" />
                   View Work
                 </Link>
               </motion.div>
 
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <button
                   onClick={() => setShowCV(true)}
-                  className="px-8 py-3 border-2 border-purple-500 text-purple-400 rounded-lg hover:bg-purple-500/10 transition-all"
+                  className="px-3 py-1.5 sm:px-6 sm:py-3 text-sm sm:text-base border border-purple-500 text-purple-400 rounded-md sm:rounded-lg hover:bg-purple-500/10 transition-all"
                 >
                   View CV
                 </button>
               </motion.div>
             </div>
 
-            <div className="mt-8 flex gap-4">
+            <div className="mt-4 sm:mt-8 flex gap-2 sm:gap-4">
               <motion.a
                 whileHover={{ y: -5, scale: 1.1 }}
                 href="https://www.linkedin.com/in/srijanpokhrel/"
                 target="_blank"
                 rel="noopener"
-                className="p-3 text-gray-300 hover:text-purple-400 bg-gray-800 rounded-full transition-all"
+                className="p-2 sm:p-3 text-gray-300 hover:text-purple-400 bg-gray-800 rounded-full transition-all"
               >
-                <FaLinkedin className="text-2xl" />
+                <FaLinkedin className="text-xl sm:text-2xl" />
               </motion.a>
 
               <motion.a
@@ -162,24 +156,23 @@ const TitleSection = () => {
                 href="https://github.com/crizanp"
                 target="_blank"
                 rel="noopener"
-                className="p-3 text-gray-300 hover:text-purple-400 bg-gray-800 rounded-full transition-all"
+                className="p-2 sm:p-3 text-gray-300 hover:text-purple-400 bg-gray-800 rounded-full transition-all"
               >
-                <FaGithub className="text-2xl" />
+                <FaGithub className="text-xl sm:text-2xl" />
               </motion.a>
             </div>
           </motion.div>
 
-          {/* Photo section with animations */}
-          {/* Photo section with animations - UPDATED for larger image */}
+          {/* Photo section with responsive sizing */}
           <motion.div
-            className="md:w-1/2 flex justify-center"
+            className="md:w-1/2 flex justify-center md:justify-end mt-6 md:mt-0"
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <div className="relative overflow-visible">
-              {/* Optimized image container - INCREASED SIZE */}
-              <div className="relative w-80 h-80 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-purple-500 shadow-2xl">
+              {/* Responsive image container */}
+              <div className="relative w-64 h-64 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4 border-purple-500 shadow-2xl">
                 <Image
                   src="/images/pp.png"
                   alt="Crijan Pokhrel"
@@ -189,7 +182,7 @@ const TitleSection = () => {
                 />
               </div>
 
-              {/* Adjusted orbit animations for larger image */}
+              {/* Adjusted orbit animations */}
               <motion.div
                 className="absolute rounded-full border-2 border-blue-500/50"
                 style={{
@@ -214,9 +207,9 @@ const TitleSection = () => {
                 transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
               />
 
-              {/* Adjusted floating badges positions for larger image */}
+              {/* Responsive floating badges */}
               <motion.div
-                className="absolute -right-2 top-12 bg-gray-800 text-purple-400 px-3 py-1 rounded-full text-sm shadow-lg"
+                className="absolute -right-1 sm:-right-2 top-12 bg-gray-800 text-purple-400 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm shadow-lg"
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               >
@@ -224,7 +217,7 @@ const TitleSection = () => {
               </motion.div>
 
               <motion.div
-                className="absolute -left-2 top-1/3 bg-gray-800 text-blue-400 px-3 py-1 rounded-full text-sm shadow-lg"
+                className="absolute -left-1 sm:-left-2 top-1/3 bg-gray-800 text-blue-400 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm shadow-lg"
                 animate={{ y: [0, 10, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
               >
@@ -232,7 +225,7 @@ const TitleSection = () => {
               </motion.div>
 
               <motion.div
-                className="absolute -right-4 bottom-1/4 bg-gray-800 text-indigo-400 px-3 py-1 rounded-full text-sm shadow-lg"
+                className="absolute -right-2 sm:-right-4 bottom-1/4 bg-gray-800 text-indigo-400 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm shadow-lg"
                 animate={{ y: [0, -8, 0] }}
                 transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
               >
@@ -240,27 +233,28 @@ const TitleSection = () => {
               </motion.div>
             </div>
           </motion.div>
-
         </div>
-        <section className="py-16 md:py-15 relative z-10" id="category">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 sm:gap-4 gap-2">
+
+        {/* Categories section with improved responsiveness */}
+        <section className="py-8 sm:py-12 md:py-14 relative z-10" id="category">
+          <div className="container mx-auto">
+            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-2 sm:gap-4">
               {categories.map((category, index) => (
                 <motion.div
                   key={category.name}
-                  className="bg-gray-300 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all border border-purple-200 hover:border-purple-100 cursor-pointer flex flex-col items-center text-center"
+                  className="bg-gray-300 p-3 sm:p-6 rounded-xl shadow-lg hover:shadow-xl transition-all border border-purple-200 hover:border-purple-100 cursor-pointer flex flex-col items-center text-center"
                   whileHover={{ scale: 1.05 }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <div className="text-4xl mb-4 text-purple-600">{category.icon}</div>
-                  <h3 className="sm:text-xl font-bold text-gray-900 mb-2 hover:text-purple-700 transition-colors">
+                  <div className="text-2xl sm:text-4xl mb-2 sm:mb-4 text-purple-600">{category.icon}</div>
+                  <h3 className="text-sm sm:text-xl font-bold text-gray-900 mb-1 sm:mb-2 hover:text-purple-700 transition-colors">
                     {category.name}
                   </h3>
-                  <Link href={category.link} className="text-purple-600 hover:text-purple-800 text-sm flex items-center gap-2 transition-colors">
+                  <Link href={category.link} className="text-purple-600 hover:text-purple-800 text-xs sm:text-sm flex items-center gap-1 sm:gap-2 transition-colors">
                     Explore
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
                   </Link>
