@@ -8,18 +8,18 @@ export default function Navbar() {
   const toggleMenu = () => setIsOpen(!isOpen);
 
   return (
-    <nav className="bg-white shadow-lg sticky top-0 z-[600] backdrop-blur-sm">
+    <nav className="bg-gray-900 shadow-lg sticky top-0  backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo and Branding */}
           <div className="flex items-center">
             <Link href="/" className="group relative flex items-center space-x-1">
-              <span className="sm:text-4xl text-3xl font-black tracking-tighter text-purple-700">C</span>
-              <span className="sm:text-2xl text-2xl font-black tracking-tighter text-gray-700 transition-all duration-300">RIZAN</span>
-              <span className="sm:text-4xl text-3xl font-black text-purple-700 tracking-tighter transition-colors duration-300">P</span>
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gray-800 transition-all duration-300 group-hover:w-full"></span>
+              <span className="sm:text-4xl text-3xl font-black tracking-tighter text-purple-400">C</span>
+              <span className="sm:text-2xl text-2xl font-black tracking-tighter text-gray-300 transition-all duration-300">RIZAN</span>
+              <span className="sm:text-4xl text-3xl font-black text-purple-400 tracking-tighter transition-colors duration-300">P</span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-400 transition-all duration-300 group-hover:w-full"></span>
             </Link>
-            <span className="ml-3 text-xs text-gray-500 hidden sm:block">Tech • Code • Tools</span>
+            <span className="ml-3 text-xs text-gray-400 hidden sm:block">Tech • Code • Tools</span>
           </div>
 
           {/* Desktop Navigation Links */}
@@ -35,7 +35,7 @@ export default function Navbar() {
           <div className="flex items-center md:hidden">
             <button
               onClick={toggleMenu}
-              className="text-gray-600 hover:text-purple-600 p-2 rounded-lg transition-colors"
+              className="text-gray-300 hover:text-purple-400 p-2 rounded-lg transition-colors"
             >
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {isOpen ? (
@@ -51,7 +51,7 @@ export default function Navbar() {
 
       {/* Mobile Navigation Menu */}
       {isOpen && (
-        <div className="md:hidden bg-white border-t border-gray-100">
+        <div className="md:hidden bg-gray-800 border-t border-gray-700">
           <div className="px-4 py-3 space-y-1">
             <MobileNavLink href="/category" onClick={toggleMenu}>Categories</MobileNavLink>
             <MobileNavLink href="/translation" onClick={toggleMenu}>Nepali Unicode</MobileNavLink>
@@ -65,21 +65,21 @@ export default function Navbar() {
   );
 }
 
-const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => (
+const NavLink = ({ href, children }) => (
   <Link
     href={href}
-    className="text-gray-600 hover:text-purple-600 px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-50 relative group"
+    className="text-gray-300 hover:text-purple-400 px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-800 relative group"
   >
     {children}
-    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-purple-600 transition-all group-hover:w-full"></span>
+    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-purple-400 transition-all group-hover:w-full"></span>
   </Link>
 );
 
-const MobileNavLink = ({ href, children, onClick }: { href: string; children: React.ReactNode; onClick: () => void }) => (
+const MobileNavLink = ({ href, children, onClick }) => (
   <Link
     href={href}
     onClick={onClick}
-    className="block text-gray-600 hover:text-purple-600 px-3 py-2 rounded-md font-medium transition-colors hover:bg-gray-50"
+    className="block text-gray-300 hover:text-purple-400 px-3 py-2 rounded-md font-medium transition-colors hover:bg-gray-700"
   >
     {children}
   </Link>
