@@ -2,6 +2,8 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { Terminal, LayoutGrid } from 'lucide-react';
+import Link from 'next/link';
+import Image from 'next/image';
 
 const COMMANDS = {
   help: 'Available commands:\n\n' +
@@ -131,150 +133,194 @@ export default function About() {
       setCurrentCommand('');
     }
   };
-
+  const [isVisible, setIsVisible] = useState(false);
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
   return (
-    <main className={`min-h-screen ${isTerminalMode ? 'bg-gray-900' : 'bg-gradient-to-b from-gray-50 to-white'} pt-2 pb-9`}>
-      <div className="max-w-4xl mx-auto sm:px-4">
-        <button
-          onClick={() => setIsTerminalMode(!isTerminalMode)}
-          className="fixed right-4 p-2 bg-gray-800 hover:bg-gray-700 rounded-full transition-all duration-200 shadow-lg z-50 group flex items-center gap-2"
-          aria-label={isTerminalMode ? "Switch to GUI Mode" : "Switch to Linux Mode"}
-        >
-          {isTerminalMode ? (
-            <>
-              <span className="hidden md:inline-block text-white text-sm font-medium pr-1">GUI Mode</span>
-              <LayoutGrid className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
-            </>
-          ) : (
-            <>
-              <span className="hidden md:inline-block text-white text-sm font-medium pr-1">Linux Mode</span>
-              <Terminal className="w-6 h-6 text-white group-hover:scale-110 transition-transform" />
-            </>
-          )}
-        </button>
-        {isTerminalMode ? (
-          <div className="bg-black rounded-lg border border-gray-800 overflow-hidden shadow-xl">
-            <div className="bg-gray-800 p-2 flex items-center space-x-2">
-              <div className="w-3 h-3 rounded-full bg-red-500" />
-              <div className="w-3 h-3 rounded-full bg-yellow-500" />
-              <div className="w-3 h-3 rounded-full bg-green-500" />
-              <span className="text-gray-400 text-sm ml-2">srijan@portfolio:~</span>
+    <div className="min-h-screen bg-gray-900 text-gray-300">
+      {/* Gradient header accent */}
+      <div className="absolute inset-x-0 top-16 h-px bg-gradient-to-r from-transparent via-purple-600 to-transparent"></div>
+      
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* Hero section */}
+        <section className={`transition-opacity duration-1000 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+          <div className="text-center mb-16">
+            <h1 className="text-4xl sm:text-5xl font-black tracking-tighter">
+              About Me
+            </h1>
+            <div className="mt-2 h-1 w-32 bg-gradient-to-r from-purple-400 to-purple-600 mx-auto rounded-full"></div>
+            <p className="mt-6 text-lg text-gray-400 max-w-2xl mx-auto">
+              Passionate developer & tech enthusiast creating tools and sharing knowledge.
+            </p>
+          </div>
+        </section>
+
+        {/* Bio section */}
+        <section className="grid md:grid-cols-5 gap-12 mb-16">
+          <div className="md:col-span-2 flex justify-center">
+            <div className="relative w-64 h-64 rounded-2xl overflow-hidden border-2 border-purple-500 shadow-lg shadow-purple-500/20">
+              {/* Replace with your actual profile image */}
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-3xl text-purple-400 font-bold">
+                CP
+              </div>
+              {/* Uncomment if you have an actual image */}
+              <Image 
+                src="/images/pp.png" 
+                alt="Crizan P" 
+                fill 
+                className="object-cover"
+              />
             </div>
-            <div
-              ref={terminalRef}
-              className="p-4 h-[600px] overflow-y-auto font-mono text-gray-200"
-            >
-              {terminalHistory.map((line, i) => (
-                <div key={i} className="mb-2 whitespace-pre-wrap">{line}</div>
+          </div>
+          <div className="md:col-span-3">
+            <p className="mb-4 text-gray-300">
+              Hello! I'm a software developer with a passion for creating innovative solutions and sharing knowledge with the tech community. With expertise in web development, I focus on building accessible, responsive, and elegant web applications.
+            </p>
+            <p className="mb-8 text-gray-300">
+              My journey in tech began with a fascination for how software can solve real-world problems. Today, I continue to explore new technologies while helping others learn and grow in the field.
+            </p>
+            
+            <h3 className="text-xl font-semibold text-gray-200 mb-3">Tech Stack</h3>
+            <div className="flex flex-wrap gap-2 mb-8">
+              {['React', 'Next.js', 'JavaScript', 'TypeScript', 'Node.js', 'Tailwind CSS'].map((tech) => (
+                <span key={tech} className="px-3 py-1 bg-gray-800 text-purple-300 text-sm rounded-full border border-gray-700">
+                  {tech}
+                </span>
               ))}
-              <div className="flex items-center">
-                <span className="text-green-400 mr-2">$</span>
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={currentCommand}
-                  onChange={(e) => setCurrentCommand(e.target.value)}
-                  onKeyPress={handleKeyPress}
-                  className="flex-1 bg-transparent outline-none"
-                  autoFocus
-                />
+            </div>
+            
+           
+          </div>
+        </section>
+
+        {/* Experience & Education */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-purple-400 mb-8">Experience & Education</h2>
+          
+          <div className="space-y-8">
+            {/* Timeline item */}
+            <div className="relative pl-8 border-l-2 border-gray-700">
+              <div className="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-purple-500"></div>
+              <div className="mb-1">
+                <span className="text-purple-300 font-medium">2020 - Present</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-200">Senior Developer</h3>
+              <p className="text-gray-400">Company Name</p>
+              <p className="mt-2 text-gray-300">
+                Leading development efforts, mentoring junior developers, and architecting scalable solutions.
+              </p>
+            </div>
+
+            {/* Timeline item */}
+            <div className="relative pl-8 border-l-2 border-gray-700">
+              <div className="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-purple-500"></div>
+              <div className="mb-1">
+                <span className="text-purple-300 font-medium">2018 - 2020</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-200">Web Developer</h3>
+              <p className="text-gray-400">Previous Company</p>
+              <p className="mt-2 text-gray-300">
+                Built responsive web applications and implemented modern frontend frameworks.
+              </p>
+            </div>
+
+            {/* Timeline item */}
+            <div className="relative pl-8 border-l-2 border-gray-700">
+              <div className="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-purple-500"></div>
+              <div className="mb-1">
+                <span className="text-purple-300 font-medium">2018 - 2023</span>
+              </div>
+              <h3 className="text-xl font-semibold text-gray-200">BSc Computer Science</h3>
+              <p className="text-gray-400">University Name</p>
+              <p className="mt-2 text-gray-300">
+                Specialized in software development and computer systems.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Projects section */}
+        <section className="mb-16">
+          <h2 className="text-2xl font-bold text-purple-400 mb-8">Featured Projects</h2>
+          
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Project card */}
+            <div className="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 shadow-lg hover:shadow-purple-500/10 transition">
+              <div className="h-48 bg-gradient-to-br from-purple-900 to-gray-800 flex items-center justify-center">
+                <svg className="w-16 h-16 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                </svg>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-200 mb-2">Toolbox Pro </h3>
+                <p className="text-gray-400 mb-4">
+                Transform, convert, and optimize your files with this free online tools
+                </p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {['React', 'Node.js', 'Tailwind'].map((tech) => (
+                    <span key={tech} className="px-2 py-1 bg-gray-700 text-xs text-purple-300 rounded-full">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+                <a href="https://toobox-pro.vercel.app/" className="text-purple-400 font-medium hover:text-purple-300 inline-flex items-center">
+                  View Project
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+
+            {/* Project card */}
+            <div className="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 shadow-lg hover:shadow-purple-500/10 transition">
+              <div className="h-48 bg-gradient-to-br from-purple-900 to-gray-800 flex items-center justify-center">
+                <svg className="w-16 h-16 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                </svg>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-gray-200 mb-2">Nepali Currency Recognization System</h3>
+                <p className="text-gray-400 mb-4">
+                 its the final year project developed by 4 teams 
+                </p>
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {['JAVA', 'AI', 'NLP'].map((tech) => (
+                    <span key={tech} className="px-2 py-1 bg-gray-700 text-xs text-purple-300 rounded-full">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+                <a href="https://github.com/crizanp/currencydetection" className="text-purple-400 font-medium hover:text-purple-300 inline-flex items-center">
+                  View Project
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </a>
               </div>
             </div>
           </div>
-        ) : (
-          <article className="bg-white sm:rounded-xl shadow-lg overflow-hidden border border-gray-200 mt-5">
-            <header className="p-8 border-b border-gray-200">
-              <h1 className="text-4xl font-bold text-gray-900">Srijan Pokhrel</h1>
-              <h2 className="text-xl text-gray-600 mt-2">Senior Full Stack Developer</h2>
-            </header>
-            <div className="p-8">
-              <section className="mb-8">
-                <p className="text-gray-700 leading-relaxed">
-                  Senior Full Stack Developer with extensive experience in building complex web applications,
-                  trading systems, and automation solutions. Specialized in developing scalable e-commerce platforms,
-                  custom admin systems, and innovative fintech solutions. Proven expertise in React.js, Next.js,
-                  and Node.js development with strong focus on performance and user experience.
-                </p>
-              </section>
+        </section>
 
-              <section className="mb-8">
-                <h3 className="text-2xl font-semibold text-gray-900 mb-6">Key Projects</h3>
-                <div className="grid gap-6 md:grid-cols-2">
-                  {projects.map((project, index) => (
-                    <div key={index} className="border border-gray-100 rounded-lg p-4 hover:shadow-md transition-shadow">
-                      <h4 className="font-semibold text-gray-900 mb-2">{project.title}</h4>
-                      <p className="text-gray-600 text-sm mb-3">{project.description}</p>
-                      <div className="flex flex-wrap gap-2">
-                        {project.tech.map((tech, techIndex) => (
-                          <span
-                            key={techIndex}
-                            className="px-2 py-1 bg-gray-50 text-gray-700 rounded-md text-xs border border-gray-200"
-                          >
-                            {tech}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
+        {/* CTA section */}
+        <section className="text-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-gray-800 to-gray-900 rounded-2xl border border-gray-700 shadow-lg">
+          <h2 className="text-2xl font-bold text-gray-200 mb-4">Want to Work Together?</h2>
+          <p className="text-gray-400 mb-8 max-w-2xl mx-auto">
+            I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
+          </p>
+          <Link href="/contact" 
+            className="inline-flex items-center px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors shadow-lg shadow-purple-600/20">
+            Get In Touch
+            <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </Link>
+        </section>
+      </main>
 
-              <section className="mb-8">
-                <h3 className="text-2xl font-semibold text-gray-900 mb-6">Technical Expertise</h3>
-                <div className="space-y-4">
-                  {Object.entries(skills).map(([category, skillList]) => (
-                    <div key={category} className="space-y-2">
-                      <h4 className="text-gray-700 font-medium capitalize">{category}:</h4>
-                      <div className="flex flex-wrap gap-2">
-                        {skillList.map((skill) => (
-                          <span
-                            key={skill}
-                            className="px-3 py-1 bg-gray-50 text-gray-700 rounded-md text-sm border border-gray-200"
-                          >
-                            {skill}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
-
-              <section className="mb-8">
-                <h3 className="text-2xl font-semibold text-gray-900 mb-6">Professional Experience</h3>
-                <div className="space-y-4">
-                  <div>
-                    <h4 className="font-semibold text-gray-900">Senior Full Stack Developer</h4>
-                    <p className="text-gray-600">IGH Digital | 2020 - Present</p>
-                    <ul className="mt-2 space-y-2 text-gray-700 pl-4 list-disc">
-                      <li>Architected and developed enterprise-level web applications</li>
-                      <li>Built and maintained automated trading systems and financial tools</li>
-                      <li>Developed Telegram mini apps and automation solutions</li>
-                      <li>Led development of custom e-commerce and CMS solutions</li>
-                    </ul>
-                  </div>
-                </div>
-              </section>
-
-              <section className="mb-8">
-                <h3 className="text-2xl font-semibold text-gray-900 mb-4">Education</h3>
-                <div>
-                  <h4 className="font-semibold text-gray-900">Bachelor of Computer Engineering</h4>
-                  <p className="text-gray-600">Tribhuwan University | Graduated with Honors</p>
-                </div>
-              </section>
-
-              <section>
-                <h3 className="text-2xl font-semibold text-gray-900 mb-4">Contact</h3>
-                <p className="text-gray-700">
-                  Available for consulting on complex web applications, trading systems, and automation solutions.
-                  Specialized in building scalable, high-performance applications and innovative technical solutions.
-                </p>
-              </section>
-            </div>
-          </article>
-        )}
-      </div>
-    </main>
+      {/* Footer accent */}
+      <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-purple-600 to-transparent"></div>
+    </div>
   );
 }
