@@ -58,7 +58,6 @@ const scrollToHash = (hash: string) => {
 };
 export default function HomePage() {
   const [latestPosts, setLatestPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [showCV, setShowCV] = useState(false);
   const pageTitle = "Crijan Pokhrel - Developer, Blockchain Enthusiast & Tech Blogger";
   const pageDescription = "Explore my portfolio, projects, and technical blogs. I specialize in blockchain development, software engineering, and Web3 technologies.";
@@ -85,16 +84,9 @@ export default function HomePage() {
   useEffect(() => {
     setTimeout(() => {
       setLatestPosts(getLatestPosts());
-      setLoading(false);
     }, 2000);
   }, []);
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-white">
-        <PuffLoader color="purple" size={150} />
-      </div>
-    );
-  }
+ 
   return (
     <>
       <DynamicHead
