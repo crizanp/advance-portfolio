@@ -88,7 +88,7 @@ const TitleSection = () => {
         <div className="absolute inset-0 bg-grid-white/[0.05] bg-[length:50px_50px]" />
       </div>
 
-      <div className="container mx-auto px-3 sm:px-4 relative">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 relative">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-8">
           {/* Text content */}
           <motion.div
