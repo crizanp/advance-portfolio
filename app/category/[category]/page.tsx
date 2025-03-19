@@ -81,13 +81,13 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-white">
+      <div className="flex items-center justify-center min-h-screen bg-gray-900">
         <motion.div
           initial={{ scale: 0 }}
           animate={{ scale: 1 }}
           transition={{ type: "spring", stiffness: 260, damping: 20 }}
         >
-          <PuffLoader color="#8B5CF6" size={150} />
+          <PuffLoader color="#A78BFA" size={150} />
         </motion.div>
       </div>
     );
@@ -95,13 +95,13 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
   if (error) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-white text-gray-900 px-4">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-gray-200 px-4">
         <motion.div
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           className="text-center space-y-6 max-w-2xl"
         >
-          <h2 className="text-2xl md:text-4xl font-bold text-gray-800">
+          <h2 className="text-2xl md:text-4xl font-bold text-gray-100">
             {`No Posts Found For "${category}"`}
           </h2>
           <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
@@ -125,27 +125,27 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   }
 
   return (
-    <main className="relative min-h-screen bg-white text-gray-900">
+    <main className="relative min-h-screen bg-gray-900 text-gray-200">
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-purple-900 to-blue-900 text-white">
+      <div className="relative bg-gradient-to-r from-white to-purple-100 text-gray-800">
         <div className="max-w-7xl mx-auto px-4 py-16 sm:py-24">
           <div className="relative z-10">
             <Link
               href="/#category"
               onClick={() => scrollToHash('category')}
-              className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors mb-6"
+              className="inline-flex items-center gap-2 text-gray/80 hover:text-black transition-colors mb-6"
             >
               <FiArrowLeft className="text-sm" />
               <span className="text-sm font-medium">All Categories</span>
             </Link>
             
-            <h1 className="text-4xl sm:text-5xl text-white md:text-6xl font-bold mt-4">
+            <h1 className="text-4xl sm:text-5xl text-gray-800 md:text-6xl font-bold mt-4">
               {category
                 .split("-")
                 .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                 .join(" ")}
             </h1>
-            <p className="mt-4 text-lg text-white/80">
+            <p className="mt-4 text-lg text-gray/80">
               Explore my collection of articles and insights on {category}
             </p>
           </div>
@@ -167,8 +167,8 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             className="mb-8 sm:mb-12"
           >
             <div className="flex items-center gap-3 mb-4">
-              <FiTag className="text-xl text-purple-600" />
-              <h3 className="text-lg font-semibold text-gray-700">
+              <FiTag className="text-xl text-purple-400" />
+              <h3 className="text-lg font-semibold text-gray-200">
                 Filter by Tags:
               </h3>
             </div>
@@ -178,7 +178,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                 className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${
                   !selectedTag
                     ? "bg-purple-600 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    : "bg-gray-700 text-gray-200 hover:bg-gray-600"
                 }`}
               >
                 All
@@ -190,7 +190,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                   className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${
                     selectedTag === tag
                       ? "bg-purple-600 text-white"
-                      : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                      : "bg-gray-700 text-gray-200 hover:bg-gray-600"
                   }`}
                 >
                   {tag}
@@ -208,12 +208,12 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="p-4 sm:p-6 bg-white rounded-xl shadow-lg hover:shadow-xl transition-all cursor-pointer
-                          border-2 border-purple-100 hover:border-purple-200
-                          shadow-purple-200/40 hover:shadow-purple-300/50"
+                className="p-4 sm:p-6 bg-gray-800 rounded-xl transition-all cursor-pointer
+                          border-2 border-gray-700 hover:border-purple-700
+                          shadow-purple-900/40 hover:shadow-purple-700/20"
                 onClick={() => setSelectedPostSlug(post.slug)}
               >
-                <h2 className="text-lg sm:text-xl font-bold text-gray-900 mb-2">
+                <h2 className="text-lg sm:text-xl font-bold text-gray-100 mb-2">
                   {post.title}
                 </h2>
                 {post.tags && (
@@ -221,7 +221,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                     {post.tags.map((tag) => (
                       <span
                         key={tag}
-                        className="px-2.5 py-1 text-xs font-medium bg-purple-100 text-purple-700 rounded-full"
+                        className="px-2.5 py-1 text-xs font-medium bg-gray-700 text-purple-300 rounded-full"
                       >
                         {tag}
                       </span>

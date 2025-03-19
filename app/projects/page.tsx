@@ -2,20 +2,21 @@
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronDown, ExternalLink, Github } from "lucide-react";
+import { ChevronDown, ExternalLink, Github, Star } from "lucide-react";
 
 // Internal UI Components
 const Button = React.forwardRef<
   HTMLButtonElement,
   React.ButtonHTMLAttributes<HTMLButtonElement> & {
-    variant?: "default" | "outline";
+    variant?: "default" | "outline" | "ghost";
     size?: "default" | "sm";
   }
 >(({ className = "", variant = "default", size = "default", ...props }, ref) => {
-  const baseStyle = "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors";
+  const baseStyle = "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50";
   const variants = {
-    default: "bg-purple-600 text-white hover:bg-purple-700",
-    outline: "border border-gray-300 hover:bg-gray-100"
+    default: "bg-purple-600 text-white hover:bg-purple-700 shadow-lg shadow-purple-500/20",
+    outline: "border border-purple-500 text-purple-500 bg-transparent hover:bg-purple-500/10",
+    ghost: "bg-transparent text-purple-400 hover:bg-purple-800/30"
   };
   const sizes = {
     default: "h-10 py-2 px-4",
@@ -34,15 +35,15 @@ Button.displayName = "Button";
 
 const Card = ({ className = "", ...props }) => (
   <div
-    className={`rounded-lg border border-gray-200 bg-white shadow-sm ${className}`}
+    className={`rounded-lg border border-gray-800 bg-gray-900 shadow-xl hover:shadow-purple-900/10 transition-all duration-300 ${className}`}
     {...props}
   />
 );
 
 const Badge = ({ className = "", variant = "default", ...props }) => {
   const variants = {
-    default: "bg-purple-600 text-white",
-    secondary: "bg-gray-100 text-gray-800"
+    default: "bg-purple-600 text-white shadow-lg shadow-purple-500/20",
+    secondary: "bg-gray-800 text-gray-300 border border-gray-700"
   };
   
   return (
@@ -88,7 +89,7 @@ export default function PortfolioShowcase() {
             mockup: "/images/1.png",
             description: "Frontend online shopping platform with beautiful design",
             category: "Frontend",
-            featured: true,
+            featured: false,
             liveDemo: "https://ecommercereactapp.vercel.app/",
             details: [
               { text: "React" },
@@ -108,7 +109,6 @@ export default function PortfolioShowcase() {
               { text: "Tailwind" },
               { text: "Framer Motion" },
               { text: "MongoDb" }
-
             ],
           },
           {
@@ -119,7 +119,6 @@ export default function PortfolioShowcase() {
             category: "Full Stack",
             featured: false,
             liveDemo: "https://www.srijanpokhrel.com.np/category/reading",
-
             details: [
               { text: "Next.js" },
               { text: "MongoDB" },
@@ -159,7 +158,7 @@ export default function PortfolioShowcase() {
             description: "Convert Romanized Nepali (like kasto to Unicode Devanagari (कस्तो) instantly",
             category: "Tools",
             liveDemo: "https://www.srijanpokhrel.com.np/translation",
-            featured: true,
+            featured: false,
             details: [
               { text: "Next Js" },
               { text: "sanscript" },
@@ -173,12 +172,27 @@ export default function PortfolioShowcase() {
             description: "Collaborative documentation platform with real-time editing and version control.",
             category: "Full Stack",
             liveDemo: "https://github.com/crizanp/onlinelearnal_fullstack-php",
-
             featured: false,
             details: [
               { text: "Core PHP" },
               { text: "jQuery" },
               { text: "MySQL" }
+            ],
+          },
+          {
+            id: 8,
+            title: "Tools Hub Pro",
+            mockup: "/images/project/tool-collection.png",
+            description: "Transform, convert, and optimize your files with this free online tools.",
+            category: "Full Stack",
+            liveDemo: "https://toobox-pro.vercel.app/",
+            featured: true,
+            details: [
+              { text: "JQuery" },
+              { text: "React" },
+              { text: "Node JS" },
+
+              { text: "Mongodb" }
             ],
           }
         ];
@@ -196,7 +210,12 @@ export default function PortfolioShowcase() {
   
   const filteredProjects = projects.filter(project => 
     selectedCategory === "All" || project.category === selectedCategory
-  );
+  ).sort((a, b) => {
+    // Sort by featured status (featured projects first)
+    if (a.featured && !b.featured) return -1;
+    if (!a.featured && b.featured) return 1;
+    return 0;
+  });
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -212,45 +231,89 @@ export default function PortfolioShowcase() {
     hidden: { y: 20, opacity: 0 },
     visible: {
       y: 0,
-      opacity: 1
+      opacity: 1,
+      transition: { 
+        type: "spring",
+        stiffness: 100,
+        damping: 12
+      }
     }
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="flex items-center justify-center min-h-screen bg-gray-950">
         <div className="space-y-4 text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-600 mx-auto"></div>
-          <p className="text-gray-600">Loading amazing projects...</p>
+          <p className="text-purple-400">Loading amazing projects...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <main className="p-6 sm:p-8 lg:p-12 bg-gray-50 min-h-screen">
-      <Card className="mb-12 p-6">
-        <h1 className="text-3xl font-bold text-center text-gray-800 mb-4">
-          Project Showcase
-        </h1>
-        <p className="text-center text-gray-600 max-w-3xl mx-auto mb-3">
-          Explore my portfolio of diverse projects spanning web development, design, and innovation.
-          Each project represents a unique challenge and solution.
-        </p>
-        <p className="text-center text-gray-600 max-w-3xl mx-auto mb-8"><b> Commercial project is not showcase here</b></p>
-        <div className="flex flex-wrap gap-2 justify-center text-gray-700">
-          {categories.map((category) => (
-            <Button
-              key={category}
-              variant={selectedCategory === category ? "default" : "outline"}
-              onClick={() => setSelectedCategory(category)}
-              className="rounded-full"
+    <main className="p-6 sm:p-8 lg:p-12 bg-gray-950 min-h-screen text-gray-200">
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        <Card className="mb-12 p-6 border-purple-900/50 backdrop-blur-sm bg-opacity-80 bg-gradient-to-br from-gray-900 to-gray-950">
+          <div className="text-center mb-8">
+            <motion.h1 
+              className="text-3xl md:text-4xl font-bold text-white mb-2"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
             >
-              {category}
-            </Button>
-          ))}
-        </div>
-      </Card>
+              <span className="text-white">
+                Project Showcase
+              </span>
+            </motion.h1>
+            <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto my-4 rounded-full"></div>
+            <motion.p 
+              className="text-gray-400 max-w-3xl mx-auto mb-3"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              Explore my portfolio of diverse projects spanning web development, design, and innovation.
+              Each project represents a unique challenge and solution.
+            </motion.p>
+            {/* <motion.p 
+              className="text-gray-300 max-w-3xl mx-auto font-medium italic"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              Commercial projects are not showcased here
+            </motion.p> */}
+          </div>
+          <motion.div 
+            className="flex flex-wrap gap-2 justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            {categories.map((category, index) => (
+              <motion.div
+                key={category}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 + (index * 0.1) }}
+              >
+                <Button
+                  variant={selectedCategory === category ? "default" : "outline"}
+                  onClick={() => setSelectedCategory(category)}
+                  className="rounded-full"
+                >
+                  {category}
+                </Button>
+              </motion.div>
+            ))}
+          </motion.div>
+        </Card>
+      </motion.div>
 
       <motion.div
         variants={containerVariants}
@@ -267,59 +330,67 @@ export default function PortfolioShowcase() {
               className="relative"
               onHoverStart={() => setHoveredProject(project.id)}
               onHoverEnd={() => setHoveredProject(null)}
+              whileHover={{ y: -5 }}
             >
-              <Card className="h-full overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                <div className="relative">
-                  <div className="relative h-48 bg-gray-100 overflow-hidden">
+              <Card className="h-full overflow-hidden border-gray-800 bg-gradient-to-b from-gray-900 to-gray-950">
+                <div className="relative group">
+                  <div className="relative h-48 bg-gray-900 overflow-hidden">
                     <img
                       src={project.mockup}
                       alt={project.title}
-                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
+                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900 to-transparent opacity-60"></div>
+                    
                     {project.featured && (
-                      <Badge className="absolute top-2 right-2">
-                        Featured
-                      </Badge>
+                      <div className="absolute top-2 right-2 flex items-center gap-1">
+                        <Badge className="bg-gradient-to-r from-purple-600 to-pink-600">
+                          <Star size={12} className="mr-1" /> Featured
+                        </Badge>
+                      </div>
                     )}
                   </div>
                   
-                  {hoveredProject === project.id && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="absolute inset-0 bg-black bg-opacity-60 flex items-center justify-center space-x-4"
-                    >
-                      {project.liveDemo && (
-                        <Button
-                          size="sm"
-                          className="flex items-center space-x-2"
-                          onClick={() => window.open(project.liveDemo, '_blank')}
-                        >
-                          <ExternalLink size={16} />
-                          <span>Live Demo</span>
-                        </Button>
-                      )}
-                      {project.sourceCode && (
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="flex items-center space-x-2 bg-white"
-                          onClick={() => window.open(project.sourceCode, '_blank')}
-                        >
-                          <Github size={16} />
-                          <span>Source</span>
-                        </Button>
-                      )}
-                    </motion.div>
-                  )}
+                  <AnimatePresence>
+                    {hoveredProject === project.id && (
+                      <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="absolute inset-0 bg-gradient-to-b from-purple-900/80 to-black/80 backdrop-blur-sm flex items-center justify-center space-x-4"
+                      >
+                        {project.liveDemo && (
+                          <Button
+                            size="sm"
+                            className="flex items-center space-x-2"
+                            onClick={() => window.open(project.liveDemo, '_blank')}
+                          >
+                            <ExternalLink size={16} />
+                            <span>Live Demo</span>
+                          </Button>
+                        )}
+                        {project.sourceCode && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="flex items-center space-x-2"
+                            onClick={() => window.open(project.sourceCode, '_blank')}
+                          >
+                            <Github size={16} />
+                            <span>Source</span>
+                          </Button>
+                        )}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
 
                 <div className="p-6">
-                  <h2 className="text-xl font-semibold text-gray-800 mb-2">
+                  <h2 className="text-xl font-semibold text-white mb-2 group-hover:text-purple-400 transition-colors">
                     {project.title}
                   </h2>
-                  <p className="text-gray-600 mb-4 line-clamp-3">
+                  <p className="text-gray-400 mb-4 line-clamp-3">
                     {project.description}
                   </p>
                   <div className="flex flex-wrap gap-2 mt-auto">
@@ -327,6 +398,7 @@ export default function PortfolioShowcase() {
                       <Badge
                         key={index}
                         variant="secondary"
+                        className="bg-gray-800/70 backdrop-blur-sm"
                       >
                         {detail.text}
                       </Badge>
@@ -340,15 +412,20 @@ export default function PortfolioShowcase() {
       </motion.div>
 
       {filteredProjects.length > visibleProjects && (
-        <div className="text-center mt-12">
+        <motion.div 
+          className="text-center mt-12"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8 }}
+        >
           <Button
             onClick={() => setVisibleProjects(prev => prev + ITEMS_PER_PAGE)}
-            className="flex items-center space-x-2"
+            className="flex items-center space-x-2 group"
           >
             <span>Load More Projects</span>
-            <ChevronDown size={16} />
+            <ChevronDown size={16} className="transition-transform group-hover:translate-y-1" />
           </Button>
-        </div>
+        </motion.div>
       )}
     </main>
   );

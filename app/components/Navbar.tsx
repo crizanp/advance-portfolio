@@ -9,8 +9,9 @@ export default function Navbar() {
   <div className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-purple-600 to-transparent"></div>
 
   return (
-    <nav className="relative bg-gray-900 shadow-lg sticky top-0 backdrop-blur-sm">
-      <div className="absolute inset-x-0 -bottom-px h-[2px] bg-gradient-to-r from-transparent via-purple-600 to-transparent"></div>      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+<nav className="relative bg-gray-900 shadow-lg sticky top-0 backdrop-blur-sm z-50">
+<div className="absolute inset-x-0 -bottom-px h-[2px] bg-gradient-to-r from-transparent via-purple-600 to-transparent"></div>      
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Logo and Branding */}
           <div className="flex items-center">

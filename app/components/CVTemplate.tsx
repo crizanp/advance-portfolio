@@ -154,7 +154,7 @@ const CVTemplate = () => {
             </div>
           </div>
         </div>
-      );
-    };
+    );
+};
 
 export default CVTemplate;
