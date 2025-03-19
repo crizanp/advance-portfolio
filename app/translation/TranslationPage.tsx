@@ -154,7 +154,8 @@ const TranslationPage = () => {
   }, [romanInput, inputMode]);
 
   const handleKeyboardInput = useCallback((char: string) => {
-    const textArea = inputMode === "direct" ? inputRef.current : outputRef.current;
+    const targetRef = inputMode === "direct" ? inputRef : outputRef;
+    const textArea = targetRef.current;
     
     if (!textArea) return;
     
@@ -170,7 +171,19 @@ const TranslationPage = () => {
           setRomanInput(newText);
           setUnicodeOutput(newText);
         } else {
+          // For roman mode, we need to update both fields
+          const segments = romanInput.split(/(\([^)]*\))/g);
+          const converted = segments.map(segment => {
+            if (segment.startsWith('(') && segment.endsWith(')')) {
+              return segment.slice(1, -1);
+            }
+            return Sanscript.t(segment, "itrans", "devanagari");
+          }).join('');
+          
           setUnicodeOutput(newText);
+          // Update roman input as well by converting back if possible
+          // This is a simplified approach - in reality, you might need a more sophisticated conversion
+          setRomanInput(romanInput.slice(0, romanInput.length - 1));
         }
         
         // Set cursor position
@@ -188,6 +201,11 @@ const TranslationPage = () => {
           setUnicodeOutput(newText);
         } else {
           setUnicodeOutput(newText);
+          // Update roman input - removing the corresponding part
+          const beforeLength = romanInput.length;
+          const selectionLength = end - start;
+          const newRomanInput = romanInput.slice(0, romanInput.length - selectionLength);
+          setRomanInput(newRomanInput);
         }
         
         // Set cursor position
@@ -206,6 +224,8 @@ const TranslationPage = () => {
         setUnicodeOutput(newText);
       } else {
         setUnicodeOutput(newText);
+        // For roman mode, append the character to the roman input
+        setRomanInput(romanInput + char);
       }
       
       // Set cursor position after inserted character
@@ -215,8 +235,7 @@ const TranslationPage = () => {
         textArea.focus();
       }, 0);
     }
-  }, [inputMode]);
-
+  }, [inputMode, romanInput]);
   const toggleInputMode = useCallback(() => {
     if (inputMode === "roman") {
       setInputMode("direct");
@@ -284,18 +303,18 @@ const TranslationPage = () => {
 
   if (isInitialLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-white flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 flex items-center justify-center">
         <div className="text-center">
           <motion.div
             animate={{ rotate: 360 }}
             transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
-            className="h-16 w-16 border-4 border-blue-500 border-t-transparent rounded-full mx-auto mb-6"
+            className="h-16 w-16 border-4 border-purple-500 border-t-transparent rounded-full mx-auto mb-6"
           />
           <motion.h2 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="text-xl text-blue-800"
+            className="text-xl text-purple-400"
           >
             Loading Nepali Unicode Converter...
           </motion.h2>
@@ -305,69 +324,109 @@ const TranslationPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-white via-gray-50 to-white py-12 sm:px-6 lg:px-8">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-gray-900 text-gray-100">
+      {/* Hero Section */}
+      <div className="relative bg-gradient-to-br from-purple-900 via-gray-800 to-gray-900 overflow-hidden">
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-purple-900 opacity-20"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-gray-900 to-transparent"></div>
+        </div>
+        
+        <div className="relative max-w-7xl mx-auto py-24 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center text-center">
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+          >
+            <h1 className="text-5xl sm:text-6xl font-extrabold text-white mb-6">
+              <span className="block bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-blue-300">
+                Nepali Unicode Converter
+              </span>
+            </h1>
+          </motion.div>
+          
+          <motion.p 
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="max-w-xl text-xl text-gray-300 mb-8"
+          >
+            Convert Romanized Nepali to Unicode Devanagari instantly with our powerful converter
+          </motion.p>
+          
+          <motion.div
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="flex flex-wrap justify-center gap-4"
+          >
+            <button 
+              onClick={() => {
+                inputRef.current?.focus();
+                document.getElementById('converter')?.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg shadow-lg transition-all"
+            >
+              Start Converting
+            </button>
+            <button 
+              onClick={() => setShowKeyboard(true)}
+              className="px-8 py-3 bg-gray-800 hover:bg-gray-700 text-white font-medium rounded-lg shadow-lg border border-purple-500 transition-all"
+            >
+              Open Keyboard
+            </button>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8" id="converter">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="bg-white sm:rounded-2xl shadow-2xl shadow-blue-200/50 p-6 sm:p-8 mb-8 border border-blue-100"
+          className="bg-gray-800 sm:rounded-2xl shadow-2xl shadow-purple-900/30 p-6 sm:p-8 mb-8 border border-gray-700"
         >
-          <div className="text-center mb-10">
-            <motion.div 
-              initial={{ scale: 0.9 }}
-              animate={{ scale: 1 }}
-              transition={{ type: "spring", stiffness: 300, damping: 30, delay: 0.2 }}
-            >
-              <h1 className="text-3xl sm:text-4xl font-bold text-blue-600 mb-4 flex items-center justify-center">
-                <BookOpenIcon className="h-8 w-8 sm:h-10 sm:w-10 inline-block mr-3 text-blue-500" />
-                Nepali Unicode Converter
-              </h1>
-            </motion.div>
-            <p className="text-gray-600 text-lg">
-              Convert Romanized Nepali to Unicode Devanagari instantly
-            </p>
-            {loadedWordsCount > 0 && loadedWordsCount < totalWords && (
-              <div className="mt-4 relative mx-auto max-w-md">
-                <div className="h-2 bg-gray-200 rounded-full">
-                  <div 
-                    className="h-2 bg-blue-500 rounded-full transition-all duration-500 ease-out"
-                    style={{ width: `${Math.round((loadedWordsCount / totalWords) * 100)}%` }}
-                  />
-                </div>
-                <p className="text-sm text-gray-600 mt-2">
-                  Loading dictionary: {loadedWordsCount} of {totalWords} words
-                  ({Math.round((loadedWordsCount / totalWords) * 100)}%)
-                </p>
+          {loadedWordsCount > 0 && loadedWordsCount < totalWords && (
+            <div className="mb-8 relative mx-auto max-w-md">
+              <div className="h-2 bg-gray-700 rounded-full">
+                <div 
+                  className="h-2 bg-purple-500 rounded-full transition-all duration-500 ease-out"
+                  style={{ width: `${Math.round((loadedWordsCount / totalWords) * 100)}%` }}
+                />
               </div>
-            )}
-          </div>
+              <p className="text-sm text-gray-400 mt-2">
+                Loading dictionary: {loadedWordsCount} of {totalWords} words
+                ({Math.round((loadedWordsCount / totalWords) * 100)}%)
+              </p>
+            </div>
+          )}
 
           <div className="mb-10">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Features</h2>
+            <h2 className="text-2xl font-semibold text-gray-100 mb-4">Features</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <motion.div 
                 whileHover={{ scale: 1.03 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                className="flex items-center p-4 bg-blue-50 rounded-lg text-gray-700 border border-blue-100"
+                className="flex items-center p-4 bg-gray-700 rounded-lg text-gray-100 border border-gray-600"
               >
-                <ArrowPathIcon className="h-6 w-6 text-blue-500 mr-3 flex-shrink-0" />
+                <ArrowPathIcon className="h-6 w-6 text-purple-400 mr-3 flex-shrink-0" />
                 <span>Real-time conversion with smart suggestions</span>
               </motion.div>
               <motion.div 
                 whileHover={{ scale: 1.03 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                className="flex items-center p-4 bg-blue-50 rounded-lg text-gray-700 border border-blue-100"
+                className="flex items-center p-4 bg-gray-700 rounded-lg text-gray-100 border border-gray-600"
               >
-                <ClipboardDocumentIcon className="h-6 w-6 text-blue-500 mr-3 flex-shrink-0" />
+                <ClipboardDocumentIcon className="h-6 w-6 text-purple-400 mr-3 flex-shrink-0" />
                 <span>Preserve text in parentheses (like this)</span>
               </motion.div>
               <motion.div 
                 whileHover={{ scale: 1.03 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                className="flex items-center p-4 bg-blue-50 rounded-lg text-gray-700 border border-blue-100"
+                className="flex items-center p-4 bg-gray-700 rounded-lg text-gray-100 border border-gray-600"
               >
-                <FaKeyboard className="h-6 w-6 text-blue-500 mr-3 flex-shrink-0" />
+                <FaKeyboard className="h-6 w-6 text-purple-400 mr-3 flex-shrink-0" />
                 <span>On-screen Nepali keyboard</span>
               </motion.div>
             </div>
@@ -378,7 +437,7 @@ const TranslationPage = () => {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="bg-blue-50 text-blue-800 px-4 py-3 rounded-lg mb-4 text-center border border-blue-100"
+              className="bg-purple-900/30 text-purple-200 px-4 py-3 rounded-lg mb-4 text-center border border-purple-700"
             >
               {copyMessage}
             </motion.div>
@@ -392,8 +451,8 @@ const TranslationPage = () => {
                 onClick={toggleInputMode}
                 className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors w-full sm:w-auto justify-center ${
                   inputMode === "direct" 
-                    ? "bg-blue-600 text-white" 
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    ? "bg-purple-600 text-white" 
+                    : "bg-gray-700 text-gray-200 hover:bg-gray-600"
                 }`}
               >
                 <FaKeyboard className="h-5 w-5" />
@@ -404,7 +463,7 @@ const TranslationPage = () => {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setShowKeyboard(!showKeyboard)}
-                className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-blue-700 rounded-lg hover:bg-gray-200 w-full sm:w-auto justify-center"
+                className="flex items-center gap-2 px-4 py-2 bg-gray-700 text-purple-300 rounded-lg hover:bg-gray-600 w-full sm:w-auto justify-center"
               >
                 {showKeyboard ? (
                   <>
@@ -423,22 +482,22 @@ const TranslationPage = () => {
             {inputMode === "roman" ? (
               <div>
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 gap-2">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-300">
                     Type Romanized Nepali
                   </label>
-                  <div className="flex items-center text-sm text-blue-700 bg-blue-50 px-3 py-1 rounded-full">
+                  <div className="flex items-center text-sm text-purple-300 bg-purple-900/30 px-3 py-1 rounded-full">
                     <LightBulbIcon className="h-4 w-4 mr-1" />
                     <span>Example: namaste = नमस्ते</span>
                   </div>
                 </div>
                 <div className="relative">
                   <motion.textarea
-                    initial={{ boxShadow: "0 0 0 0 rgba(59, 130, 246, 0)" }}
-                    whileFocus={{ boxShadow: "0 0 0 3px rgba(59, 130, 246, 0.3)" }}
+                    initial={{ boxShadow: "0 0 0 0 rgba(167, 139, 250, 0)" }}
+                    whileFocus={{ boxShadow: "0 0 0 3px rgba(167, 139, 250, 0.3)" }}
                     ref={inputRef}
-                    className="w-full p-4 border-2 border-blue-100 bg-white rounded-xl 
-                             focus:border-blue-300 focus:ring-0 focus:outline-none
-                             resize-none text-lg text-gray-800 placeholder-gray-500 transition-all"
+                    className="w-full p-4 border-2 border-gray-700 bg-gray-800 rounded-xl 
+                             focus:border-purple-500 focus:ring-0 focus:outline-none
+                             resize-none text-lg text-gray-100 placeholder-gray-500 transition-all"
                     placeholder="kasto chha (hello) halkhabar..."
                     value={romanInput}
                     onChange={handleInputChange}
@@ -452,8 +511,8 @@ const TranslationPage = () => {
                           whileTap={{ scale: 0.95 }}
                           key={index}
                           onClick={() => handleSuggestionClick(suggestion)}
-                          className="bg-blue-100 text-blue-800 px-3 py-1 rounded-full shadow-sm border 
-                                   border-blue-200 hover:bg-blue-200"
+                          className="bg-purple-900/60 text-purple-200 px-3 py-1 rounded-full shadow-sm border 
+                                   border-purple-700 hover:bg-purple-800"
                         >
                           {suggestion}
                         </motion.button>
@@ -464,16 +523,16 @@ const TranslationPage = () => {
               </div>
             ) : (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Type Directly in Nepali
                 </label>
                 <motion.textarea
-                  initial={{ boxShadow: "0 0 0 0 rgba(59, 130, 246, 0)" }}
-                  whileFocus={{ boxShadow: "0 0 0 3px rgba(59, 130, 246, 0.3)" }}
+                  initial={{ boxShadow: "0 0 0 0 rgba(167, 139, 250, 0)" }}
+                  whileFocus={{ boxShadow: "0 0 0 3px rgba(167, 139, 250, 0.3)" }}
                   ref={inputRef}
-                  className="w-full p-4 border-2 border-blue-100 bg-white rounded-xl
-                           focus:border-blue-300 focus:ring-0 focus:outline-none
-                           resize-none text-lg text-gray-800 placeholder-gray-500 transition-all"
+                  className="w-full p-4 border-2 border-gray-700 bg-gray-800 rounded-xl
+                           focus:border-purple-500 focus:ring-0 focus:outline-none
+                           resize-none text-lg text-gray-100 placeholder-gray-500 transition-all"
                   placeholder="यहाँ सिधै नेपाली मा टाइप गर्नुहोस्..."
                   value={romanInput}
                   onChange={handleInputChange}
@@ -483,18 +542,18 @@ const TranslationPage = () => {
             )}
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Nepali Unicode Output
               </label>
               <div className="relative">
                 <motion.textarea
-                  initial={{ boxShadow: "0 0 0 0 rgba(59, 130, 246, 0)" }}
-                  whileFocus={{ boxShadow: "0 0 0 3px rgba(59, 130, 246, 0.3)" }}
+                  initial={{ boxShadow: "0 0 0 0 rgba(167, 139, 250, 0)" }}
+                  whileFocus={{ boxShadow: "0 0 0 3px rgba(167, 139, 250, 0.3)" }}
                   ref={outputRef}
-                  className={`w-full p-4 border-2 border-blue-100 rounded-xl
-                            ${inputMode === "roman" ? "bg-gray-50" : "bg-white"}
-                            text-lg resize-none font-sans text-gray-800 focus:ring-0 focus:outline-none
-                            focus:border-blue-300 transition-all`}
+                  className={`w-full p-4 border-2 border-gray-700 rounded-xl
+                            ${inputMode === "roman" ? "bg-gray-700" : "bg-gray-800"}
+                            text-lg resize-none font-sans text-gray-100 focus:ring-0 focus:outline-none
+                            focus:border-purple-500 transition-all`}
                   value={unicodeOutput}
                   readOnly={inputMode === "roman"}
                   onChange={inputMode === "direct" ? undefined : handleInputChange}
@@ -505,7 +564,7 @@ const TranslationPage = () => {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={copyToClipboard}
-                    className="p-2 bg-blue-500 hover:bg-blue-600 rounded-lg text-white shadow-lg transition-all"
+                    className="p-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-white shadow-lg transition-all"
                   >
                     <ClipboardDocumentIcon className="h-5 w-5" />
                   </motion.button>
@@ -513,7 +572,7 @@ const TranslationPage = () => {
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
                     onClick={shareContent}
-                    className="p-2 bg-blue-500 hover:bg-blue-600 rounded-lg text-white shadow-lg transition-all"
+                    className="p-2 bg-purple-600 hover:bg-purple-700 rounded-lg text-white shadow-lg transition-all"
                   >
                     <ShareIcon className="h-5 w-5" />
                   </motion.button>
@@ -526,7 +585,7 @@ const TranslationPage = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: 20 }}
-                className="mt-6 p-4 bg-white rounded-xl border border-blue-100 shadow-sm"
+                className="mt-6 p-4 bg-gray-800 rounded-xl border border-gray-700 shadow-sm"
               >
                 <NepaliKeyboard 
                   onKeyPress={handleKeyboardInput} 
@@ -541,21 +600,21 @@ const TranslationPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white sm:rounded-2xl shadow-2xl shadow-blue-200/50 p-6 sm:p-8 border border-blue-100"
+          className="bg-gray-800 sm:rounded-2xl shadow-2xl shadow-purple-900/30 p-6 sm:p-8 border border-gray-700"
         >
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">About Nepali Unicode</h2>
-          <div className="space-y-4 text-gray-700">
+          <h2 className="text-2xl font-semibold text-gray-100 mb-4">About Nepali Unicode</h2>
+          <div className="space-y-4 text-gray-300">
             <p>
               Nepali Unicode is the standard encoding system for representing Nepali text in digital
               formats. Unlike traditional font-based systems, Unicode allows for consistent
               representation across all devices and platforms.
             </p>
             <p className="flex items-start">
-              <span className="bg-blue-500 text-white px-2 py-1 rounded text-sm font-bold mr-2 mt-0.5">TIP</span>
+              <span className="bg-purple-600 text-white px-2 py-1 rounded text-sm font-bold mr-2 mt-0.5">TIP</span>
               <span>Text inside parentheses ( ) won't be converted, making it
               perfect for keeping English words or special notations in your text.</span>
             </p>
-            <p className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+            <p className="bg-gray-700 p-4 rounded-lg border border-gray-600">
               This converter uses the ITRANS standard and contains over 10,000+ Nepali words in its
               dictionary for accurate conversions. Use the on-screen keyboard for direct input in Nepali!
             </p>
