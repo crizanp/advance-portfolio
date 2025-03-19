@@ -2,11 +2,12 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import PuffLoader from "react-spinners/PuffLoader";
 import axios from "axios";
 import PostModal from "../../components/PostModal";
-import { FiArrowLeft, FiTag } from "react-icons/fi";
+import { FiArrowLeft, FiTag, FiImage } from "react-icons/fi";
 
 interface Post {
   _id: string;
@@ -133,7 +134,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             <Link
               href="/#category"
               onClick={() => scrollToHash('category')}
-              className="inline-flex items-center gap-2 text-gray/80 hover:text-black transition-colors mb-6"
+              className="inline-flex items-center gap-2 text-gray-700 hover:text-black transition-colors mb-6"
             >
               <FiArrowLeft className="text-sm" />
               <span className="text-sm font-medium">All Categories</span>
@@ -145,7 +146,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                 .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
                 .join(" ")}
             </h1>
-            <p className="mt-4 text-lg text-gray/80">
+            <p className="mt-4 text-lg text-gray-700">
               Explore my collection of articles and insights on {category}
             </p>
           </div>
@@ -208,26 +209,42 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
-                className="p-4 sm:p-6 bg-gray-800 rounded-xl transition-all cursor-pointer
+                className="overflow-hidden rounded-xl transition-all cursor-pointer
                           border-2 border-gray-700 hover:border-purple-700
-                          shadow-purple-900/40 hover:shadow-purple-700/20"
+                          shadow-purple-900/40 hover:shadow-purple-700/20 bg-gray-800"
                 onClick={() => setSelectedPostSlug(post.slug)}
               >
-                <h2 className="text-lg sm:text-xl font-bold text-gray-100 mb-2">
-                  {post.title}
-                </h2>
-                {post.tags && (
-                  <div className="flex flex-wrap gap-2">
-                    {post.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="px-2.5 py-1 text-xs font-medium bg-gray-700 text-purple-300 rounded-full"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
+                <div className="relative h-48 w-full overflow-hidden">
+                  {post.imageUrl ? (
+                    <Image
+                      src={post.imageUrl}
+                      alt={post.title}
+                      fill
+                      className="object-cover transition-transform duration-300 hover:scale-105"
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-full w-full bg-gray-700">
+                      <FiImage className="text-gray-500 text-4xl" />
+                    </div>
+                  )}
+                </div>
+                <div className="p-4 sm:p-6">
+                  <h2 className="text-lg sm:text-xl font-bold text-gray-100 mb-2">
+                    {post.title}
+                  </h2>
+                  {post.tags && (
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {post.tags.map((tag) => (
+                        <span
+                          key={tag}
+                          className="px-2.5 py-1 text-xs font-medium bg-gray-700 text-purple-300 rounded-full"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </motion.div>
             ))}
           </div>

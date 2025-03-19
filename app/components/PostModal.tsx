@@ -17,34 +17,6 @@ import QuoteCardModal from "./QuoteCardModal";
 import React from "react";
 import { FaFacebook, FaTwitter, FaLinkedin, FaLink } from "react-icons/fa";
 import { FiShare2 } from "react-icons/fi";
-const FloatingBubbles = () => {
-  const colors = ["#93C5FD", "#F9A8D4", "#C4B5FD"];
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(3)].map((_, index) => (
-        <motion.div
-          key={index}
-          className="absolute rounded-full"
-          style={{
-            backgroundColor: colors[index % colors.length],
-            width: `${Math.random() * 80 + 40}px`,
-            height: `${Math.random() * 80 + 40}px`,
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            opacity: 0.2,
-          }}
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{
-            opacity: [0.2, 0.4, 0.2],
-            scale: [0.5, 1, 0.5],
-            transition: { duration: Math.random() * 5 + 3, repeat: Infinity },
-          }}
-        />
-      ))}
-    </div>
-  );
-};
-
 const getRawTextFromDomNode = (node) => {
   if (typeof node === "string") return node;
   if (Array.isArray(node)) return node.map(getRawTextFromDomNode).join("");
