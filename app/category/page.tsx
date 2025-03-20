@@ -1,52 +1,67 @@
 "use client";
-
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import Spinner from "../components/Spinner";
-import { FiBook, FiCode, FiCloud, FiDatabase, FiLayers, FiRss, FiServer, FiTag } from "react-icons/fi";
-
+import { FiBook, FiCode, FiCloud, FiDatabase, FiLayers, FiRss, FiServer, FiTag, FiChevronDown, FiChevronUp } from "react-icons/fi";
+const Skeleton = () => {
+  return (
+    <div className="animate-pulse">
+      <div className="grid md:grid-cols-2 gap-6">
+        {[...Array(4)].map((_, i) => (
+          <div key={i} className="bg-gray-800 rounded-xl p-6 h-32"></div>
+        ))}
+      </div>
+      <div className="mt-8">
+        <div className="bg-gray-800 h-10 w-48 rounded-lg mb-6"></div>
+        <div className="flex flex-wrap gap-3">
+          {[...Array(8)].map((_, i) => (
+            <div key={i} className="bg-gray-800 h-10 w-20 rounded-full"></div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
 const CategoryCard = ({ href, icon: Icon, title, description }) => (
   <Link href={href}>
     <motion.div
-      className="group bg-gradient-to-br from-white to-purple-50 p-6 rounded-2xl shadow-lg hover:shadow-xl transition-all border border-purple-100 hover:border-purple-200 relative overflow-hidden"
-      whileHover={{ y: -8 }}
+      className="group bg-gray-800 p-5 rounded-xl border border-gray-700 hover:border-purple-600 transition-all relative overflow-hidden h-32"
+      whileHover={{ y: -4 }}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
       <div className="flex items-start space-x-4">
-        <div className="w-14 h-14 bg-purple-500/10 rounded-xl flex items-center justify-center">
-          <Icon className="w-6 h-6 text-purple-600" />
+        <div className="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center group-hover:bg-purple-900/30 transition-colors">
+          <Icon className="w-5 h-5 text-purple-400" />
         </div>
-        <div>
-          <h3 className="text-xl font-bold text-gray-900 group-hover:text-purple-700 transition-colors">
+        <div className="flex-1">
+          <h3 className="text-lg font-bold text-gray-200 group-hover:text-purple-400 transition-colors">
             {title}
           </h3>
           {description && (
-            <p className="text-sm text-gray-600 mt-1">{description}</p>
+            <p className="text-sm text-gray-400 mt-1 line-clamp-2">{description}</p>
           )}
         </div>
       </div>
     </motion.div>
   </Link>
 );
-
 const TagPill = ({ tag }) => (
   <Link href={`/tags/${tag.toLowerCase().replace(/\s+/g, "-")}`}>
     <motion.span
-      className="px-4 py-2 bg-gradient-to-r from-purple-100 to-blue-100 text-purple-800 rounded-full text-sm hover:from-purple-200 hover:to-blue-200 transition-all cursor-pointer shadow-sm hover:shadow-md"
+      className="px-3 py-1.5 bg-gray-800 text-purple-400 rounded-full text-sm hover:bg-gray-700 transition-all cursor-pointer border border-gray-700 hover:border-purple-500"
       whileHover={{ scale: 1.05 }}
     >
       #{tag}
     </motion.span>
   </Link>
 );
-
 export default function CategoriesPage() {
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(true);
-
+  const [showAllTags, setShowAllTags] = useState(false);
+  const tagsToShowInitially = 10;
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -59,41 +74,45 @@ export default function CategoriesPage() {
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
-        setLoading(false);
+        setTimeout(() => setLoading(false), 800);
       }
     };
     fetchData();
   }, []);
-
+  const maxTagsHeight = categories.length * 66; 
+  const visibleTags = showAllTags ? tags : tags.slice(0, tagsToShowInitially);
   return (
-    <main className="min-h-screen bg-gradient-to-b from-white to-purple-50">
-      {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-purple-900 to-blue-900 text-white py-20 px-4">
-        <div className="max-w-7xl mx-auto text-center">
+    <main className="min-h-screen bg-gray-900 text-gray-300">
+      {}
+      <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-purple-600 to-transparent"></div>
+      {}
+      <div className="relative bg-gradient-to-r from-gray-900 to-gray-800 py-16 px-4 border-b border-gray-800">
+        <div className="absolute inset-0 bg-purple-900 opacity-5 pointer-events-none"></div>
+        <div className="max-w-5xl mx-auto text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl text-white md:text-6xl font-bold mb-6"
+            className="text-3xl md:text-4xl font-bold mb-4 text-gray-200"
           >
-            Explore Technical Resources
+            Find Your Tech Topic!
           </motion.h1>
-          <p className="text-xl text-purple-100 max-w-2xl mx-auto">
-          Explore about coding, software, and tech with simple and clear explanations.
+          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
+            Explore coding, software, and tech with simple and clear explanations.
           </p>
         </div>
       </div>
-
-      {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <Spinner loading={loading} />
-
-        {!loading && (
+      {}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
+        {loading ? (
+          <Skeleton />
+        ) : (
           <div className="grid lg:grid-cols-4 gap-8">
             <div className="lg:col-span-3">
-              <h2 className="text-3xl font-bold text-gray-900 mb-8">
+              <h2 className="text-2xl font-bold text-gray-200 mb-6 flex items-center">
+                <FiBook className="mr-2" />
                 Featured Categories
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 {categories.map((category, index) => (
                   <CategoryCard
                     key={index}
@@ -111,19 +130,41 @@ export default function CategoriesPage() {
                 />
               </div>
             </div>
-
-            {/* Tags Sidebar */}
+            {}
             <div className="lg:col-span-1">
-              <div className="sticky top-24 bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
-                <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center">
-                  <FiTag className="mr-2 text-purple-600" />
+              <div className="sticky top-24 bg-gray-800 p-5 rounded-xl border border-gray-700">
+                <h3 className="text-lg font-bold text-gray-200 mb-4 flex items-center">
+                  <FiTag className="mr-2" />
                   Trending Topics
                 </h3>
-                <div className="flex flex-wrap gap-3">
-                  {tags.map((tag, index) => (
+                <div 
+                  className="flex flex-wrap gap-2" 
+                  style={{ 
+                    maxHeight: showAllTags ? `${maxTagsHeight}px` : '250px', 
+                    overflowY: showAllTags ? 'auto' : 'hidden',
+                    transition: 'max-height 0.3s ease'
+                  }}
+                >
+                  {visibleTags.map((tag, index) => (
                     <TagPill key={index} tag={tag} />
                   ))}
                 </div>
+                {tags.length > tagsToShowInitially && (
+                  <button 
+                    className="mt-4 w-full py-2 flex items-center justify-center text-purple-400 hover:text-purple-300 bg-gray-700 rounded-lg border border-gray-600 transition-colors"
+                    onClick={() => setShowAllTags(!showAllTags)}
+                  >
+                    {showAllTags ? (
+                      <>
+                        <FiChevronUp className="mr-1" /> Show Less
+                      </>
+                    ) : (
+                      <>
+                        <FiChevronDown className="mr-1" /> Show More
+                      </>
+                    )}
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -132,7 +173,6 @@ export default function CategoriesPage() {
     </main>
   );
 }
-
 const getCategoryIcon = (categoryName) => {
   const icons = {
     'Web Development': FiCode,
