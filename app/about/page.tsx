@@ -203,10 +203,10 @@ export default function About() {
             <div className="relative pl-8 border-l-2 border-gray-700">
               <div className="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-purple-500"></div>
               <div className="mb-1">
-                <span className="text-purple-300 font-medium">2020 - Present</span>
+                <span className="text-purple-300 font-medium">2021 - Present</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-200">Senior Developer</h3>
-              <p className="text-gray-400">Company Name</p>
+              <p className="text-gray-400">IGH Digital Dubai</p>
               <p className="mt-2 text-gray-300">
                 Leading development efforts, mentoring junior developers, and architecting scalable solutions.
               </p>
@@ -219,7 +219,7 @@ export default function About() {
                 <span className="text-purple-300 font-medium">2018 - 2020</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-200">Web Developer</h3>
-              <p className="text-gray-400">Previous Company</p>
+              <p className="text-gray-400">Nxtech Hosting Itahari</p>
               <p className="mt-2 text-gray-300">
                 Built responsive web applications and implemented modern frontend frameworks.
               </p>
@@ -232,7 +232,7 @@ export default function About() {
                 <span className="text-purple-300 font-medium">2018 - 2023</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-200">BSc Computer Science</h3>
-              <p className="text-gray-400">University Name</p>
+              <p className="text-gray-400">Institute Of Engineering (TU)</p>
               <p className="mt-2 text-gray-300">
                 Specialized in software development and computer systems.
               </p>
