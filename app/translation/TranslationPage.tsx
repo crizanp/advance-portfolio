@@ -338,7 +338,7 @@ const TranslationPage = () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6 }}
           >
-            <h1 className="text-5xl sm:text-6xl font-extrabold text-white mb-6">
+            <h1 className="text-4xl sm:text-6xl font-extrabold text-white mb-6">
               <span className="block bg-clip-text text-transparent bg-gradient-to-r from-purple-300 to-blue-300">
                 Nepali Unicode Converter
               </span>
@@ -380,7 +380,7 @@ const TranslationPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8" id="converter">
+      <div className="max-w-5xl mx-auto py-12 sm:px-6 lg:px-8" id="converter">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
