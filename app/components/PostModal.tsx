@@ -183,7 +183,7 @@ export default function PostModal({ slug, isOpen, onClose }) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[600] flex items-center justify-center bg-gray-900/50 overflow-y-hidden">
+    <div className="fixed inset-0 z-[600] flex items-center justify-center bg-gray-900/50 overflow-y-hidden text-gray-800">
       <div className="w-full  bg-white  shadow-xl overflow-y-auto max-h-[100vh] my-8 custom-scroll">
         <motion.div
           initial={{ opacity: 0 }}
