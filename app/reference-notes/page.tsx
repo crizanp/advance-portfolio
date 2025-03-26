@@ -405,7 +405,7 @@ const NotesDetailsModal = ({ note, onClose }) => {
           <h1 className="text-2xl md:text-3xl font-bold text-center text-white mb-6">
             Engineering Reference Notes
           </h1>
-          <div className="sticky top-0 mb-3 z-40 bg-gray-800 shadow-md">
+          {/* <div className="sticky top-0 mb-3 z-40 bg-gray-800 shadow-md">
   <div className="max-w-7xl mx-auto px-2 py-2">
     <div className="flex space-x-2 overflow-x-auto">
       {referenceNotes.map((semester) => (
@@ -421,7 +421,7 @@ const NotesDetailsModal = ({ note, onClose }) => {
       ))}
     </div>
   </div>
-</div>
+</div> */}
 
           {referenceNotes.map((semester) => (
             <section 
