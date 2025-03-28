@@ -54,8 +54,8 @@ export default function NotesDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-purple-50">
-        <PuffLoader color="#6D28D9" size={150} />
+      <div className="flex items-center justify-center min-h-screen bg-gray-900">
+        <PuffLoader color="#6D28D9" size={120} />
       </div>
     );
   }
@@ -68,46 +68,26 @@ export default function NotesDetailPage() {
   ];
 
   return (
-    <main className="p-4 sm:p-6 lg:p-10 bg-gradient-to-br from-purple-50 to-white min-h-screen">
-      <nav className="mb-6">
-        <ul className="flex flex-wrap text-purple-700 text-sm space-x-2">
+    <main className="p-3 sm:p-4 lg:p-6 bg-gray-900 text-gray-100 min-h-screen">
+      <nav className="mb-4 sm:mb-6">
+        <ul className="flex flex-wrap text-purple-300 text-xs sm:text-sm space-x-1 sm:space-x-2">
           {breadcrumbItems.map((item, index) => (
             <li key={index} className="flex items-center">
-              <Link href={item.href} className="hover:underline">
+              <Link href={item.href} className="hover:text-purple-200 transition-colors">
                 {item.name}
               </Link>
               {index < breadcrumbItems.length - 1 && (
-                <span className="mx-2 text-purple-400">/</span>
+                <span className="mx-1 sm:mx-2 text-gray-600">/</span>
               )}
             </li>
           ))}
         </ul>
       </nav>
-
-      <section className="mb-10 text-center px-2 sm:px-4 lg:px-0">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="max-w-4xl mx-auto"
-        >
-          <div className="space-y-6 text-gray-700 leading-relaxed text-lg">
-            <p className="bg-white p-6 rounded-xl shadow-sm border border-purple-50 hover:shadow-md transition-shadow">
-              Studying isn't just about reading through the notes. Sure, these
-              resources will give you a strong foundation, but remember, a strong
-              foundation is just the beginning of building a great skyscraper of
-              knowledge.
-            </p>
-
-          </div>
-        </motion.div>
-      </section>
-
-      <h2 className="text-3xl sm:text-4xl font-bold text-purple-700 text-center mb-10">
+      <h2 className="text-2xl sm:text-3xl font-bold text-purple-300 text-center mb-6">
         Notes for {subjectNameStr}
       </h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {posts.length > 0 ? (
           posts.map((post) => (
             <Link
@@ -115,24 +95,24 @@ export default function NotesDetailPage() {
               key={post._id}
             >
               <motion.div
-                className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md border border-purple-50 cursor-pointer transition-all"
+                className="bg-gray-800 p-4 sm:p-5 rounded-xl shadow-sm hover:shadow-md border border-gray-700 hover:border-purple-800 cursor-pointer transition-all"
                 whileHover={{ y: -5 }}
               >
                 <div className="flex flex-col justify-between h-full">
                   <div>
-                    <h3 className="text-xl font-semibold text-purple-700 mb-4">
+                    <h3 className="text-lg sm:text-xl font-semibold text-purple-300 mb-3">
                       {post.title}
                     </h3>
-                    <p className="text-sm text-gray-600 mb-6">
+                    <p className="text-xs sm:text-sm text-gray-400 mb-4">
                       {stripHtml(post.excerpt || post.content.slice(0, 100)) +
                         "..."}
                     </p>
                   </div>
-                  <div className="text-sm text-purple-600 font-semibold flex items-center justify-between">
+                  <div className="text-xs sm:text-sm text-purple-400 font-semibold flex items-center justify-between">
                     <span>Read More</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
+                      className="h-3 w-3 sm:h-4 sm:w-4"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -150,7 +130,7 @@ export default function NotesDetailPage() {
             </Link>
           ))
         ) : (
-          <p className="text-center text-purple-700 col-span-full py-8">
+          <p className="text-center text-purple-300 col-span-full py-6">
             No posts available for this subject
           </p>
         )}
