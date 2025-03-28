@@ -45,7 +45,7 @@ export default function AddSubject() {
     }
   };
   return (
-    <div className="container mx-auto max-w-md mt-10 p-6 bg-white rounded-lg shadow-md">
+    <div className="container mx-auto max-w-md mt-10 p-6 bg-white rounded-lg shadow-md text-black">
       <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">
         Add Subject to Semester
       </h1>

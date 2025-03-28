@@ -102,7 +102,7 @@ export default function AddPostToSubject() {
     "code-block",
   ];
   return (
-    <div className="container mx-auto mt-10 p-6 bg-white shadow-md rounded-md">
+    <div className="container mx-auto mt-10 p-6 bg-white shadow-md rounded-md text-black">
       <h1 className="text-3xl font-bold mb-6 text-center">Add Post to Subject</h1>
       <form onSubmit={handleSubmit} className="mx-auto max-w-4xl">
         {}

@@ -67,7 +67,7 @@ export default function ViewSubjects() {
     }
   };
   return (
-    <div className="container mx-auto max-w-4xl mt-10 p-6 bg-white rounded-lg shadow-md">
+    <div className="container mx-auto max-w-4xl mt-10 p-6 bg-white rounded-lg shadow-md text-black">
       <h1 className="text-3xl font-bold mb-6 text-center text-blue-600">View Subjects</h1>
       <div className="mb-6">
         <label className="block text-lg font-medium text-gray-700 mb-2">Select Semester</label>

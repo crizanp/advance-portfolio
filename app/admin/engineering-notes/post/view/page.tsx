@@ -148,7 +148,7 @@ export default function ViewAllPosts() {
 
 
   return (
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto p-6 text-black">
       <h1 className="text-3xl font-bold mb-6">All Posts Management</h1>
 
       {loading ? (

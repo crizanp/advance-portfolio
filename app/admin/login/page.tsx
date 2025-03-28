@@ -30,7 +30,7 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="container mx-auto mt-10">
+    <div className="container mx-auto mt-10 text-black">
       <h1 className="text-3xl font-bold mb-6 text-center">Admin Login</h1>
       {error && <p className="text-red-500">{error}</p>}
       <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white p-8 shadow-md rounded-md">

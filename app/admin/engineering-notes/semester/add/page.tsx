@@ -48,7 +48,7 @@ export default function AddSemester() {
     }
   };
   return (
-    <div className="container mx-auto p-6">
+    <div className="container mx-auto p-6 text-black">
       <div className="bg-white shadow-md rounded-lg p-6 mb-8">
         <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">Add New Semester</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -61,7 +61,7 @@ export default function AddSemester() {
               value={semesterName}
               onChange={(e) => setSemesterName(e.target.value)}
               required
-              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-black"
               placeholder="Enter semester name"
             />
           </div>
