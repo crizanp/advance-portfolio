@@ -132,7 +132,7 @@ const TitleSection = () => {
 
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <button
-                  onClick={() => setShowCV(true)}
+                  // onClick={() => setShowCV(true)}
                   className="px-3 py-1.5 sm:px-6 sm:py-3 text-sm sm:text-base border border-purple-500 text-purple-400 rounded-md sm:rounded-lg hover:bg-purple-500/10 transition-all"
                 >
                   View CV
