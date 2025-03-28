@@ -88,8 +88,8 @@ export default function NotesDetailPage() {
           const headingId = headingText.toLowerCase().replace(/\s+/g, "-");
 
           const headingStyles = {
-            h1: "text-3xl sm:text-4xl font-black text-gray-100 border-b-4 border-purple-600 pb-2 mb-4 tracking-tight",
-            h2: "text-2xl sm:text-3xl font-extrabold text-gray-200 border-b-2 border-purple-500 pb-1 mb-3 tracking-tight",
+            h1: "text-3xl sm:text-4xl font-black text-gray-100  pb-2 mb-4 tracking-tight",
+            h2: "text-2xl sm:text-3xl font-extrabold text-gray-200  pb-1 mb-3 tracking-tight",
             h3: "text-xl sm:text-2xl font-bold text-gray-300 border-l-4 border-purple-500 pl-3 mb-2 tracking-tight"
           };
 
