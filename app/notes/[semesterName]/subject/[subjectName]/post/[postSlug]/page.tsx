@@ -3,29 +3,66 @@ import React, { useState, useEffect } from "react";
 import { useParams, notFound } from "next/navigation";
 import parse, { domToReact } from "html-react-parser";
 import Prism from "prismjs";
-import "prismjs/themes/prism.css";
+import "prismjs/themes/prism-okaidia.css"; // Dark theme Prism color scheme
 import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-css";
 import "prismjs/components/prism-markup";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLink } from "@fortawesome/free-solid-svg-icons";
+import { 
+  faLink, 
+  faCalendarAlt, 
+  faDotCircle, 
+  faCheckCircle,
+  faChevronRight 
+} from "@fortawesome/free-solid-svg-icons";
 import PuffLoader from "react-spinners/PuffLoader";
 import Link from "next/link";
 
 const FloatingBubbles = () => {
-  const colors = ["#4C51BF", "#ED64A6", "#9F7AEA"];
+  const colors = ["#6D28D9", "#9333EA", "#4338CA"];
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      
+      {colors.map((color, index) => (
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, scale: 0.5 }}
+          animate={{ 
+            opacity: [0.1, 0.3, 0.1], 
+            scale: [0.5, 1, 0.5],
+            x: [0, 50, -50, 0],
+            y: [0, -30, 30, 0]
+          }}
+          transition={{ 
+            duration: 5, 
+            repeat: Infinity, 
+            ease: "easeInOut",
+            delay: index * 1 
+          }}
+          className="absolute rounded-full blur-xl opacity-10"
+          style={{
+            width: `${Math.random() * 200 + 100}px`,
+            height: `${Math.random() * 200 + 100}px`,
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+            backgroundColor: color
+          }}
+        />
+      ))}
     </div>
   );
 };
 
 const getRawTextFromDomNode = (node) => {
-  if (typeof node === "string") return node;
-  if (Array.isArray(node)) return node.map(getRawTextFromDomNode).join("");
-  if (node?.props?.children) return getRawTextFromDomNode(node.props.children);
+  if (typeof node === "string") return node.trim();
+  if (Array.isArray(node)) {
+    const text = node.map(getRawTextFromDomNode).join("").trim();
+    return text;
+  }
+  if (node?.props?.children) {
+    const text = getRawTextFromDomNode(node.props.children).trim();
+    return text;
+  }
   return "";
 };
 
@@ -35,62 +72,111 @@ export default function NotesDetailPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [tableOfContents, setTableOfContents] = useState([]);
+  const [completedListItems, setCompletedListItems] = useState(new Set());
 
-  const customParseOptions = (headingList) => ({
-    replace: (domNode) => {
-      if (domNode.name === "a" && domNode.attribs?.href) {
-        return (
-          <a
-            href={domNode.attribs.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 underline hover:text-blue-700 transition-all"
-          >
-            {domToReact(domNode.children)}
-          </a>
-        );
-      }
+  const customParseOptions = () => {
+    const headings = [];
+    
+    return {
+      replace: (domNode) => {
+        // Custom Heading Parsing (existing code)
+        if (["h1", "h2", "h3"].includes(domNode.name)) {
+          const headingText = getRawTextFromDomNode(domToReact(domNode.children));
+          
+          if (!headingText) return null;
 
-      if (domNode.name === "blockquote") {
-        return (
-          <blockquote className="border-l-4 border-blue-500 pl-4 italic text-gray-600 my-4">
-            {domToReact(domNode.children)}
-          </blockquote>
-        );
-      }
+          const headingId = headingText.toLowerCase().replace(/\s+/g, "-");
 
-      if (domNode.attribs?.class === "ql-syntax") {
-        const codeContent = getRawTextFromDomNode(domToReact(domNode.children));
-        const language = domNode.attribs["data-language"] || "javascript";
-        const highlightedCode = Prism.highlight(
-          codeContent,
-          Prism.languages[language],
-          language
-        );
+          const headingStyles = {
+            h1: "text-3xl sm:text-4xl font-black text-gray-100 border-b-4 border-purple-600 pb-2 mb-4 tracking-tight",
+            h2: "text-2xl sm:text-3xl font-extrabold text-gray-200 border-b-2 border-purple-500 pb-1 mb-3 tracking-tight",
+            h3: "text-xl sm:text-2xl font-bold text-gray-300 border-l-4 border-purple-500 pl-3 mb-2 tracking-tight"
+          };
 
-        return (
-          <div className="relative bg-gray-100 p-4 rounded-md overflow-x-auto mb-5">
-            <pre className="text-gray-800">
-              <code dangerouslySetInnerHTML={{ __html: highlightedCode }} />
-            </pre>
-          </div>
-        );
-      }
+          headings.push({ text: headingText, id: headingId, level: domNode.name });
 
-      if (["h1", "h2", "h3"].includes(domNode.name)) {
-        const headingText = getRawTextFromDomNode(domToReact(domNode.children));
-        const headingId = headingText.toLowerCase().replace(/\s+/g, "-");
+          return (
+            <div className="w-full">
+              {React.createElement(
+                domNode.name,
+                { 
+                  id: headingId, 
+                  className: `group relative ${headingStyles[domNode.name]} ${
+                    domNode.name === 'h1' ? 'mt-6' : 
+                    domNode.name === 'h2' ? 'mt-4' : 
+                    domNode.name === 'h3' ? 'mt-3' : ''
+                  }` 
+                },
+                <>
+                  {domToReact(domNode.children)}
+                  <a 
+                    href={`#${headingId}`} 
+                    className="absolute right-0 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-400 hover:text-purple-400"
+                  >
+                    <FontAwesomeIcon icon={faLink} className="ml-2" />
+                  </a>
+                </>
+              )}
+            </div>
+          );
+        }
 
-        headingList.push({ id: headingId, text: headingText, tag: domNode.name });
+        // Custom List Item Parsing
+        if (domNode.name === 'li') {
+          const itemText = getRawTextFromDomNode(domToReact(domNode.children));
+          const itemId = itemText.toLowerCase().replace(/\s+/g, "-");
 
-        return React.createElement(
-          domNode.name,
-          { id: headingId, className: `font-bold my-2 ${domNode.name === "h1" ? "text-4xl" : domNode.name === "h2" ? "text-3xl" : "text-2xl"}` },
-          domToReact(domNode.children)
-        );
-      }
-    },
-  });
+          const toggleItemCompletion = () => {
+            setCompletedListItems(prev => {
+              const newSet = new Set(prev);
+              if (newSet.has(itemId)) {
+                newSet.delete(itemId);
+              } else {
+                newSet.add(itemId);
+              }
+              return newSet;
+            });
+          };
+
+          return (
+            <motion.li
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.3 }}
+              className={`
+                group relative pl-6 py-1 rounded-lg transition-all duration-300 
+                ${completedListItems.has(itemId) ? 'bg-purple-900/30 line-through text-gray-400' : 'hover:bg-purple-900/20'}
+                flex items-center space-x-2
+              `}
+            >
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={toggleItemCompletion}
+                className="absolute left-0 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center"
+              >
+                {completedListItems.has(itemId) ? (
+                  <FontAwesomeIcon 
+                    icon={faCheckCircle} 
+                    className="text-purple-400 group-hover:text-purple-500" 
+                  />
+                ) : (
+                  <FontAwesomeIcon 
+                    icon={faChevronRight} 
+                    className="text-purple-500 group-hover:text-purple-600" 
+                  />
+                )}
+              </motion.button>
+              <span>{domToReact(domNode.children)}</span>
+            </motion.li>
+          );
+        }
+
+        return undefined;
+      },
+      system: () => headings
+    };
+  };
 
   useEffect(() => {
     async function fetchData() {
@@ -103,9 +189,11 @@ export default function NotesDetailPage() {
         const postData = await postResponse.json();
         setPost(postData);
 
-        const headingList = [];
-        parse(postData.content, customParseOptions(headingList));
-        setTableOfContents(headingList);
+        const parseOptions = customParseOptions();
+        parse(postData.content, parseOptions);
+        const headings = parseOptions.system();
+        
+        setTableOfContents(headings);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -130,62 +218,103 @@ export default function NotesDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-white">
-        <PuffLoader color="#36D7B7" size={150} />
+      <div className="flex items-center justify-center min-h-screen bg-gray-900">
+        <PuffLoader color="#6D28D9" size={120} />
       </div>
     );
   }
 
-  if (error) return <p className="text-red-500 text-center">Error: {error}</p>;
+  if (error) return <p className="text-red-400 text-center">Error: {error}</p>;
   if (!post) return notFound();
 
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-purple-50 to-white text-gray-900 p-4 sm:p-6 lg:p-10">
+    <div className="relative min-h-screen bg-gray-900 text-gray-100 p-3 sm:p-4 lg:p-6 overflow-hidden">
       <FloatingBubbles />
 
-      <nav className="mb-6">
-        <ul className="flex flex-wrap text-gray-900 text-sm space-x-2">
+      <nav className="mb-6 relative z-10">
+        <ul className="flex flex-wrap text-gray-300 text-xs space-x-1 bg-gray-800/50 backdrop-blur-sm rounded-full px-4 py-2 shadow-md">
           {breadcrumbItems.map((item, index) => (
             <li key={index} className="flex items-center">
-              <Link href={item.href} className="hover:underline">
+              <Link 
+                href={item.href} 
+                className="hover:text-purple-400 transition-colors duration-300"
+              >
                 {item.name.replace(/%20/g, " ")}
               </Link>
               {index < breadcrumbItems.length - 1 && (
-                <span className="mx-2 text-gray-500">/</span>
+                <span className="mx-1 text-gray-600">/</span>
               )}
             </li>
           ))}
         </ul>
       </nav>
 
-      {/* Main Title */}
-      <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-5 text-center">
+      <motion.h1 
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500"
+      >
         {post.title}
-      </h1>
+      </motion.h1>
 
-      <main className="max-w-4xl mx-auto">
-        <p className="text-gray-600 mb-6 text-center">
-          {new Date(post.createdAt).toLocaleDateString()}
+      <main className="max-w-3xl mx-auto">
+        <p className="text-gray-400 mb-6 text-center flex items-center justify-center space-x-2">
+          <FontAwesomeIcon icon={faCalendarAlt} className="text-purple-500" />
+          <span className="font-medium text-sm">
+            {new Date(post.createdAt).toLocaleDateString('en-US', {
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric'
+            })}
+          </span>
         </p>
 
         {tableOfContents.length > 0 && (
-          <div className="mb-10 bg-gray-100 p-5 rounded-lg shadow-lg">
-            <h2 className="text-2xl font-bold text-gray-900 mb-4">Table of Contents</h2>
-            <ul className="space-y-2 list-disc list-inside">
+          <motion.div 
+            initial={{ opacity: 0, x: -50 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            className="mb-8 bg-gray-800 p-4 rounded-xl shadow-lg border-l-4 border-purple-600"
+          >
+            <h2 className="text-xl font-bold text-gray-100 mb-3 border-b-2 border-gray-700 pb-1">
+              Table of Contents
+            </h2>
+            <ul className="space-y-1 pl-2">
               {tableOfContents.map((heading, index) => (
-                <li key={index} className="flex items-center">
-                  <FontAwesomeIcon icon={faLink} className="text-blue-400 mr-2" />
-                  <a href={`#${heading.id}`} className="text-blue-500 hover:text-blue-700">
+                <motion.li 
+                  key={index} 
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="flex items-center space-x-2"
+                >
+                  <FontAwesomeIcon 
+                    icon={faDotCircle} 
+                    className={`text-purple-400 ${
+                      heading.level === 'h1' ? 'text-base' :
+                      heading.level === 'h2' ? 'text-sm' :
+                      'text-xs'
+                    }`} 
+                  />
+                  <a 
+                    href={`#${heading.id}`} 
+                    className={`text-blue-300 hover:text-purple-400 transition-colors duration-300 font-medium ${
+                      heading.level === 'h1' ? 'text-base' :
+                      heading.level === 'h2' ? 'text-sm' :
+                      'text-xs pl-3'
+                    }`}
+                  >
                     {heading.text}
                   </a>
-                </li>
+                </motion.li>
               ))}
             </ul>
-          </div>
+          </motion.div>
         )}
 
-        <article className="prose lg:prose-xl mx-auto">
-          {parse(post.content, customParseOptions([]))}
+        <article className="prose prose-invert lg:prose-xl mx-auto text-gray-200 leading-relaxed">
+          {parse(post.content, customParseOptions())}
         </article>
       </main>
     </div>
