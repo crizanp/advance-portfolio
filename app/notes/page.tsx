@@ -40,8 +40,9 @@ export default function NotesPage() {
     async function fetchSubjects() {
       setLoadingSubjects(true);
       try {
+        const encodedSemester = encodeURIComponent(selectedSemester);
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/semesters/${selectedSemester}/subjects`,
+          `${process.env.NEXT_PUBLIC_API_URL}/semesters/${encodedSemester}/subjects`,
           {
             method: "GET",
             headers: {
@@ -52,7 +53,7 @@ export default function NotesPage() {
 
         if (!res.ok) throw new Error("Failed to fetch subjects");
         const data = await res.json();
-        setSubjects(data);
+        setSubjects(data.subjects); // Extract subjects array from response
       } catch (error) {
         console.error("Error fetching subjects:", error);
       } finally {

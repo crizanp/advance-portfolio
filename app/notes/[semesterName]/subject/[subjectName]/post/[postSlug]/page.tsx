@@ -212,9 +212,15 @@ export default function NotesDetailPage() {
 
   const breadcrumbItems = [
     { name: "Engineering Notes", href: "/notes" },
-    { name: subjectName, href: `/notes/${semesterName}/subject/${subjectName}` },
+    { 
+      name: (subjectName as string).split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' '), 
+      href: `/notes/${semesterName}/subject/${subjectName}`
+    },
     post && { name: post.title, href: `/notes/${semesterName}/subject/${subjectName}/post/${postSlug}` },
   ].filter(Boolean);
+  
 
   if (loading) {
     return (
