@@ -190,7 +190,7 @@ export default function NotesDetailPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className="bg-gray-800/50 backdrop-blur-sm p-4 rounded-xl mb-8 shadow-lg border border-gray-700/50"
+          className=""
         >
           <div className="flex flex-col sm:flex-row gap-4 items-center">
             <div className="relative flex-grow">
