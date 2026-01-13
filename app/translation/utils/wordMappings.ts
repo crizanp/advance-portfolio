@@ -1,4 +1,4 @@
-// app/translation/utils/wordMappings.ts
+// translation/utils/wordMappings.ts
 
 export const wordMappings: Record<string, string> = {
   'k': 'के',

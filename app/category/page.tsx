@@ -26,16 +26,16 @@ const Skeleton = () => {
 const CategoryCard = ({ href, icon: Icon, title, description }) => (
   <Link href={href}>
     <motion.div
-      className="group bg-gray-800 p-5 rounded-xl border border-gray-700 hover:border-purple-600 transition-all relative overflow-hidden h-32"
+      className="group bg-gray-800 p-5 rounded-xl border border-gray-700 hover:border-gray-600 transition-all relative overflow-hidden h-32"
       whileHover={{ y: -4 }}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
       <div className="flex items-start space-x-4">
-        <div className="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center group-hover:bg-purple-900/30 transition-colors">
-          <Icon className="w-5 h-5 text-purple-400" />
+        <div className="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center group-hover:bg-gray-900/30 transition-colors">
+          <Icon className="w-5 h-5 text-gray-400" />
         </div>
         <div className="flex-1">
-          <h3 className="text-lg font-bold text-gray-200 group-hover:text-purple-400 transition-colors">
+          <h3 className="text-lg font-bold text-gray-200 group-hover:text-gray-400 transition-colors">
             {title}
           </h3>
           {description && (
@@ -49,7 +49,7 @@ const CategoryCard = ({ href, icon: Icon, title, description }) => (
 const TagPill = ({ tag }) => (
   <Link href={`/tags/${tag.toLowerCase().replace(/\s+/g, "-")}`}>
     <motion.span
-      className="px-3 py-1.5 bg-gray-800 text-purple-400 rounded-full text-sm hover:bg-gray-700 transition-all cursor-pointer border border-gray-700 hover:border-purple-500"
+      className="px-3 py-1.5 bg-gray-800 text-gray-400 rounded-full text-sm hover:bg-gray-700 transition-all cursor-pointer border border-gray-700 hover:border-gray-500"
       whileHover={{ scale: 1.05 }}
     >
       #{tag}
@@ -84,10 +84,10 @@ export default function CategoriesPage() {
   return (
     <main className="min-h-screen bg-gray-900 text-gray-300">
       {}
-      <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-purple-600 to-transparent"></div>
+      <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-gray-600 to-transparent"></div>
       {}
       <div className="relative bg-gradient-to-r from-gray-900 to-gray-800 py-16 px-4 border-b border-gray-800">
-        <div className="absolute inset-0 bg-purple-900 opacity-5 pointer-events-none"></div>
+        <div className="absolute inset-0 bg-gray-900 opacity-5 pointer-events-none"></div>
         <div className="max-w-5xl mx-auto text-center">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
@@ -151,7 +151,7 @@ export default function CategoriesPage() {
                 </div>
                 {tags.length > tagsToShowInitially && (
                   <button 
-                    className="mt-4 w-full py-2 flex items-center justify-center text-purple-400 hover:text-purple-300 bg-gray-700 rounded-lg border border-gray-600 transition-colors"
+                    className="mt-4 w-full py-2 flex items-center justify-center text-gray-400 hover:text-gray-300 bg-gray-700 rounded-lg border border-gray-600 transition-colors"
                     onClick={() => setShowAllTags(!showAllTags)}
                   >
                     {showAllTags ? (

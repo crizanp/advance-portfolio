@@ -171,7 +171,7 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz, handleDelete }) => {
         exit={{ scale: 0.95, opacity: 0 }}
         className="bg-white rounded-xl p-6 w-full max-w-3xl shadow-lg overflow-y-auto max-h-[90vh]"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center text-purple-600">Edit Quiz Question</h2>
+        <h2 className="text-2xl font-bold mb-6 text-center text-gray-600">Edit Quiz Question</h2>
 
         <form className="space-y-6">
           {/* Question Type Select */}
@@ -180,7 +180,7 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz, handleDelete }) => {
             <select
               value={formData.questionType}
               onChange={(e) => handleQuestionTypeChange(e.target.value)}
-              className="w-full p-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+              className="w-full p-3 rounded-lg focus:ring-2 focus:ring-gray-500 focus:outline-none"
               disabled={loadingTypes}
             >
               {loadingTypes ? (
@@ -201,7 +201,7 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz, handleDelete }) => {
             <select
               value={formData.subTopic}
               onChange={(e) => setFormData((prev) => ({ ...prev, subTopic: e.target.value }))}
-              className="w-full p-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+              className="w-full p-3 rounded-lg focus:ring-2 focus:ring-gray-500 focus:outline-none"
             >
               {subtopics.map((subtopic) => (
                 <option key={subtopic._id} value={subtopic.name}>
@@ -236,7 +236,7 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz, handleDelete }) => {
                   type="text"
                   value={option}
                   onChange={(e) => handleOptionChange(index, e.target.value)}
-                  className="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                  className="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:outline-none"
                   placeholder={`Option ${index + 1}`}
                 />
                 <input
@@ -300,7 +300,7 @@ const Modal = ({ isOpen, closeModal, quiz, updateQuiz, handleDelete }) => {
             <button
               type="button"
               onClick={handleSave}
-              className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+              className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
               disabled={subTopicError}
             >
               Save Changes

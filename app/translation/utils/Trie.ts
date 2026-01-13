@@ -1,4 +1,4 @@
-// app/translation/utils/Trie.ts
+// translation/utils/Trie.ts
 
 class TrieNode {
     children: Record<string, TrieNode> = {};

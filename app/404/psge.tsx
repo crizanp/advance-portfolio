@@ -12,7 +12,7 @@ export default function NotFound() {
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <div className="bg-white shadow-lg rounded-lg overflow-hidden">
           <div className="px-6 py-16">
-            <h1 className="text-9xl font-bold text-purple-500 mb-4">404</h1>
+            <h1 className="text-9xl font-bold text-gray-500 mb-4">404</h1>
             <h2 className="text-3xl font-semibold text-gray-900 mb-6">Page Not Found</h2>
             <div className="max-w-md mx-auto">
               <p className="text-lg text-gray-600 mb-8">
@@ -22,7 +22,7 @@ export default function NotFound() {
               <div className="space-y-4">
                 <button 
                   onClick={() => router.back()} 
-                  className="inline-block px-6 py-3 bg-purple-500 text-white font-semibold rounded-lg hover:bg-purple-600 transition-colors duration-200 mr-4"
+                  className="inline-block px-6 py-3 bg-gray-500 text-white font-semibold rounded-lg hover:bg-gray-600 transition-colors duration-200 mr-4"
                 >
                   Go Back
                 </button>
@@ -38,7 +38,7 @@ export default function NotFound() {
                   If you believe this is a mistake, please don't hesitate to{' '}
                   <Link 
                     href="/contact" 
-                    className="text-purple-500 hover:text-purple-600 font-medium"
+                    className="text-gray-500 hover:text-gray-600 font-medium"
                   >
                     contact us
                   </Link>

@@ -140,7 +140,7 @@ export default function About() {
   return (
     <div className="min-h-screen bg-gray-900 text-gray-300">
       {/* Gradient header accent */}
-      <div className="absolute inset-x-0 top-16 h-px bg-gradient-to-r from-transparent via-purple-600 to-transparent"></div>
+      <div className="absolute inset-x-0 top-16 h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent"></div>
       
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Hero section */}
@@ -149,7 +149,7 @@ export default function About() {
             <h1 className="text-4xl sm:text-5xl font-black tracking-tighter">
               About Me
             </h1>
-            <div className="mt-2 h-1 w-32 bg-gradient-to-r from-purple-400 to-purple-600 mx-auto rounded-full"></div>
+            <div className="mt-2 h-1 w-32 bg-gradient-to-r from-gray-400 to-gray-600 mx-auto rounded-full"></div>
             <p className="mt-6 text-lg text-gray-400 max-w-2xl mx-auto">
               Passionate developer & tech enthusiast creating tools and sharing knowledge.
             </p>
@@ -159,9 +159,9 @@ export default function About() {
         {/* Bio section */}
         <section className="grid md:grid-cols-5 gap-12 mb-16">
           <div className="md:col-span-2 flex justify-center">
-            <div className="relative w-64 h-64 rounded-2xl overflow-hidden border-2 border-purple-500 shadow-lg shadow-purple-500/20">
+            <div className="relative w-64 h-64 rounded-2xl overflow-hidden border-2 border-gray-500 shadow-lg shadow-gray-500/20">
               {/* Replace with your actual profile image */}
-              <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-3xl text-purple-400 font-bold">
+              <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center text-3xl text-gray-400 font-bold">
                 CP
               </div>
               {/* Uncomment if you have an actual image */}
@@ -184,7 +184,7 @@ export default function About() {
             <h3 className="text-xl font-semibold text-gray-200 mb-3">Tech Stack</h3>
             <div className="flex flex-wrap gap-2 mb-8">
               {['React', 'Next.js', 'JavaScript', 'TypeScript', 'Node.js', 'Tailwind CSS'].map((tech) => (
-                <span key={tech} className="px-3 py-1 bg-gray-800 text-purple-300 text-sm rounded-full border border-gray-700">
+                <span key={tech} className="px-3 py-1 bg-gray-800 text-gray-300 text-sm rounded-full border border-gray-700">
                   {tech}
                 </span>
               ))}
@@ -196,14 +196,14 @@ export default function About() {
 
         {/* Experience & Education */}
         <section className="mb-16">
-          <h2 className="text-2xl font-bold text-purple-400 mb-8">Experience & Education</h2>
+          <h2 className="text-2xl font-bold text-gray-400 mb-8">Experience & Education</h2>
           
           <div className="space-y-8">
             {/* Timeline item */}
             <div className="relative pl-8 border-l-2 border-gray-700">
-              <div className="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-purple-500"></div>
+              <div className="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-gray-500"></div>
               <div className="mb-1">
-                <span className="text-purple-300 font-medium">2021 - Present</span>
+                <span className="text-gray-300 font-medium">2021 - Present</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-200">Senior Developer</h3>
               <p className="text-gray-400">IGH Digital Dubai</p>
@@ -214,9 +214,9 @@ export default function About() {
 
             {/* Timeline item */}
             <div className="relative pl-8 border-l-2 border-gray-700">
-              <div className="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-purple-500"></div>
+              <div className="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-gray-500"></div>
               <div className="mb-1">
-                <span className="text-purple-300 font-medium">2018 - 2020</span>
+                <span className="text-gray-300 font-medium">2018 - 2020</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-200">Web Developer</h3>
               <p className="text-gray-400">Nxtech Hosting Itahari</p>
@@ -227,9 +227,9 @@ export default function About() {
 
             {/* Timeline item */}
             <div className="relative pl-8 border-l-2 border-gray-700">
-              <div className="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-purple-500"></div>
+              <div className="absolute left-[-8px] top-0 w-4 h-4 rounded-full bg-gray-500"></div>
               <div className="mb-1">
-                <span className="text-purple-300 font-medium">2018 - 2023</span>
+                <span className="text-gray-300 font-medium">2018 - 2023</span>
               </div>
               <h3 className="text-xl font-semibold text-gray-200">BSc Computer Science</h3>
               <p className="text-gray-400">Institute Of Engineering (TU)</p>
@@ -242,13 +242,13 @@ export default function About() {
 
         {/* Projects section */}
         <section className="mb-16">
-          <h2 className="text-2xl font-bold text-purple-400 mb-8">Featured Projects</h2>
+          <h2 className="text-2xl font-bold text-gray-400 mb-8">Featured Projects</h2>
           
           <div className="grid md:grid-cols-2 gap-6">
             {/* Project card */}
-            <div className="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 shadow-lg hover:shadow-purple-500/10 transition">
-              <div className="h-48 bg-gradient-to-br from-purple-900 to-gray-800 flex items-center justify-center">
-                <svg className="w-16 h-16 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <div className="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 shadow-lg hover:shadow-gray-500/10 transition">
+              <div className="h-48 bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center">
+                <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
                 </svg>
               </div>
@@ -259,12 +259,12 @@ export default function About() {
                 </p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {['React', 'Node.js', 'Tailwind'].map((tech) => (
-                    <span key={tech} className="px-2 py-1 bg-gray-700 text-xs text-purple-300 rounded-full">
+                    <span key={tech} className="px-2 py-1 bg-gray-700 text-xs text-gray-300 rounded-full">
                       {tech}
                     </span>
                   ))}
                 </div>
-                <a href="https://toobox-pro.vercel.app/" className="text-purple-400 font-medium hover:text-purple-300 inline-flex items-center">
+                <a href="https://toobox-pro.vercel.app/" className="text-gray-400 font-medium hover:text-gray-300 inline-flex items-center">
                   View Project
                   <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -274,9 +274,9 @@ export default function About() {
             </div>
 
             {/* Project card */}
-            <div className="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 shadow-lg hover:shadow-purple-500/10 transition">
-              <div className="h-48 bg-gradient-to-br from-purple-900 to-gray-800 flex items-center justify-center">
-                <svg className="w-16 h-16 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <div className="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 shadow-lg hover:shadow-gray-500/10 transition">
+              <div className="h-48 bg-gradient-to-br from-gray-900 to-gray-800 flex items-center justify-center">
+                <svg className="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
                 </svg>
               </div>
@@ -287,12 +287,12 @@ export default function About() {
                 </p>
                 <div className="flex flex-wrap gap-2 mb-4">
                   {['JAVA', 'AI', 'NLP'].map((tech) => (
-                    <span key={tech} className="px-2 py-1 bg-gray-700 text-xs text-purple-300 rounded-full">
+                    <span key={tech} className="px-2 py-1 bg-gray-700 text-xs text-gray-300 rounded-full">
                       {tech}
                     </span>
                   ))}
                 </div>
-                <a href="https://github.com/crizanp/currencydetection" className="text-purple-400 font-medium hover:text-purple-300 inline-flex items-center">
+                <a href="https://github.com/crizanp/currencydetection" className="text-gray-400 font-medium hover:text-gray-300 inline-flex items-center">
                   View Project
                   <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -310,7 +310,7 @@ export default function About() {
             I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
           </p>
           <Link href="/contact" 
-            className="inline-flex items-center px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors shadow-lg shadow-purple-600/20">
+            className="inline-flex items-center px-6 py-3 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-lg transition-colors shadow-lg shadow-gray-600/20">
             Get In Touch
             <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -320,7 +320,7 @@ export default function About() {
       </main>
 
       {/* Footer accent */}
-      <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-purple-600 to-transparent"></div>
+      <div className="absolute inset-x-0 bottom-0 h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent"></div>
     </div>
   );
 }

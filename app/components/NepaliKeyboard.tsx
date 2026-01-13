@@ -62,7 +62,7 @@ const NepaliKeyboard: React.FC<KeyboardProps> = ({ onKeyPress, className = "" })
             onClick={() => setActiveTab(tab)}
             className={`px-2 py-1 sm:px-3 sm:py-2 rounded-lg text-xs sm:text-sm font-medium flex-shrink-0 ${
               activeTab === tab
-                ? "bg-purple-700 text-white shadow-md"
+                ? "bg-gray-700 text-white shadow-md"
                 : "bg-gray-700 text-gray-300 hover:bg-gray-600"
             }`}
           >
@@ -83,7 +83,7 @@ const NepaliKeyboard: React.FC<KeyboardProps> = ({ onKeyPress, className = "" })
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleKeyboardInput(key)}
                 className="w-[8vw] h-[8vw] max-w-10 max-h-10 min-w-6 min-h-6 bg-gray-700 rounded-lg shadow 
-                           hover:bg-gray-600 active:bg-purple-800 flex items-center justify-center 
+                           hover:bg-gray-600 active:bg-gray-800 flex items-center justify-center 
                            text-gray-200 text-xs sm:text-base font-medium"
               >
                 {key}
@@ -101,7 +101,7 @@ const NepaliKeyboard: React.FC<KeyboardProps> = ({ onKeyPress, className = "" })
               onClick={key.action}
               className={`${key.width} px-2 h-10 bg-gradient-to-r ${
                 key.isActive 
-                  ? "from-purple-700 to-purple-800 text-white" 
+                  ? "from-gray-700 to-gray-800 text-white" 
                   : "from-gray-600 to-gray-700 text-gray-200"
               } rounded-lg shadow hover:brightness-110 flex items-center justify-center text-xs sm:text-sm font-medium min-w-8`}
             >

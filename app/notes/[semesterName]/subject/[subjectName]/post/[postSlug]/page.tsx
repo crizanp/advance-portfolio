@@ -90,7 +90,7 @@ export default function NotesDetailPage() {
           const headingStyles = {
             h1: "text-3xl sm:text-4xl font-black text-gray-100  pb-2 mb-4 tracking-tight",
             h2: "text-2xl sm:text-3xl font-extrabold text-gray-200  pb-1 mb-3 tracking-tight",
-            h3: "text-xl sm:text-2xl font-bold text-gray-300 border-l-4 border-purple-500 pl-3 mb-2 tracking-tight"
+            h3: "text-xl sm:text-2xl font-bold text-gray-300 border-l-4 border-gray-500 pl-3 mb-2 tracking-tight"
           };
 
           headings.push({ text: headingText, id: headingId, level: domNode.name });
@@ -111,7 +111,7 @@ export default function NotesDetailPage() {
                   {domToReact(domNode.children)}
                   <a 
                     href={`#${headingId}`} 
-                    className="absolute right-0 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-400 hover:text-purple-400"
+                    className="absolute right-0 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-400 hover:text-gray-400"
                   >
                     <FontAwesomeIcon icon={faLink} className="ml-2" />
                   </a>
@@ -145,7 +145,7 @@ export default function NotesDetailPage() {
               transition={{ duration: 0.3 }}
               className={`
                 group relative pl-6 py-1 rounded-lg transition-all duration-300 
-                ${completedListItems.has(itemId) ? 'bg-purple-900/30 line-through text-gray-400' : 'hover:bg-purple-900/20'}
+                ${completedListItems.has(itemId) ? 'bg-gray-900/30 line-through text-gray-400' : 'hover:bg-gray-900/20'}
                 flex items-center space-x-2
               `}
             >
@@ -158,12 +158,12 @@ export default function NotesDetailPage() {
                 {completedListItems.has(itemId) ? (
                   <FontAwesomeIcon 
                     icon={faCheckCircle} 
-                    className="text-purple-400 group-hover:text-purple-500" 
+                    className="text-gray-400 group-hover:text-gray-500" 
                   />
                 ) : (
                   <FontAwesomeIcon 
                     icon={faChevronRight} 
-                    className="text-purple-500 group-hover:text-purple-600" 
+                    className="text-gray-500 group-hover:text-gray-600" 
                   />
                 )}
               </motion.button>
@@ -243,7 +243,7 @@ export default function NotesDetailPage() {
             <li key={index} className="flex items-center">
               <Link 
                 href={item.href} 
-                className="hover:text-purple-400 transition-colors duration-300"
+                className="hover:text-gray-400 transition-colors duration-300"
               >
                 {item.name.replace(/%20/g, " ")}
               </Link>
@@ -259,14 +259,14 @@ export default function NotesDetailPage() {
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500"
+        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-gray-500 to-blue-500"
       >
         {post.title}
       </motion.h1>
 
       <main className="max-w-3xl mx-auto">
         <p className="text-gray-400 mb-6 text-center flex items-center justify-center space-x-2">
-          <FontAwesomeIcon icon={faCalendarAlt} className="text-purple-500" />
+          <FontAwesomeIcon icon={faCalendarAlt} className="text-gray-500" />
           <span className="font-medium text-sm">
             {new Date(post.createdAt).toLocaleDateString('en-US', {
               year: 'numeric', 
@@ -281,7 +281,7 @@ export default function NotesDetailPage() {
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="mb-8 bg-gray-800 p-4 rounded-xl shadow-lg border-l-4 border-purple-600"
+            className="mb-8 bg-gray-800 p-4 rounded-xl shadow-lg border-l-4 border-gray-600"
           >
             <h2 className="text-xl font-bold text-gray-100 mb-3 border-b-2 border-gray-700 pb-1">
               Table of Contents
@@ -297,7 +297,7 @@ export default function NotesDetailPage() {
                 >
                   <FontAwesomeIcon 
                     icon={faDotCircle} 
-                    className={`text-purple-400 ${
+                    className={`text-gray-400 ${
                       heading.level === 'h1' ? 'text-base' :
                       heading.level === 'h2' ? 'text-sm' :
                       'text-xs'
@@ -305,7 +305,7 @@ export default function NotesDetailPage() {
                   />
                   <a 
                     href={`#${heading.id}`} 
-                    className={`text-blue-300 hover:text-purple-400 transition-colors duration-300 font-medium ${
+                    className={`text-blue-300 hover:text-gray-400 transition-colors duration-300 font-medium ${
                       heading.level === 'h1' ? 'text-base' :
                       heading.level === 'h2' ? 'text-sm' :
                       'text-xs pl-3'

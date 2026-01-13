@@ -220,10 +220,10 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                     >
                         <XMarkIcon className="h-5 w-5" />
                     </button>
-                    <h3 className="text-xl font-bold text-purple-900 mb-4">Select Subtopic</h3>
+                    <h3 className="text-xl font-bold text-gray-900 mb-4">Select Subtopic</h3>
                     {subtopicsLoading ? (
                         <div className="text-center py-4">
-                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-900 mx-auto"></div>
+                            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
                         </div>
                     ) : (
                         <div className="space-y-3">
@@ -231,7 +231,7 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                                 <button
                                     key={subtopic.name}
                                     onClick={() => setSelectedSubtopic(subtopic.name)}
-                                    className="w-full bg-purple-100 hover:bg-purple-200 text-purple-900 p-2 rounded-md transition-colors text-sm sm:text-base"
+                                    className="w-full bg-gray-100 hover:bg-gray-200 text-gray-900 p-2 rounded-md transition-colors text-sm sm:text-base"
                                 >
                                     {subtopic.name}
                                 </button>
@@ -247,7 +247,7 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
             <div className="bg-white rounded-xl p-4 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                 {/* Modal content */}
                 <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg sm:text-xl font-bold mx-auto text-purple-900 truncate">
+                    <h3 className="text-lg sm:text-xl font-bold mx-auto text-gray-900 truncate">
                         {topic}
                     </h3>
                     <button
@@ -260,7 +260,7 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                 {showWarning && (
                     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
                         <div className="bg-white rounded-lg p-6 max-w-sm w-full shadow-lg">
-                            <h3 className="text-lg font-semibold text-purple-600 mb-3">
+                            <h3 className="text-lg font-semibold text-gray-600 mb-3">
                                 Changes will not be saved. Proceed anyway?
                             </h3>
                             <div className="flex justify-center">
@@ -275,7 +275,7 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                                         setShowWarning(false);
                                         onClose();
                                     }}
-                                    className="bg-purple-600 text-white p-2 rounded-md hover:bg-purple-700 text-sm"
+                                    className="bg-gray-600 text-white p-2 rounded-md hover:bg-gray-700 text-sm"
                                 >
                                     Proceed Anyway
                                 </button>
@@ -286,15 +286,15 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
 
                 {loading ? (
                     <div className="text-center py-6">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-900 mx-auto"></div>
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
                     </div>
                 ) : showResults ? (
                     <div className="space-y-4">
-                        <div className="bg-purple-100 p-4 rounded-lg text-center">
-                            <h4 className="text-lg sm:text-xl font-bold text-purple-900 mb-1">
+                        <div className="bg-gray-100 p-4 rounded-lg text-center">
+                            <h4 className="text-lg sm:text-xl font-bold text-gray-900 mb-1">
                                 {timeLeft === 0 ? "Time's Up! " : ""}Quiz Complete!
                             </h4>
-                            <p className="text-2xl sm:text-3xl font-bold text-purple-900">
+                            <p className="text-2xl sm:text-3xl font-bold text-gray-900">
                                 {score}/{questions.length}
                             </p>
                         </div>
@@ -369,14 +369,14 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                     </div>
                 ) : questions.length > 0 ? (
                     <>
-                        <div className="py-4 bg-purple-100 sm:p-6 p-2">
+                        <div className="py-4 bg-gray-100 sm:p-6 p-2">
                             <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-lg sm:text-xl font-bold text-purple-900 truncate">
+                                <h3 className="text-lg sm:text-xl font-bold text-gray-900 truncate">
                                     {selectedSubtopic}
                                 </h3>
 
                             </div>
-                            <div className="flex justify-between items-center mb-3 bg-purple-100">
+                            <div className="flex justify-between items-center mb-3 bg-gray-100">
                                 <div className="text-xs sm:text-sm text-gray-600">
                                     Time: <span className="font-semibold">{formatTime(timeLeft)}</span>
                                 </div>
@@ -385,9 +385,9 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                                 <span>Q{currentQuestion + 1}/{questions.length}</span>
                                 <span>{selectedSubtopic}</span>
                             </div>
-                            <div className="h-1.5 bg-whote border border-purple-500 rounded-full">
+                            <div className="h-1.5 bg-whote border border-gray-500 rounded-full">
                                 <motion.div
-                                    className="h-1.5 bg-purple-600 rounded-full"
+                                    className="h-1.5 bg-gray-600 rounded-full"
                                     initial={{ width: 0 }}
                                     animate={{
                                         width: `${((currentQuestion + 1) / questions.length) * 100}%`
@@ -415,7 +415,7 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                                                 key={option.text}
                                                 onClick={() => handleAnswerSelect(option.text)}
                                                 className={`p-3 text-left rounded-lg transition-all ${isSelected
-                                                    ? "bg-purple-600 text-white"
+                                                    ? "bg-gray-600 text-white"
                                                     : "bg-gray-50 hover:bg-gray-100 text-gray-700"
                                                     }`}
                                             >
@@ -433,7 +433,7 @@ export function LicenseQuizModal({ topic, onClose }: QuizModalProps) {
                             <button
                                 onClick={handleNextQuestion}
                                 disabled={selectedAnswers.length === 0}
-                                className="w-full bg-purple-600 text-white p-2 sm:p-3 rounded-md hover:bg-purple-700 disabled:bg-gray-300 text-sm sm:text-base"
+                                className="w-full bg-gray-600 text-white p-2 sm:p-3 rounded-md hover:bg-gray-700 disabled:bg-gray-300 text-sm sm:text-base"
                             >
                                 {currentQuestion === questions.length - 1 ? "Finish" : "Next"}
                             </button>

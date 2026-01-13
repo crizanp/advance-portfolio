@@ -1,3 +1,5 @@
+// hooks/useTransliterate.ts
+
 import Sanscript from "@sanskrit-coders/sanscript";
 
 export default function useTransliterate(wordMappings: Record<string, string>) {

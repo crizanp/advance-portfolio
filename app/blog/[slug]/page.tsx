@@ -106,7 +106,7 @@ const customParseOptions = (headingList, handleGenerateCard) => ({
           href={href}
           target="_blank"
           rel="noopener noreferrer"
-          className="text-purple-600 hover:text-purple-800 transition-colors"
+          className="text-gray-600 hover:text-gray-800 transition-colors"
         >
           {domToReact(domNode.children)}
         </a>
@@ -253,7 +253,7 @@ export default function BlogDetail({ params }) {
             className="hidden md:block fixed left-4 top-1/2 -translate-y-1/2 z-10"
           >
             <div className="flex flex-col gap-4 items-center bg-white p-3 rounded-2xl shadow-lg">
-              <span className="text-sm font-medium text-purple-600 flex items-center gap-1">
+              <span className="text-sm font-medium text-gray-600 flex items-center gap-1">
                 <FiShare2 /> Share
               </span>
               <div className="flex flex-col gap-3">
@@ -295,7 +295,7 @@ export default function BlogDetail({ params }) {
 
           <div className="md:hidden mb-4">
             <div className="flex items-center gap-4 bg-white p-3 rounded-lg shadow-md">
-              <span className="text-sm font-medium text-purple-600 flex items-center gap-1">
+              <span className="text-sm font-medium text-gray-600 flex items-center gap-1">
                 <FiShare2 /> Share
               </span>
               <div className="flex gap-3">

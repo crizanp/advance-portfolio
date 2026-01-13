@@ -96,7 +96,7 @@ export default function QuizModal({ onClose, onSubmit, quizData }) {
         transition={{ duration: 0.3 }}
         className="bg-white rounded-xl p-6 w-full max-w-3xl overflow-auto shadow-lg"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center text-purple-600">
+        <h2 className="text-2xl font-bold mb-6 text-center text-gray-600">
           {quizData ? "Edit Quiz Question" : "Add New Quiz Question"}
         </h2>
         <form onSubmit={handleSubmit} className="space-y-6 max-h-[80vh] overflow-y-auto">
@@ -106,7 +106,7 @@ export default function QuizModal({ onClose, onSubmit, quizData }) {
             <select
               value={formData.questionType}
               onChange={(e) => setFormData({ ...formData, questionType: e.target.value })}
-              className="w-full p-3 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+              className="w-full p-3 rounded-lg focus:ring-2 focus:ring-gray-500 focus:outline-none"
               disabled={loadingTypes}
             >
               {loadingTypes ? (
@@ -136,7 +136,7 @@ export default function QuizModal({ onClose, onSubmit, quizData }) {
                   type="text"
                   value={option}
                   onChange={(e) => handleOptionChange(index, e.target.value)}
-                  className="w-full p-3 border-2 border-gray-300 rounded-lg mb-2 focus:ring-2 focus:ring-purple-500 focus:outline-none"
+                  className="w-full p-3 border-2 border-gray-300 rounded-lg mb-2 focus:ring-2 focus:ring-gray-500 focus:outline-none"
                   required
                 />
                 <input
@@ -173,7 +173,7 @@ export default function QuizModal({ onClose, onSubmit, quizData }) {
               type="number"
               value={formData.difficulty}
               onChange={handleDifficultyChange}
-              className="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:outline-none"
+              className="w-full p-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:outline-none"
               min="1"
               max="5"
               required
@@ -185,7 +185,7 @@ export default function QuizModal({ onClose, onSubmit, quizData }) {
             <button type="button" onClick={onClose} className="px-6 py-3 text-gray-700 hover:bg-gray-200 rounded-lg transition-colors">
               Cancel
             </button>
-            <button type="submit" className="px-6 py-3 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors" disabled={difficultyError}>
+            <button type="submit" className="px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors" disabled={difficultyError}>
               Save Question
             </button>
           </div>

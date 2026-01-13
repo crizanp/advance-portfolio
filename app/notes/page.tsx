@@ -142,7 +142,7 @@ export default function NotesPage() {
                 onClick={() => setSelectedSemester(semester.name)}
                 className={`px-4 py-2 rounded-full font-medium text-sm transition-all ${
                   selectedSemester === semester.name
-                    ? "bg-purple-600 text-white shadow-lg"
+                    ? "bg-gray-600 text-white shadow-lg"
                     : "bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700"
                 }`}
               >
@@ -176,8 +176,8 @@ export default function NotesPage() {
                     }}
                   >
                     <div className="flex items-center gap-3">
-                      <div className="h-10 w-10 bg-purple-900 rounded-lg flex items-center justify-center">
-                        <span className="text-purple-300 font-bold text-lg">
+                      <div className="h-10 w-10 bg-gray-900 rounded-lg flex items-center justify-center">
+                        <span className="text-gray-300 font-bold text-lg">
                           {subject.name.charAt(0)}
                         </span>
                       </div>
@@ -185,7 +185,7 @@ export default function NotesPage() {
                         {subject.name}
                       </h2>
                     </div>
-                    <div className="mt-3 flex justify-between items-center text-xs text-purple-300">
+                    <div className="mt-3 flex justify-between items-center text-xs text-gray-300">
                       <span>View Resources</span>
                       <svg
                         xmlns="http://www.w3.org/2000/svg"

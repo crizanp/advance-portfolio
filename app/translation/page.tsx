@@ -1,4 +1,4 @@
-// app/translate/page.tsx
+// translate/page.tsx
 import TranslationPage from './TranslationPage'
 import { metadata } from './metadata'
 import { jsonLd } from './metadata'

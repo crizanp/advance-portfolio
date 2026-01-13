@@ -79,12 +79,12 @@ export default function AdminPage() {
       <div className="flex space-x-4 mb-8">
         <button
           onClick={() => setShowModal(true)}
-          className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition duration-300"
+          className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition duration-300"
         >
           Add New Question
         </button>
         <Link href="/admin/quiz/ViewAllQuizzes">
-          <button className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition duration-300">
+          <button className="bg-gray-600 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition duration-300">
             View All Quizzes
           </button>
         </Link>
@@ -103,7 +103,7 @@ export default function AdminPage() {
         {/* Total Quizzes */}
         <div className="mb-6">
           <h3 className="text-xl font-semibold text-gray-700 mb-2">Total Quizzes</h3>
-          <p className="text-3xl font-bold text-purple-600">{quizCounts.total}</p>
+          <p className="text-3xl font-bold text-gray-600">{quizCounts.total}</p>
         </div>
 
         {/* By Question Type */}
@@ -116,7 +116,7 @@ export default function AdminPage() {
                 className="bg-gray-50 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow"
               >
                 <span className="text-lg font-medium text-gray-700">{type}</span>
-                <span className="block text-2xl font-bold text-purple-600">{count}</span>
+                <span className="block text-2xl font-bold text-gray-600">{count}</span>
               </li>
             ))}
           </ul>
@@ -139,7 +139,7 @@ export default function AdminPage() {
                   <span className="text-lg font-medium text-gray-700">
                     {key.replace("_", " + Difficulty ")}
                   </span>
-                  <span className="block text-2xl font-bold text-purple-600">{count}</span>
+                  <span className="block text-2xl font-bold text-gray-600">{count}</span>
                 </li>
               ))}
             </ul>

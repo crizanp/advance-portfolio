@@ -372,7 +372,7 @@ const NotesDetailsModal = ({ note, onClose }) => {
                 key={index}
                 href={link.url} 
                 target="_blank"
-                className="w-full bg-purple-700 hover:bg-purple-600 text-white py-2 rounded-md flex items-center justify-center space-x-1 text-sm transition-colors"
+                className="w-full bg-gray-700 hover:bg-gray-600 text-white py-2 rounded-md flex items-center justify-center space-x-1 text-sm transition-colors"
               >
                 <ArrowDownTrayIcon className="h-4 w-4" />
                 <span>{link.name}</span>
@@ -412,7 +412,7 @@ const NotesDetailsModal = ({ note, onClose }) => {
         <button
           key={semester.semester}
           onClick={() => scrollToSemester(semester.semester)}
-          className="px-3 py-1.5 bg-gray-700 hover:bg-purple-700 rounded-md 
+          className="px-3 py-1.5 bg-gray-700 hover:bg-gray-700 rounded-md 
                      text-xs sm:text-sm md:text-base lg:text-lg 
                      font-medium transition-colors"
         >
@@ -448,7 +448,7 @@ const NotesDetailsModal = ({ note, onClose }) => {
                     <p className="text-gray-400 mb-1 text-xs">
                       {note.description}
                     </p>
-                    <span className="text-xs text-purple-400 font-semibold">
+                    <span className="text-xs text-gray-400 font-semibold">
                       {note.subject}
                     </span>
                   </motion.div>

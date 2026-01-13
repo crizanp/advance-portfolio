@@ -108,14 +108,14 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
             <Link
               href="/"
-              className="flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all"
+              className="flex items-center justify-center gap-2 bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition-all"
             >
               <FiArrowLeft className="text-xl" />
               Back to Home
             </Link>
             <Link
               href="/category"
-              className="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-6 rounded-lg transition-all text-center"
+              className="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition-all text-center"
             >
               Explore Categories
             </Link>
@@ -128,7 +128,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   return (
     <main className="relative min-h-screen bg-gray-900 text-gray-200">
       {/* Hero Section */}
-      <div className="relative bg-gradient-to-r from-white to-purple-100 text-gray-800">
+      <div className="relative bg-gradient-to-r from-white to-gray-100 text-gray-800">
         <div className="max-w-7xl mx-auto px-4 py-16 sm:py-24">
           <div className="relative z-10">
             <Link
@@ -168,7 +168,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
             className="mb-8 sm:mb-12"
           >
             <div className="flex items-center gap-3 mb-4">
-              <FiTag className="text-xl text-purple-400" />
+              <FiTag className="text-xl text-gray-400" />
               <h3 className="text-lg font-semibold text-gray-200">
                 Filter by Tags:
               </h3>
@@ -178,7 +178,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                 onClick={() => setSelectedTag(null)}
                 className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${
                   !selectedTag
-                    ? "bg-purple-600 text-white"
+                    ? "bg-gray-600 text-white"
                     : "bg-gray-700 text-gray-200 hover:bg-gray-600"
                 }`}
               >
@@ -190,7 +190,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                   onClick={() => setSelectedTag(tag)}
                   className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${
                     selectedTag === tag
-                      ? "bg-purple-600 text-white"
+                      ? "bg-gray-600 text-white"
                       : "bg-gray-700 text-gray-200 hover:bg-gray-600"
                   }`}
                 >
@@ -210,8 +210,8 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
                 className="overflow-hidden rounded-xl transition-all cursor-pointer
-                          border-2 border-gray-700 hover:border-purple-700
-                          shadow-purple-900/40 hover:shadow-purple-700/20 bg-gray-800"
+                          border-2 border-gray-700 hover:border-gray-700
+                          shadow-gray-900/40 hover:shadow-gray-700/20 bg-gray-800"
                 onClick={() => setSelectedPostSlug(post.slug)}
               >
                 <div className="relative h-48 w-full overflow-hidden">
@@ -237,7 +237,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
                       {post.tags.map((tag) => (
                         <span
                           key={tag}
-                          className="px-2.5 py-1 text-xs font-medium bg-gray-700 text-purple-300 rounded-full"
+                          className="px-2.5 py-1 text-xs font-medium bg-gray-700 text-gray-300 rounded-full"
                         >
                           {tag}
                         </span>

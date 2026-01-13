@@ -94,11 +94,11 @@ export default function ContactPage() {
 
   return (
     <main className="relative min-h-screen bg-gray-900 text-gray-300 px-6 py-6 sm:p-6 md:p-8 lg:p-10 xl:p-12 2xl:p-14">
-      {/* Purple gradient line at top */}
-      <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-purple-600 to-transparent"></div>
+      {/* gray gradient line at top */}
+      <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-gray-600 to-transparent"></div>
 
       <motion.h1 
-        className="text-3xl font-bold text-center mb-12 text-purple-400"
+        className="text-3xl font-bold text-center mb-12 text-gray-400"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
@@ -113,8 +113,8 @@ export default function ContactPage() {
         transition={{ duration: 0.6, delay: 0.2 }}
       >
         {/* Background accent */}
-        <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500 opacity-10 rounded-full -mr-16 -mt-16"></div>
-        <div className="absolute bottom-0 left-0 w-24 h-24 bg-purple-500 opacity-10 rounded-full -ml-12 -mb-12"></div>
+        <div className="absolute top-0 right-0 w-32 h-32 bg-gray-500 opacity-10 rounded-full -mr-16 -mt-16"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 bg-gray-500 opacity-10 rounded-full -ml-12 -mb-12"></div>
 
         {submitted ? (
           <motion.div 
@@ -124,18 +124,18 @@ export default function ContactPage() {
             transition={{ duration: 0.6 }}
           >
             <motion.div 
-              className="text-purple-400 text-6xl mb-6"
+              className="text-gray-400 text-6xl mb-6"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ type: "spring", stiffness: 200, damping: 10 }}
             >
               ✓
             </motion.div>
-            <h2 className="text-2xl font-bold text-purple-400 mb-4">Thanks for reaching out!</h2>
+            <h2 className="text-2xl font-bold text-gray-400 mb-4">Thanks for reaching out!</h2>
             <p className="text-gray-400 mb-8">I'll get back to you shortly.</p>
             <button 
               onClick={() => setSubmitted(false)}
-              className="px-6 py-3 bg-gray-700 text-purple-400 rounded-md font-semibold shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-300"
+              className="px-6 py-3 bg-gray-700 text-gray-400 rounded-md font-semibold shadow-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-300"
             >
               Send Another Message
             </button>
@@ -149,7 +149,7 @@ export default function ContactPage() {
             animate="visible"
           >
             <motion.div variants={itemVariants}>
-              <label className="block text-lg font-medium text-purple-400 mb-2">
+              <label className="block text-lg font-medium text-gray-400 mb-2">
                 Name
               </label>
               <motion.input
@@ -157,7 +157,7 @@ export default function ContactPage() {
                 name="name"
                 value={formData.name}
                 onChange={handleInputChange}
-                className="w-full p-3 rounded-md bg-gray-700 text-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-300 border border-gray-600"
+                className="w-full p-3 rounded-md bg-gray-700 text-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-300 border border-gray-600"
                 placeholder="Enter your name"
                 required
                 variants={inputVariants}
@@ -166,7 +166,7 @@ export default function ContactPage() {
             </motion.div>
             
             <motion.div variants={itemVariants}>
-              <label className="block text-lg font-medium text-purple-400 mb-2">
+              <label className="block text-lg font-medium text-gray-400 mb-2">
                 Email
               </label>
               <motion.input
@@ -174,7 +174,7 @@ export default function ContactPage() {
                 name="email"
                 value={formData.email}
                 onChange={handleInputChange}
-                className="w-full p-3 rounded-md bg-gray-700 text-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-300 border border-gray-600"
+                className="w-full p-3 rounded-md bg-gray-700 text-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-300 border border-gray-600"
                 placeholder="Enter your email"
                 required
                 variants={inputVariants}
@@ -183,7 +183,7 @@ export default function ContactPage() {
             </motion.div>
             
             <motion.div variants={itemVariants}>
-              <label className="block text-lg font-medium text-purple-400 mb-2">
+              <label className="block text-lg font-medium text-gray-400 mb-2">
                 Message
               </label>
               <motion.textarea
@@ -191,7 +191,7 @@ export default function ContactPage() {
                 value={formData.message}
                 onChange={handleInputChange}
                 rows={5}
-                className="w-full p-3 rounded-md bg-gray-700 text-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-300 border border-gray-600"
+                className="w-full p-3 rounded-md bg-gray-700 text-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-300 border border-gray-600"
                 placeholder="Write your message"
                 required
                 variants={inputVariants}
@@ -205,7 +205,7 @@ export default function ContactPage() {
             >
               <button
                 type="submit"
-                className="px-8 py-3 bg-purple-600 text-white rounded-md font-semibold shadow-lg hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition duration-300"
+                className="px-8 py-3 bg-gray-600 text-white rounded-md font-semibold shadow-lg hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 transition duration-300"
                 disabled={loading}
               >
                 {loading ? (

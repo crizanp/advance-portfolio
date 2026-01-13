@@ -12,11 +12,11 @@ const Button = React.forwardRef<
     size?: "default" | "sm";
   }
 >(({ className = "", variant = "default", size = "default", ...props }, ref) => {
-  const baseStyle = "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50";
+  const baseStyle = "inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50";
   const variants = {
-    default: "bg-purple-600 text-white hover:bg-purple-700 shadow-lg shadow-purple-500/20",
-    outline: "border border-purple-500 text-purple-500 bg-transparent hover:bg-purple-500/10",
-    ghost: "bg-transparent text-purple-400 hover:bg-purple-800/30"
+    default: "bg-gray-600 text-white hover:bg-gray-700 shadow-lg shadow-gray-500/20",
+    outline: "border border-gray-500 text-gray-500 bg-transparent hover:bg-gray-500/10",
+    ghost: "bg-transparent text-gray-400 hover:bg-gray-800/30"
   };
   const sizes = {
     default: "h-10 py-2 px-4",
@@ -35,14 +35,14 @@ Button.displayName = "Button";
 
 const Card = ({ className = "", ...props }) => (
   <div
-    className={`rounded-lg border border-gray-800 bg-gray-900 shadow-xl hover:shadow-purple-900/10 transition-all duration-300 ${className}`}
+    className={`rounded-lg border border-gray-800 bg-gray-900 shadow-xl hover:shadow-gray-900/10 transition-all duration-300 ${className}`}
     {...props}
   />
 );
 
 const Badge = ({ className = "", variant = "default", ...props }) => {
   const variants = {
-    default: "bg-purple-600 text-white shadow-lg shadow-purple-500/20",
+    default: "bg-gray-600 text-white shadow-lg shadow-gray-500/20",
     secondary: "bg-gray-800 text-gray-300 border border-gray-700"
   };
   
@@ -244,8 +244,8 @@ export default function PortfolioShowcase() {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-950">
         <div className="space-y-4 text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-purple-600 mx-auto"></div>
-          <p className="text-purple-400">Loading amazing projects...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-600 mx-auto"></div>
+          <p className="text-gray-400">Loading amazing projects...</p>
         </div>
       </div>
     );
@@ -258,7 +258,7 @@ export default function PortfolioShowcase() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <Card className="mb-12 p-6 border-purple-900/50 backdrop-blur-sm bg-opacity-80 bg-gradient-to-br from-gray-900 to-gray-950">
+        <Card className="mb-12 p-6 border-gray-900/50 backdrop-blur-sm bg-opacity-80 bg-gradient-to-br from-gray-900 to-gray-950">
           <div className="text-center mb-8">
             <motion.h1 
               className="text-3xl md:text-4xl font-bold text-white mb-2"
@@ -270,7 +270,7 @@ export default function PortfolioShowcase() {
                 Project Showcase
               </span>
             </motion.h1>
-            <div className="w-24 h-1 bg-gradient-to-r from-purple-500 to-pink-500 mx-auto my-4 rounded-full"></div>
+            <div className="w-24 h-1 bg-gradient-to-r from-gray-500 to-pink-500 mx-auto my-4 rounded-full"></div>
             <motion.p 
               className="text-gray-400 max-w-3xl mx-auto mb-3"
               initial={{ opacity: 0 }}
@@ -344,7 +344,7 @@ export default function PortfolioShowcase() {
                     
                     {project.featured && (
                       <div className="absolute top-2 right-2 flex items-center gap-1">
-                        <Badge className="bg-gradient-to-r from-purple-600 to-pink-600">
+                        <Badge className="bg-gradient-to-r from-gray-600 to-pink-600">
                           <Star size={12} className="mr-1" /> Featured
                         </Badge>
                       </div>
@@ -358,7 +358,7 @@ export default function PortfolioShowcase() {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.2 }}
-                        className="absolute inset-0 bg-gradient-to-b from-purple-900/80 to-black/80 backdrop-blur-sm flex items-center justify-center space-x-4"
+                        className="absolute inset-0 bg-gradient-to-b from-gray-900/80 to-black/80 backdrop-blur-sm flex items-center justify-center space-x-4"
                       >
                         {project.liveDemo && (
                           <Button
@@ -387,7 +387,7 @@ export default function PortfolioShowcase() {
                 </div>
 
                 <div className="p-6">
-                  <h2 className="text-xl font-semibold text-white mb-2 group-hover:text-purple-400 transition-colors">
+                  <h2 className="text-xl font-semibold text-white mb-2 group-hover:text-gray-400 transition-colors">
                     {project.title}
                   </h2>
                   <p className="text-gray-400 mb-4 line-clamp-3">

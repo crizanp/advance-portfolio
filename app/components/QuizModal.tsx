@@ -179,13 +179,13 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                     >
                         <XMarkIcon className="h-6 w-6" />
                     </button>
-                    <h3 className="text-2xl font-bold text-purple-900 mb-6">Select Difficulty</h3>
+                    <h3 className="text-2xl font-bold text-gray-900 mb-6">Select Difficulty</h3>
                     <div className="space-y-4">
                         {[1, 2, 3, 4, 5].map((level) => (
                             <button
                                 key={level}
                                 onClick={() => setSelectedDifficulty(level)}
-                                className="w-full bg-purple-100 hover:bg-purple-200 text-purple-900 p-3 rounded-lg transition-colors flex items-center gap-3"
+                                className="w-full bg-gray-100 hover:bg-gray-200 text-gray-900 p-3 rounded-lg transition-colors flex items-center gap-3"
                             >
                                 <span className="text-lg">
                                     {["🌱", "📘", "📚", "🔥", "⚡"][level - 1]}
@@ -207,7 +207,7 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
             <div className="bg-white rounded-xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto">
                 <div className="flex justify-between items-center mb-6">
-                    <h3 className="text-2xl font-bold text-purple-900">{topic} Quiz</h3>
+                    <h3 className="text-2xl font-bold text-gray-900">{topic} Quiz</h3>
                     <button
                         onClick={handleClose}
                         className="text-gray-500 hover:text-gray-700 transition-colors"
@@ -223,7 +223,7 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                 {showWarning && (
                     <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
                         <div className="bg-white rounded-lg p-6 max-w-sm w-full shadow-lg">
-                            <h3 className="text-lg font-semibold text-purple-600 mb-3">
+                            <h3 className="text-lg font-semibold text-gray-600 mb-3">
                                 Changes will not be saved. Proceed anyway?
                             </h3>
                             <div className="flex justify-center">
@@ -238,7 +238,7 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                                         setShowWarning(false);
                                         onClose();
                                     }}
-                                    className="bg-purple-600 text-white p-2 rounded-md hover:bg-purple-700 text-sm"
+                                    className="bg-gray-600 text-white p-2 rounded-md hover:bg-gray-700 text-sm"
                                 >
                                     Proceed Anyway
                                 </button>
@@ -248,15 +248,15 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                 )}
                 {loading ? (
                     <div className="text-center py-8">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-900 mx-auto"></div>
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
                     </div>
                 ) : showResults ? (
                     <div className="space-y-6">
-                        <div className="bg-purple-100 p-6 rounded-xl text-center">
-                            <h4 className="text-xl font-bold text-purple-900 mb-2">
+                        <div className="bg-gray-100 p-6 rounded-xl text-center">
+                            <h4 className="text-xl font-bold text-gray-900 mb-2">
                                 {timeLeft === 0 ? "Time's Up! " : ""}Quiz Complete!
                             </h4>
-                            <p className="text-3xl font-bold text-purple-900">
+                            <p className="text-3xl font-bold text-gray-900">
                                 Score: {score}/{questions.length}
                             </p>
                         </div>
@@ -340,7 +340,7 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                             </div>
                             <div className="h-2 bg-gray-200 rounded-full">
                                 <motion.div
-                                    className="h-2 bg-purple-600 rounded-full"
+                                    className="h-2 bg-gray-600 rounded-full"
                                     initial={{ width: 0 }}
                                     animate={{
                                         width: `${((currentQuestion + 1) / questions.length) * 100}%`
@@ -368,7 +368,7 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                                                 key={option.text}
                                                 onClick={() => handleAnswerSelect(option.text)}
                                                 className={`p-3 text-left rounded-lg transition-all ${isSelected
-                                                    ? "bg-purple-600 text-white"
+                                                    ? "bg-gray-600 text-white"
                                                     : "bg-gray-500 hover:bg-gray-400"
                                                     }`}
                                             >
@@ -386,7 +386,7 @@ export function QuizModal({ topic, onClose }: QuizModalProps) {
                             <button
                                 onClick={handleNextQuestion}
                                 disabled={selectedAnswers.length === 0}
-                                className="w-full sm:w-auto bg-purple-600 text-white p-3 rounded-lg hover:bg-purple-700 disabled:bg-gray-300 transition-colors"
+                                className="w-full sm:w-auto bg-gray-600 text-white p-3 rounded-lg hover:bg-gray-700 disabled:bg-gray-300 transition-colors"
                             >
                                 {currentQuestion === questions.length - 1 ? "Finish Quiz" : "Next Question"}
                             </button>

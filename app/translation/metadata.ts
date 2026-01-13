@@ -1,4 +1,4 @@
-// app/translate/metadata.ts
+// translate/metadata.ts
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {

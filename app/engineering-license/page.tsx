@@ -161,7 +161,7 @@ export default function EngineeringLicensePage() {
                   onClick={() => setSelectedTopic(subject.name)}
                 >
                   <div className="text-2xl xs:text-3xl mb-2 xs:mb-3">{subject.icon}</div>
-                  <h3 className="text-base xs:text-lg font-bold text-purple-400 mb-1 xs:mb-2">{subject.name}</h3>
+                  <h3 className="text-base xs:text-lg font-bold text-gray-400 mb-1 xs:mb-2">{subject.name}</h3>
                   <p className="text-xs xs:text-sm text-gray-400">{subject.description}</p>
                   <div className="mt-2 xs:mt-3 text-gray-300 hover:text-gray-200 text-xs xs:text-sm flex items-center gap-1">
                     Start Practice
@@ -190,27 +190,27 @@ export default function EngineeringLicensePage() {
         {/* Additional Resources */}
         <section className="py-12 xs:py-16 bg-gray-800">
           <div className="max-w-7xl mx-auto px-4 text-center">
-            <h2 className="text-2xl xs:text-3xl font-bold text-purple-400 mb-6 xs:mb-8">
+            <h2 className="text-2xl xs:text-3xl font-bold text-gray-400 mb-6 xs:mb-8">
               Enhanced Preparation Tools
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 xs:gap-6">
               {[
                 {
-                  icon: <BookOpenIcon className="w-8 h-8 xs:w-12 xs:h-12 text-purple-500 mx-auto mb-3 xs:mb-4" />,
+                  icon: <BookOpenIcon className="w-8 h-8 xs:w-12 xs:h-12 text-gray-500 mx-auto mb-3 xs:mb-4" />,
                   title: "NEC Computer Syllabus",
                   text: "Comprehensive coverage of topics with structured modules",
                   buttonText: "View Syllabus →",
                   href: "/nec-license-exam-computer-engineering-syllabus.pdf" 
                 },
                 {
-                  icon: <ClipboardListIcon className="w-8 h-8 xs:w-12 xs:h-12 text-purple-500 mx-auto mb-3 xs:mb-4" />,
+                  icon: <ClipboardListIcon className="w-8 h-8 xs:w-12 xs:h-12 text-gray-500 mx-auto mb-3 xs:mb-4" />,
                   title: "Reference Notes",
                   text: "Well-curated notes with key concepts and explanations",
                   buttonText: "Read Notes →",
                   href: "/reference-notes" 
                 },
                 {
-                  icon: <DocumentTextIcon className="w-8 h-8 xs:w-12 xs:h-12 text-purple-500 mx-auto mb-3 xs:mb-4" />,
+                  icon: <DocumentTextIcon className="w-8 h-8 xs:w-12 xs:h-12 text-gray-500 mx-auto mb-3 xs:mb-4" />,
                   title: "Past Questions",
                   text: "Practice with real exam questions and solutions",
                   buttonText: "Practice Now →",
@@ -219,11 +219,11 @@ export default function EngineeringLicensePage() {
               ].map((resource, idx) => (
                 <div key={idx} className="bg-gray-900 p-4 xs:p-6 rounded-xl shadow-lg">
                   {resource.icon}
-                  <h3 className="text-lg xs:text-xl font-bold mb-2 xs:mb-3 text-purple-400">{resource.title}</h3>
+                  <h3 className="text-lg xs:text-xl font-bold mb-2 xs:mb-3 text-gray-400">{resource.title}</h3>
                   <p className="text-xs xs:text-sm text-gray-400 mb-3 xs:mb-4">{resource.text}</p>
                   <Link
                     href={resource.href}
-                    className="text-purple-500 hover:text-purple-300 font-medium text-xs xs:text-sm"
+                    className="text-gray-500 hover:text-gray-300 font-medium text-xs xs:text-sm"
                   >
                     {resource.buttonText}
                   </Link>

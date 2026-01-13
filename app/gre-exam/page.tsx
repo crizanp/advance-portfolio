@@ -29,7 +29,7 @@ const greTopics = [
     icon: "🧮",
     description: "Master algebra, geometry, and data analysis",
     link: "/math",
-    color: "bg-purple-100"
+    color: "bg-gray-100"
   }
 ];
 
@@ -50,7 +50,7 @@ export default function HomePage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-white">
-        <PuffLoader color="purple" size={150} />
+        <PuffLoader color="gray" size={150} />
       </div>
     );
   }
@@ -62,9 +62,9 @@ export default function HomePage() {
         <meta name="description" content="Comprehensive GRE preparation resources with practice tests, study guides, and progress tracking" />
       </Head>
 
-      <main className="min-h-screen bg-gradient-to-br from-white to-purple-50">
+      <main className="min-h-screen bg-gradient-to-br from-white to-gray-50">
 
-        <section className="py-16 px-4 bg-gradient-to-r from-purple-50 to-blue-50 text-gray-800">
+        <section className="py-16 px-4 bg-gradient-to-r from-gray-50 to-blue-50 text-gray-800">
         <div className="max-w-7xl mx-auto text-center px-4 sm:px-6 lg:px-8">
   <motion.h1
     initial={{ opacity: 0, y: 20 }}
@@ -72,7 +72,7 @@ export default function HomePage() {
     className="text-4xl text-gray-700 sm:text-5xl md:text-6xl font-bold mb-6 leading-tight"
   >
     Conquer the GRE <br />
-    <span className="text-purple-600 ">Smart Preparation System</span>
+    <span className="text-gray-600 ">Smart Preparation System</span>
   </motion.h1>
   <p className="text-xs sm:text-sm md:text-base text-gray-700 max-w-2xl mx-auto mb-8">
     Join over 250,000 students who boosted their GRE scores with our advanced platform. Challenge yourself with timed exercises and get instant feedback to track your progress across all sections.
@@ -111,7 +111,7 @@ export default function HomePage() {
                   <div className="text-4xl mb-4">{topic.icon}</div>
                   <h3 className="text-xl font-bold text-gray-900 mb-2">{topic.name}</h3>
                   <p className="text-gray-600 mb-4">{topic.description}</p>
-                  <div className="text-purple-600 hover:text-purple-800 font-medium flex items-center gap-2">
+                  <div className="text-gray-600 hover:text-gray-800 font-medium flex items-center gap-2">
                     Take Test
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -137,14 +137,14 @@ export default function HomePage() {
 
         <section className="py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center text-purple-900 mb-12">
+            <h2 className="text-3xl font-bold text-center text-gray-900 mb-12">
               GRE Exam Structure
             </h2>
 
             <div className="grid md:grid-cols-3 gap-8">
               {examStructure.map((section, idx) => (
-                <div key={idx} className="bg-purple-50 p-6 rounded-xl border border-purple-200">
-                  <h3 className="text-xl font-bold text-purple-900 mb-4">
+                <div key={idx} className="bg-gray-50 p-6 rounded-xl border border-gray-200">
+                  <h3 className="text-xl font-bold text-gray-900 mb-4">
                     {section.section}
                   </h3>
                   <div className="space-y-2">
@@ -157,7 +157,7 @@ export default function HomePage() {
                       <span className="font-semibold text-gray-600">{section.time}</span>
                     </div>
                   </div>
-                  <div className="mt-4 text-sm text-purple-600">
+                  <div className="mt-4 text-sm text-gray-600">
                     {section.section === 'Analytical Writing' ? (
                       'Evaluate arguments and articulate complex ideas'
                     ) : (

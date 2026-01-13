@@ -40,7 +40,7 @@ export default function Footer() {
               Software engineer with expertise in modern web technologies, passionate about building scalable and user-friendly applications.
             </p>
             <div className="mb-4">
-              <Link href="/about" className="text-purple-400 hover:text-purple-300 text-sm flex items-center">
+              <Link href="/about" className="text-gray-400 hover:text-gray-300 text-sm flex items-center">
                 <span>More about me</span>
                 <FaArrowRight className="ml-1 h-3 w-3" />
               </Link>
@@ -92,32 +92,32 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3">
               <li className="flex items-center">
-                <FaGlobe className="h-3 w-3 text-purple-500 mr-2" />
-                <Link href="/category" className="text-gray-500 hover:text-purple-400 transition-colors duration-300 text-sm">
+                <FaGlobe className="h-3 w-3 text-gray-500 mr-2" />
+                <Link href="/category" className="text-gray-500 hover:text-gray-400 transition-colors duration-300 text-sm">
                   Category
                 </Link>
               </li>
               <li className="flex items-center">
-                <FaCode className="h-3 w-3 text-purple-500 mr-2" />
-                <Link href="/codecleaner" className="text-gray-500 hover:text-purple-400 transition-colors duration-300 text-sm">
+                <FaCode className="h-3 w-3 text-gray-500 mr-2" />
+                <Link href="/codecleaner" className="text-gray-500 hover:text-gray-400 transition-colors duration-300 text-sm">
                   Code Cleaner
                 </Link>
               </li>
               <li className="flex items-center">
-                <FaFileAlt className="h-3 w-3 text-purple-500 mr-2" />
-                <Link href="/projects" className="text-gray-500 hover:text-purple-400 transition-colors duration-300 text-sm">
+                <FaFileAlt className="h-3 w-3 text-gray-500 mr-2" />
+                <Link href="/projects" className="text-gray-500 hover:text-gray-400 transition-colors duration-300 text-sm">
                   Projects
                 </Link>
               </li>
               <li className="flex items-center">
-                <FaBook className="h-3 w-3 text-purple-500 mr-2" />
-                <Link href="/notes" className="text-gray-500 hover:text-purple-400 transition-colors duration-300 text-sm">
+                <FaBook className="h-3 w-3 text-gray-500 mr-2" />
+                <Link href="/notes" className="text-gray-500 hover:text-gray-400 transition-colors duration-300 text-sm">
                   Engineering Notes
                 </Link>
               </li>
               <li className="flex items-center">
-                <FaEnvelope className="h-3 w-3 text-purple-500 mr-2" />
-                <Link href="/contact" className="text-gray-500 hover:text-purple-400 transition-colors duration-300 text-sm">
+                <FaEnvelope className="h-3 w-3 text-gray-500 mr-2" />
+                <Link href="/contact" className="text-gray-500 hover:text-gray-400 transition-colors duration-300 text-sm">
                   Contact
                 </Link>
               </li>
@@ -131,32 +131,32 @@ export default function Footer() {
             </h3>
             <ul className="space-y-3">
               <li className="flex items-center">
-                <FaFileAlt className="h-3 w-3 text-purple-500 mr-2" />
-                <Link href="/engineering-license" className="text-gray-500 hover:text-purple-400 transition-colors duration-300 text-sm">
+                <FaFileAlt className="h-3 w-3 text-gray-500 mr-2" />
+                <Link href="/engineering-license" className="text-gray-500 hover:text-gray-400 transition-colors duration-300 text-sm">
                   Engineering License
                 </Link>
               </li>
               <li className="flex items-center">
-                <FaFileAlt className="h-3 w-3 text-purple-500 mr-2" />
-                <Link href="/gre-exam" className="text-gray-500 hover:text-purple-400 transition-colors duration-300 text-sm">
+                <FaFileAlt className="h-3 w-3 text-gray-500 mr-2" />
+                <Link href="/gre-exam" className="text-gray-500 hover:text-gray-400 transition-colors duration-300 text-sm">
                   GRE Practice
                 </Link>
               </li>
               <li className="flex items-center">
-                <FaBook className="h-3 w-3 text-purple-500 mr-2" />
-                <Link href="http://srijanpokhrel.com.np/nec-license-exam-computer-engineering-syllabus.pdf" className="text-gray-500 hover:text-purple-400 transition-colors duration-300 text-sm">
+                <FaBook className="h-3 w-3 text-gray-500 mr-2" />
+                <Link href="http://srijanpokhrel.com.np/nec-license-exam-computer-engineering-syllabus.pdf" className="text-gray-500 hover:text-gray-400 transition-colors duration-300 text-sm">
                   NEC Syllabus
                 </Link>
               </li>
               <li className="flex items-center">
-                <FaGlobe className="h-3 w-3 text-purple-500 mr-2" />
-                <Link href="/translation" className="text-gray-500 hover:text-purple-400 transition-colors duration-300 text-sm">
+                <FaGlobe className="h-3 w-3 text-gray-500 mr-2" />
+                <Link href="/translation" className="text-gray-500 hover:text-gray-400 transition-colors duration-300 text-sm">
                   Nepali Unicode
                 </Link>
               </li>
               <li className="flex items-center">
-                <FaRss className="h-3 w-3 text-purple-500 mr-2" />
-                <Link href="/category/reading" className="text-gray-500 hover:text-purple-400 transition-colors duration-300 text-sm">
+                <FaRss className="h-3 w-3 text-gray-500 mr-2" />
+                <Link href="/category/reading" className="text-gray-500 hover:text-gray-400 transition-colors duration-300 text-sm">
                   Reading
                 </Link>
               </li>
@@ -172,7 +172,7 @@ export default function Footer() {
               Subscribe to receive updates on latest projects and articles.
             </p>
             {subscribed ? (
-              <div className="px-4 py-3 bg-purple-900/30 border border-purple-700 rounded-md text-purple-300 text-sm">
+              <div className="px-4 py-3 bg-gray-900/30 border border-gray-700 rounded-md text-gray-300 text-sm">
                 Thank you for subscribing!
               </div>
             ) : (
@@ -182,12 +182,12 @@ export default function Footer() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Your email address"
-                  className="w-full px-3 py-2 bg-gray-900 border border-gray-800 rounded-md focus:outline-none focus:ring-1 focus:ring-purple-500 text-gray-400 text-sm"
+                  className="w-full px-3 py-2 bg-gray-900 border border-gray-800 rounded-md focus:outline-none focus:ring-1 focus:ring-gray-500 text-gray-400 text-sm"
                   required
                 />
                 <button
                   type="submit"
-                  className="w-full px-3 py-2 bg-purple-900 hover:bg-purple-800 text-white rounded-md transition-colors duration-300 text-sm flex items-center justify-center"
+                  className="w-full px-3 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-md transition-colors duration-300 text-sm flex items-center justify-center"
                 >
                   Subscribe
                   <FaArrowRight className="ml-2 h-3 w-3" />
@@ -203,13 +203,13 @@ export default function Footer() {
             &copy; {new Date().getFullYear()} Crizan Pokhrel. All Rights Reserved.
           </p>
           <div className="flex justify-center space-x-4 mt-2">
-            <Link href="#" className="text-gray-500 hover:text-purple-400 transition-colors text-xs">
+            <Link href="#" className="text-gray-500 hover:text-gray-400 transition-colors text-xs">
               Privacy Policy
             </Link>
-            <Link href="#" className="text-gray-500 hover:text-purple-400 transition-colors text-xs">
+            <Link href="#" className="text-gray-500 hover:text-gray-400 transition-colors text-xs">
               Terms of Service
             </Link>
-            <Link href="#" className="text-gray-500 hover:text-purple-400 transition-colors text-xs">
+            <Link href="#" className="text-gray-500 hover:text-gray-400 transition-colors text-xs">
               Sitemap
             </Link>
           </div>

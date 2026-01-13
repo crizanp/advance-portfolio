@@ -132,7 +132,7 @@ export default function BCTQuestionTypeModal({ onClose }) {
             </button>
             <button
               type="submit"
-              className="bg-purple-600 text-white px-4 py-2 rounded"
+              className="bg-gray-600 text-white px-4 py-2 rounded"
             >
               {editingType ? 'Update' : 'Add'} Type
             </button>

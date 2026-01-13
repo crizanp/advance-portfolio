@@ -44,13 +44,13 @@ const PDFViewer = ({ pdfUrl, onClose }) => {
           <div className="flex space-x-2">
             <button 
               onClick={handleZoomOut} 
-              className="bg-gray-700 hover:bg-purple-700 p-2 rounded-full"
+              className="bg-gray-700 hover:bg-gray-700 p-2 rounded-full"
             >
               <ZoomOutIcon className="h-5 w-5 text-white" />
             </button>
             <button 
               onClick={handleZoomIn} 
-              className="bg-gray-700 hover:bg-purple-700 p-2 rounded-full"
+              className="bg-gray-700 hover:bg-gray-700 p-2 rounded-full"
             >
               <ZoomInIcon className="h-5 w-5 text-white" />
             </button>
@@ -59,7 +59,7 @@ const PDFViewer = ({ pdfUrl, onClose }) => {
             <button 
               onClick={handlePrevPage} 
               disabled={page === 1}
-              className="bg-gray-700 hover:bg-purple-700 p-2 rounded-full disabled:opacity-50"
+              className="bg-gray-700 hover:bg-gray-700 p-2 rounded-full disabled:opacity-50"
             >
               <ArrowLeftIcon className="h-5 w-5 text-white" />
             </button>
@@ -67,7 +67,7 @@ const PDFViewer = ({ pdfUrl, onClose }) => {
             <button 
               onClick={handleNextPage} 
               disabled={page === totalPages}
-              className="bg-gray-700 hover:bg-purple-700 p-2 rounded-full disabled:opacity-50"
+              className="bg-gray-700 hover:bg-gray-700 p-2 rounded-full disabled:opacity-50"
             >
               <ArrowRightIcon className="h-5 w-5 text-white" />
             </button>
@@ -123,7 +123,7 @@ const NotesDetailsModal = ({ note, onClose }) => {
               <button 
                 key={index}
                 onClick={() => setSelectedPdf(link.url)}
-                className="w-full bg-purple-700 hover:bg-purple-600 text-white py-3 rounded-lg flex items-center justify-center space-x-2 transition-colors"
+                className="w-full bg-gray-700 hover:bg-gray-600 text-white py-3 rounded-lg flex items-center justify-center space-x-2 transition-colors"
               >
                 <span>View: {link.name}</span>
               </button>

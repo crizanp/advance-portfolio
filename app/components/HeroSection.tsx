@@ -39,12 +39,30 @@ const TitleSection = () => {
 
   return (
     <section className="relative z-10 py-8 sm:py-12 md:py-24 overflow-hidden bg-gray-900">
-      {/* Animated background elements */}
+      {/* Background video + animated background elements */}
       <div className="absolute inset-0 overflow-hidden">
+        {/* Background video (plays muted, loops) */}
+        <video
+          src="/video/herobgindex.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover -z-10"
+        />
+
+        {/* Soft dark overlay to improve text contrast */}
+        <div className="absolute inset-0 bg-black/30 -z-10" />
+
+        {/* Right-side simple decorative image */}
+        <div
+          className="absolute right-0 top-0 h-full w-1/3 pointer-events-none"
+          style={{ backgroundImage: "url('/images/bg5.avif')", backgroundSize: 'cover', backgroundPosition: 'right', opacity: 0.12 }}
+        />
         <div className="absolute top-0 left-0 w-full h-full">
           {/* Gradient orbs */}
           <motion.div
-            className="absolute w-32 sm:w-64 h-32 sm:h-64 rounded-full bg-purple-600/20 blur-3xl"
+            className="absolute w-32 sm:w-64 h-32 sm:h-64 rounded-full bg-gray-600/20 blur-3xl"
             animate={{
               x: [0, 100, 0],
               y: [0, 50, 0],
@@ -100,7 +118,7 @@ const TitleSection = () => {
             <h2 className="text-base sm:text-lg text-gray-300 mb-2 sm:mb-3">Hello, I'm Crijan Pokhrel</h2>
 
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-6">
-              <span className="bg-gradient-to-r from-purple-400 to-blue-500 bg-clip-text text-transparent">
+              <span className="bg-gradient-to-r from-gray-400 to-blue-500 bg-clip-text text-transparent">
                 I'm a{" "}
               </span>
               <motion.span
@@ -123,7 +141,7 @@ const TitleSection = () => {
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <Link
                   href="/projects"
-                  className="px-3 py-1.5 sm:px-6 sm:py-3 text-sm sm:text-base bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-md sm:rounded-lg shadow-md hover:from-purple-700 hover:to-blue-700 transition-all flex items-center gap-1 sm:gap-2"
+                  className="px-3 py-1.5 sm:px-6 sm:py-3 text-sm sm:text-base bg-gradient-to-r from-gray-600 to-blue-600 text-white rounded-md sm:rounded-lg shadow-md hover:from-gray-700 hover:to-blue-700 transition-all flex items-center gap-1 sm:gap-2"
                 >
                   <RiPagesLine className="text-lg sm:text-xl" />
                   View Work
@@ -133,7 +151,7 @@ const TitleSection = () => {
               <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
                 <button
                   // onClick={() => setShowCV(true)}
-                  className="px-3 py-1.5 sm:px-6 sm:py-3 text-sm sm:text-base border border-purple-500 text-purple-400 rounded-md sm:rounded-lg hover:bg-purple-500/10 transition-all"
+                  className="px-3 py-1.5 sm:px-6 sm:py-3 text-sm sm:text-base border border-gray-500 text-gray-400 rounded-md sm:rounded-lg hover:bg-gray-500/10 transition-all"
                 >
                   View CV
                 </button>
@@ -146,7 +164,7 @@ const TitleSection = () => {
                 href="https://www.linkedin.com/in/srijanpokhrel/"
                 target="_blank"
                 rel="noopener"
-                className="p-2 sm:p-3 text-gray-300 hover:text-purple-400 bg-gray-800 rounded-full transition-all"
+                className="p-2 sm:p-3 text-gray-300 hover:text-gray-400 bg-gray-800 rounded-full transition-all"
               >
                 <FaLinkedin className="text-xl sm:text-2xl" />
               </motion.a>
@@ -156,7 +174,7 @@ const TitleSection = () => {
                 href="https://github.com/crizanp"
                 target="_blank"
                 rel="noopener"
-                className="p-2 sm:p-3 text-gray-300 hover:text-purple-400 bg-gray-800 rounded-full transition-all"
+                className="p-2 sm:p-3 text-gray-300 hover:text-gray-400 bg-gray-800 rounded-full transition-all"
               >
                 <FaGithub className="text-xl sm:text-2xl" />
               </motion.a>
@@ -172,7 +190,7 @@ const TitleSection = () => {
           >
             <div className="relative overflow-visible">
               {/* Responsive image container */}
-              <div className="relative w-64 h-64 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4 border-purple-500 shadow-2xl">
+              <div className="relative w-64 h-64 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 rounded-full overflow-hidden border-4 border-gray-500 shadow-2xl">
                 <Image
                   src="/images/pp.png"
                   alt="Crijan Pokhrel"
@@ -196,7 +214,7 @@ const TitleSection = () => {
               />
 
               <motion.div
-                className="absolute rounded-full border-2 border-purple-500/30"
+                className="absolute rounded-full border-2 border-gray-500/30"
                 style={{
                   width: 'calc(100% + 16px)',
                   height: 'calc(100% + 16px)',
@@ -209,7 +227,7 @@ const TitleSection = () => {
 
               {/* Responsive floating badges */}
               <motion.div
-                className="absolute -right-1 sm:-right-2 top-12 bg-gray-800 text-purple-400 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm shadow-lg"
+                className="absolute -right-1 sm:-right-2 top-12 bg-gray-800 text-gray-400 px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-xs sm:text-sm shadow-lg"
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
               >
@@ -242,17 +260,17 @@ const TitleSection = () => {
               {categories.map((category, index) => (
                 <motion.div
                   key={category.name}
-                  className="bg-gray-300 p-3 sm:p-6 rounded-xl shadow-lg hover:shadow-xl transition-all border border-purple-200 hover:border-purple-100 cursor-pointer flex flex-col items-center text-center"
+                  className="bg-gray-300 p-3 sm:p-6 rounded-xl shadow-lg hover:shadow-xl transition-all border border-gray-200 hover:border-gray-100 cursor-pointer flex flex-col items-center text-center"
                   whileHover={{ scale: 1.05 }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
-                  <div className="text-2xl sm:text-4xl mb-2 sm:mb-4 text-purple-600">{category.icon}</div>
-                  <h3 className="text-sm sm:text-xl font-bold text-gray-900 mb-1 sm:mb-2 hover:text-purple-700 transition-colors">
+                  <div className="text-2xl sm:text-4xl mb-2 sm:mb-4 text-gray-600">{category.icon}</div>
+                  <h3 className="text-sm sm:text-xl font-bold text-gray-900 mb-1 sm:mb-2 hover:text-gray-700 transition-colors">
                     {category.name}
                   </h3>
-                  <Link href={category.link} className="text-purple-600 hover:text-purple-800 text-xs sm:text-sm flex items-center gap-1 sm:gap-2 transition-colors">
+                  <Link href={category.link} className="text-gray-600 hover:text-gray-800 text-xs sm:text-sm flex items-center gap-1 sm:gap-2 transition-colors">
                     Explore
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 sm:h-4 sm:w-4 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />

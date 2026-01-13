@@ -96,7 +96,7 @@ export default function HomePage() {
         ogImageUrl={ogImageUrl}
         schemaMarkup={schemaMarkup}
       />
-      <main className=" pb-8  bg-gradient-to-br from-white to-purple-50 min-h-screen relative overflow-hidden">
+      <main className=" pb-8  bg-gradient-to-br from-white to-gray-50 min-h-screen relative overflow-hidden">
         <div className="relative">
           <div className="absolute inset-0 z-0">
             <Image
@@ -119,16 +119,16 @@ export default function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               {/* Nepali Unicode Converter Feature */}
               <motion.div
-                className="relative p-8 rounded-2xl backdrop-blur-lg bg-gradient-to-br from-pink-50/80 to-purple-50/80 border border-purple-700 transition-all"
+                className="relative p-8 rounded-2xl backdrop-blur-lg bg-gradient-to-br from-pink-50/80 to-gray-50/80 border border-gray-700 transition-all"
                 whileHover={{ scale: 1.02 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5 }}
               >
                 <div className="absolute -top-16 -right-16 w-48 h-48 bg-pink-200/10 rounded-full blur-3xl"></div>
-                <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-purple-200/10 rounded-full blur-3xl"></div>
+                <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-gray-200/10 rounded-full blur-3xl"></div>
                 <div className="relative z-10 space-y-6">
-                  <div className="w-20 h-20 bg-gradient-to-br from-pink-600 to-purple-700 rounded-2xl flex items-center justify-center">
+                  <div className="w-20 h-20 bg-gradient-to-br from-pink-600 to-gray-700 rounded-2xl flex items-center justify-center">
                     <svg
                       className="w-12 h-12 text-white/90"
                       fill="none"
@@ -143,7 +143,7 @@ export default function HomePage() {
                       />
                     </svg>
                   </div>
-                  <h3 className="text-3xl font-bold bg-gradient-to-r from-pink-800 to-purple-900 bg-clip-text text-transparent">
+                  <h3 className="text-3xl font-bold bg-gradient-to-r from-pink-800 to-gray-900 bg-clip-text text-transparent">
                     Nepali Unicode Converter
                   </h3>
                   <p className="text-gray-600 text-lg leading-relaxed">
@@ -175,7 +175,7 @@ export default function HomePage() {
               </motion.div>
               {/* Engineering License Feature */}
               <motion.div
-                className="relative p-8 rounded-2xl backdrop-blur-lg bg-gradient-to-br from-blue-50/80 to-indigo-50/80 border border-purple-700 transition-all"
+                className="relative p-8 rounded-2xl backdrop-blur-lg bg-gradient-to-br from-blue-50/80 to-indigo-50/80 border border-gray-700 transition-all"
                 whileHover={{ scale: 1.02 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
