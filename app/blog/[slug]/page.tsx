@@ -1,5 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Script from 'next/script'
+import { articleStructuredData } from '../../../../lib/metadata'
 import { useRouter, notFound } from "next/navigation";
 import { motion } from "framer-motion";
 import parse, { domToReact } from "html-react-parser";
@@ -228,6 +230,8 @@ export default function BlogDetail({ params }) {
     );
   }
 
+  const strippedDescription = post.content ? post.content.replace(/(<([^>]+)>)/gi, '').slice(0, 160) : ''
+
   return (
     <div className="min-h-screen bg-white p-4 sm:p-8">
       <main className="max-w-3xl mx-auto">
@@ -336,6 +340,27 @@ export default function BlogDetail({ params }) {
               onClick={() => setSelectedImage(post.imageUrl)}
             />
           </div>
+        )}
+
+        {/* Article structured data (JSON-LD) */}
+        {post && (
+          <Script
+            id="article-jsonld"
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(
+                articleStructuredData({
+                  title: post.title,
+                  description: strippedDescription,
+                  author: post.author || 'Srijan Pokhrel',
+                  datePublished: post.createdAt,
+                  dateModified: post.updatedAt || post.createdAt,
+                  image: post.imageUrl,
+                  url: typeof window !== 'undefined' ? window.location.href : `https://srijanpokhrel.com.np/blog/${post.slug}`,
+                })
+              ),
+            }}
+          />
         )}
 
         {tableOfContents.length > 0 && (

@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /api/
+Disallow: /admin/
+Allow: /
+
+Sitemap: https://srijanpokhrel.com.np/sitemap.xml
+Host: https://srijanpokhrel.com.np

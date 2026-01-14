@@ -9,23 +9,23 @@ export default function Navbar() {
   <div className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent"></div>
 
   return (
-<nav className="relative bg-black shadow-lg sticky top-0 backdrop-blur-sm z-50">
+<nav className="relative bg-white shadow-lg sticky top-0 backdrop-blur-sm z-50">
 <div className="absolute inset-x-0 -bottom-px h-[2px] bg-gradient-to-r from-transparent via-gray-600 to-transparent animate-[pulse_2s_infinite]"></div>
-      <div className="max-w-7xl mx-auto px-4 ">
+      <div className="max-w-7xl mx-auto px-4 text-gray-900">
         <div className="flex justify-between h-16">
           {/* Logo and Branding */}
-          <div className="flex items-center">
+          <div className="flex items-center  text-gray-900">
             <Link href="/" className="group relative flex items-center space-x-1">
-              <span className="sm:text-4xl text-3xl font-black tracking-tighter text-gray-400">C</span>
-              <span className="sm:text-2xl text-2xl font-black tracking-tighter text-gray-300 transition-all duration-300">RIZAN</span>
-              <span className="sm:text-4xl text-3xl font-black text-gray-400 tracking-tighter transition-colors duration-300">P</span>
-              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gray-400 transition-all duration-300 group-hover:w-full"></span>
+              <span className="sm:text-4xl text-3xl font-black tracking-tighter text-gray-900">C</span>
+              <span className="sm:text-2xl text-2xl font-black tracking-tighter text-gray-800 transition-all duration-300">RIZAN</span>
+              <span className="sm:text-4xl text-3xl font-black text-gray-800 tracking-tighter transition-colors duration-800">P</span>
+              <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gray-900 transition-all duration-300 group-hover:w-full"></span>
             </Link>
           </div>
 
           {/* Desktop Navigation Links */}
-          <div className="hidden md:flex space-x-2 items-center">
-            <NavLink href="/category/reading">Readings</NavLink>
+          <div className="hidden md:flex space-x-2 items-center text-gray-900">
+            <NavLink href="/category/reading" >Readings</NavLink>
             <NavLink href="/translation">Nepali Unicode</NavLink>
 
             <NavLink href="/about">About</NavLink>
@@ -70,10 +70,10 @@ export default function Navbar() {
 const NavLink = ({ href, children }) => (
   <Link
     href={href}
-    className="text-gray-300 hover:text-gray-400 px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-800 relative group"
+    className="text-gray-800 hover:text-black px-4 py-2 rounded-md text-sm font-medium transition-colors hover:bg-gray-100 relative group"
   >
     {children}
-    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gray-400 transition-all group-hover:w-full"></span>
+    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gray-200 transition-all group-hover:w-full"></span>
   </Link>
 );
 

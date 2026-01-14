@@ -11,6 +11,7 @@ import CVTemplate from "./components/CVTemplate";
 import { RiPagesLine } from "react-icons/ri";
 import TitleSection from "./components/HeroSection";
 import Image from "next/image";
+import ScrollWordAnimation from "./components/ScrollWidthAnimation";
 
 const getLatestPosts = () => posts.slice(0, 2);
 const books = [
@@ -98,22 +99,12 @@ export default function HomePage() {
       />
       <main className=" pb-8  bg-gradient-to-br from-white to-gray-50 min-h-screen relative overflow-hidden">
         <div className="relative">
-          <div className="absolute inset-0 z-0">
-            <Image
-              src="/images/bg6.jpg"
-              alt="Tech Background"
-              layout="fill"
-              objectFit="cover"
-              quality={100}
-              className="opacity-700"
-            />
-            <div className="absolute inset-0 bg-black/30"></div> { }
-          </div>
+         
           { }
           <TitleSection />
           { }
-
         </div>
+
         <section className="py-16 md:py-20 relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
