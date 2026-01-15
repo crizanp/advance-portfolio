@@ -53,7 +53,7 @@ const NepaliKeyboard: React.FC<KeyboardProps> = ({ onKeyPress, className = "" })
   };
 
   return (
-    <div className={`bg-gradient-to-r from-gray-800 to-gray-900 rounded-xl shadow-lg p-2 sm:p-3 w-full ${className}`}>
+    <div className={`bg-gradient-to-r from-gray-100 to-gray-200 rounded-xl shadow-lg p-2 sm:p-3 w-full ${className}`}>
       {/* Keyboard tabs */}
       <div className="flex space-x-1 mb-2 sm:mb-3 overflow-x-auto pb-1 no-scrollbar">
         {(["consonants", "vowels", "numbers", "symbols"] as const).map((tab) => (
@@ -62,8 +62,8 @@ const NepaliKeyboard: React.FC<KeyboardProps> = ({ onKeyPress, className = "" })
             onClick={() => setActiveTab(tab)}
             className={`px-2 py-1 sm:px-3 sm:py-2 rounded-lg text-xs sm:text-sm font-medium flex-shrink-0 ${
               activeTab === tab
-                ? "bg-gray-700 text-white shadow-md"
-                : "bg-gray-700 text-gray-300 hover:bg-gray-600"
+                ? "bg-white text-gray-900 shadow-md"
+                : "bg-gray-300 text-gray-700 hover:bg-gray-400"
             }`}
           >
             {tab === "consonants" ? "व्यञ्जन" : 
@@ -74,7 +74,7 @@ const NepaliKeyboard: React.FC<KeyboardProps> = ({ onKeyPress, className = "" })
       </div>
 
       {/* Key rows */}
-      <div className="bg-gray-800 backdrop-blur-sm rounded-lg p-1 sm:p-2 shadow-inner">
+      <div className="bg-white backdrop-blur-sm rounded-lg p-1 sm:p-2 shadow-inner">
         {keyboardLayout[activeTab].map((row, rowIndex) => (
           <div key={rowIndex} className="flex justify-center space-x-1 mb-1">
             {row.map((key, keyIndex) => (
@@ -82,9 +82,9 @@ const NepaliKeyboard: React.FC<KeyboardProps> = ({ onKeyPress, className = "" })
                 key={`${rowIndex}-${keyIndex}`}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleKeyboardInput(key)}
-                className="w-[8vw] h-[8vw] max-w-10 max-h-10 min-w-6 min-h-6 bg-gray-700 rounded-lg shadow 
-                           hover:bg-gray-600 active:bg-gray-800 flex items-center justify-center 
-                           text-gray-200 text-xs sm:text-base font-medium"
+                className="w-[8vw] h-[8vw] max-w-10 max-h-10 min-w-6 min-h-6 bg-gray-200 rounded-lg shadow 
+                           hover:bg-gray-300 active:bg-gray-400 flex items-center justify-center 
+                           text-gray-900 text-xs sm:text-base font-medium"
               >
                 {key}
               </motion.button>
@@ -101,9 +101,9 @@ const NepaliKeyboard: React.FC<KeyboardProps> = ({ onKeyPress, className = "" })
               onClick={key.action}
               className={`${key.width} px-2 h-10 bg-gradient-to-r ${
                 key.isActive 
-                  ? "from-gray-700 to-gray-800 text-white" 
-                  : "from-gray-600 to-gray-700 text-gray-200"
-              } rounded-lg shadow hover:brightness-110 flex items-center justify-center text-xs sm:text-sm font-medium min-w-8`}
+                  ? "from-gray-300 to-gray-400 text-gray-900" 
+                  : "from-gray-300 to-gray-400 text-gray-800"
+              } rounded-lg shadow hover:brightness-95 flex items-center justify-center text-xs sm:text-sm font-medium min-w-8`}
             >
               {key.label}
             </motion.button>

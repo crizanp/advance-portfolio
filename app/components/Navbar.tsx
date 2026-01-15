@@ -16,16 +16,16 @@ export default function Navbar() {
           {/* Logo and Branding */}
           <div className="flex items-center  text-gray-900">
             <Link href="/" className="group relative flex items-center space-x-1">
-              <span className="sm:text-4xl text-3xl font-black tracking-tighter text-gray-900">C</span>
-              <span className="sm:text-2xl text-2xl font-black tracking-tighter text-gray-800 transition-all duration-300">RIZAN</span>
-              <span className="sm:text-4xl text-3xl font-black text-gray-800 tracking-tighter transition-colors duration-800">P</span>
+              <span className="sm:text-4xl text-3xl  tracking-tighter text-gray-900">C</span>
+              <span className="sm:text-2xl text-2xl  tracking-tighter text-gray-800 transition-all duration-300">RIZA</span>
+              <span className="sm:text-4xl text-3xl  text-gray-800 tracking-tighter transition-colors duration-800">N</span>
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gray-900 transition-all duration-300 group-hover:w-full"></span>
             </Link>
           </div>
 
           {/* Desktop Navigation Links */}
           <div className="hidden md:flex space-x-2 items-center text-gray-900">
-            <NavLink href="/category/reading" >Readings</NavLink>
+            <NavLink href="/engineering-license" >Computer License</NavLink>
             <NavLink href="/translation">Nepali Unicode</NavLink>
 
             <NavLink href="/about">About</NavLink>
