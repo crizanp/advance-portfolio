@@ -20,7 +20,6 @@ export default function Footer() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add email subscription logic here
     setEmail('');
     setSubscribed(true);
     setTimeout(() => setSubscribed(false), 3000);
@@ -28,10 +27,8 @@ export default function Footer() {
 
   return (
     <footer className="bg-black text-gray-400 py-12 border-t border-gray-800">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Main Footer Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {/* About Section */}
           <div>
             <h3 className="text-lg font-medium text-white mb-4">
               Crizan Pokhrel
@@ -85,7 +82,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Quick Links */}
           <div>
             <h3 className="text-lg font-medium text-white mb-4">
               Explore
@@ -123,8 +119,6 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-
-          {/* Resources */}
           <div>
             <h3 className="text-lg font-medium text-white mb-4">
               Resources
@@ -162,8 +156,6 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-
-          {/* Newsletter */}
           <div>
             <h3 className="text-lg font-medium text-white mb-4">
               Stay Updated
@@ -195,24 +187,31 @@ export default function Footer() {
               </form>
             )}
           </div>
+
+          
         </div>
 
-        {/* Copyright */}
         <div className="mt-8 pt-6 border-t border-gray-900 text-center text-gray-600 text-xs">
           <p className="mb-2">
             &copy; {new Date().getFullYear()} Crizan Pokhrel. All Rights Reserved.
           </p>
+
           <div className="flex justify-center space-x-4 mt-2">
             <Link href="#" className="text-gray-500 hover:text-gray-400 transition-colors text-xs">
               Privacy Policy
+
             </Link>
             <Link href="#" className="text-gray-500 hover:text-gray-400 transition-colors text-xs">
               Terms of Service
             </Link>
+
+
+
             <Link href="#" className="text-gray-500 hover:text-gray-400 transition-colors text-xs">
               Sitemap
             </Link>
           </div>
+
         </div>
       </div>
     </footer>

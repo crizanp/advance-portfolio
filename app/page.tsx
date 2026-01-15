@@ -15,6 +15,14 @@ import ScrollWordAnimation from "./components/ScrollWidthAnimation";
 import AboutMe from "./components/aboutme";
 import AnimatedDotted from "./components/AnimatedDotted";
 import ToolsSection from "./components/ToolsSection";
+import { 
+  AcademicCapIcon, 
+  BookOpenIcon, 
+  CodeBracketIcon, 
+  RectangleGroupIcon,
+  DocumentTextIcon,
+  SparklesIcon
+} from "@heroicons/react/24/outline";
 
 const getLatestPosts = () => posts.slice(0, 2);
 const books = [
@@ -52,6 +60,51 @@ const projects = [
     description: "Guiding and helping you understand science practical lessons from junior classes. DIY your projects and toys while learning the science behind them.",
     image: "/images/2.png",
     link: "/projects"
+  }
+];
+
+const quickLinks = [
+  {
+    title: "GRE Practice",
+    description: "Prepare for your GRE exam with curated resources",
+    icon: AcademicCapIcon,
+    link: "/gre-practice",
+    color: "from-blue-100 to-cyan-200"
+  },
+  {
+    title: "Computer ER Notes",
+    description: "Engineering notes and study materials",
+    icon: DocumentTextIcon,
+    link: "/computer-er-notes",
+    color: "from-purple-100 to-pink-100"
+  },
+  {
+    title: "Browse Categories",
+    description: "Explore all content categories",
+    icon: RectangleGroupIcon,
+    link: "/categories",
+    color: "from-green-100 to-emerald-100"
+  },
+  {
+    title: "Open Source Projects",
+    description: "Check out my contributions on GitHub",
+    icon: CodeBracketIcon,
+    link: "/projects",
+    color: "from-orange-100 to-red-100"
+  },
+  {
+    title: "ER License Preparation",
+    description: "Resources for engineering license exam",
+    icon: SparklesIcon,
+    link: "/er-license",
+    color: "from-indigo-100 to-purple-100"
+  },
+  {
+    title: "My Reads",
+    description: "Books I've read and recommend",
+    icon: BookOpenIcon,
+    link: "/my-reads",
+    color: "from-pink-100 to-rose-100"
   }
 ];
 
@@ -109,12 +162,50 @@ export default function HomePage() {
           <TitleSection />
         </div>
         <AboutMe />
-
         <ToolsSection />
+        
+        {/* Quick Links Section */}
+        <section className="py-16 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-4xl sm:text-5xl text-gray-900 text-left mb-12">
+              Quick Links
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {quickLinks.map((link, index) => (
+                <motion.div
+                  key={link.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <Link href={link.link}>
+                    <div className={`group relative bg-gradient-to-br ${link.color}  p-6 transition-all duration-300 border border-gray-200 overflow-hidden cursor-pointer`}>
+                      <div className={`absolute inset-0 bg-gradient-to-br ${link.color} opacity-0 group-hover:opacity-10 transition-opacity duration-300`} />
+                      <div className="relative z-10">
+                       
+                        <h3 className="text-xl text-gray-900 mb-2 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-gray-900 group-hover:to-gray-600 transition-all duration-300">
+                          {link.title}
+                        </h3>
+                        <p className="text-sm text-gray-600">
+                          {link.description}
+                        </p>
+                      </div>
+                    </div>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+        </section>
         
         <AnimatedDotted />
       </main>
-
     </>
   );
 }
