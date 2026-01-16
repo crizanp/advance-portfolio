@@ -61,8 +61,8 @@ type Project = {
   description: string;
   category: string;
   featured: boolean;
-  sourceCode?: string;
   liveDemo?: string;
+  githubLink?: string;
   details: {
     text: string;
     link?: string;
@@ -99,10 +99,10 @@ export default function PortfolioShowcase() {
           {
             id: 2,
             title: "Personal Portfolio",
-            mockup: "/images/project/portfolio-homepage.png",
+            mockup: "/images/portfolio.png",
             description: "Modern portfolio with dynamic content loading, and responsive animations.",
             category: "Full Stack",
-            featured: true,
+            featured: false,
             liveDemo: "https://srijanpokhrel.com.np",
             details: [
               { text: "Next Js" },
@@ -144,7 +144,7 @@ export default function PortfolioShowcase() {
             description: "Responsive college website with course management, events calendar, and admission system.",
             category: "Full Stack",
             featured: false,
-            liveDemo: "https://github.com/crizanp/college-website-corePHP",
+            githubLink: "https://github.com/crizanp/college-website-corePHP",
             details: [
               { text: "PHP" },
               { text: "jQuery" },
@@ -171,7 +171,7 @@ export default function PortfolioShowcase() {
             mockup: "/images/project/onlinelearnal.png",
             description: "Collaborative documentation platform with real-time editing and version control.",
             category: "Full Stack",
-            liveDemo: "https://github.com/crizanp/onlinelearnal_fullstack-php",
+            githubLink: "https://github.com/crizanp/onlinelearnal_fullstack-php",
             featured: false,
             details: [
               { text: "Core PHP" },
@@ -191,8 +191,105 @@ export default function PortfolioShowcase() {
               { text: "JQuery" },
               { text: "React" },
               { text: "Node JS" },
-
               { text: "Mongodb" }
+            ],
+          },
+          {
+            id: 9,
+            title: "Brand Info Connect",
+            mockup: "/images/project/brand-connect.png",
+            description: "Connect brands with influencers and manage collaboration campaigns efficiently.",
+            category: "Full Stack",
+            liveDemo: "https://brand-info-connect.vercel.app/",
+            featured: false,
+            details: [
+              { text: "Next.js" },
+              { text: "MongoDB" },
+              { text: "API Integration" }
+            ],
+          },
+          {
+            id: 10,
+            title: "Tuition Management System",
+            mockup: "/images/project/tuition-system.png",
+            description: "Comprehensive tuition center management with student tracking, attendance, and fee management.",
+            category: "Full Stack",
+            githubLink: "https://github.com/crizanp/tuition-management",
+            featured: false,
+            details: [
+              { text: "PHP" },
+              { text: "MySQL" },
+              { text: "Bootstrap" }
+            ],
+          },
+          {
+            id: 11,
+            title: "Video Conversion Tools",
+            mockup: "/images/project/video-converter.png",
+            description: "Powerful online video converter supporting multiple formats with fast processing.",
+            category: "Tools",
+            liveDemo: "https://video-tools-converter.vercel.app/",
+            featured: false,
+            details: [
+              { text: "React" },
+              { text: "FFmpeg.wasm" },
+              { text: "Web Workers" }
+            ],
+          },
+          {
+            id: 12,
+            title: "Encryption Tools Suite",
+            mockup: "/images/project/encryption-tools.png",
+            description: "Secure encryption and decryption tools for text and files with multiple algorithms.",
+            category: "Tools",
+            liveDemo: "https://encryption-tools-suite.vercel.app/",
+            featured: false,
+            details: [
+              { text: "JavaScript" },
+              { text: "CryptoJS" },
+              { text: "AES-256" }
+            ],
+          },
+          {
+            id: 13,
+            title: "YouTube Downloader API",
+            mockup: "/images/project/yt-downloader.png",
+            description: "Fast and reliable YouTube video downloader with support for multiple quality options.",
+            category: "Tools",
+            githubLink: "https://github.com/crizanp/youtube-downloader-api",
+            featured: false,
+            details: [
+              { text: "Node.js" },
+              { text: "Express" },
+              { text: "ytdl-core" }
+            ],
+          },
+          {
+            id: 14,
+            title: "Currency Detector",
+            mockup: "/images/project/currency-detector.png",
+            description: "Real-time currency detection and exchange rate calculator with historical data.",
+            category: "Tools",
+            liveDemo: "https://currency-detector-app.vercel.app/",
+            featured: false,
+            details: [
+              { text: "React" },
+              { text: "Exchange Rate API" },
+              { text: "Chart.js" }
+            ],
+          },
+          {
+            id: 15,
+            title: "PHP Captcha Solver",
+            mockup: "/images/project/captcha-solver.png",
+            description: "Automated CAPTCHA solving system with machine learning integration.",
+            category: "Backend",
+            githubLink: "https://github.com/crizanp/php-captcha-solver",
+            featured: false,
+            details: [
+              { text: "PHP" },
+              { text: "OCR" },
+              { text: "Image Processing" }
             ],
           }
         ];
@@ -242,37 +339,37 @@ export default function PortfolioShowcase() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-950">
+      <div className="flex items-center justify-center min-h-screen bg-white">
         <div className="space-y-4 text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-600 mx-auto"></div>
-          <p className="text-gray-400">Loading amazing projects...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-gray-200 mx-auto"></div>
+          <p className="text-gray-800">Loading amazing projects...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <main className="p-6 sm:p-8 lg:p-12 bg-gray-950 min-h-screen text-gray-200">
+    <main className="p-6 sm:p-8 lg:p-12 bg-white min-h-screen text-gray-800">
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <Card className="mb-12 p-6 border-gray-900/50 backdrop-blur-sm bg-opacity-80 bg-gradient-to-br from-gray-900 to-gray-950">
+        <Card className="mb-12 p-6 border-gray-600/50 backdrop-blur-sm bg-opacity-80 bg-gradient-to-br from-blue-100 to-cyan-50">
           <div className="text-center mb-8">
             <motion.h1 
-              className="text-3xl md:text-4xl font-bold text-white mb-2"
+              className="text-3xl md:text-4xl font-bold text-black mb-2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
             >
-              <span className="text-white">
+              <span className="text-black">
                 Project Showcase
               </span>
             </motion.h1>
             <div className="w-24 h-1 bg-gradient-to-r from-gray-500 to-pink-500 mx-auto my-4 rounded-full"></div>
             <motion.p 
-              className="text-gray-400 max-w-3xl mx-auto mb-3"
+              className="text-gray-700 max-w-3xl mx-auto mb-3"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
@@ -280,14 +377,6 @@ export default function PortfolioShowcase() {
               Explore my portfolio of diverse projects spanning web development, design, and innovation.
               Each project represents a unique challenge and solution.
             </motion.p>
-            {/* <motion.p 
-              className="text-gray-300 max-w-3xl mx-auto font-medium italic"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-            >
-              Commercial projects are not showcased here
-            </motion.p> */}
           </div>
           <motion.div 
             className="flex flex-wrap gap-2 justify-center"
@@ -332,7 +421,7 @@ export default function PortfolioShowcase() {
               onHoverEnd={() => setHoveredProject(null)}
               whileHover={{ y: -5 }}
             >
-              <Card className="h-full overflow-hidden border-gray-800 bg-gradient-to-b from-gray-900 to-gray-950">
+              <Card className="h-full overflow-hidden border-gray-800 bg-gradient-to-b from-gray-100 to-gray-100">
                 <div className="relative group">
                   <div className="relative h-48 bg-gray-900 overflow-hidden">
                     <img
@@ -351,46 +440,37 @@ export default function PortfolioShowcase() {
                     )}
                   </div>
                   
-                  <AnimatePresence>
-                    {hoveredProject === project.id && (
-                      <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        className="absolute inset-0 bg-gradient-to-b from-gray-900/80 to-black/80 backdrop-blur-sm flex items-center justify-center space-x-4"
-                      >
-                        {project.liveDemo && (
-                          <Button
-                            size="sm"
-                            className="flex items-center space-x-2"
-                            onClick={() => window.open(project.liveDemo, '_blank')}
-                          >
-                            <ExternalLink size={16} />
-                            <span>Live Demo</span>
-                          </Button>
-                        )}
-                        {project.sourceCode && (
-                          <Button
-                            size="sm"
-                            variant="outline"
-                            className="flex items-center space-x-2"
-                            onClick={() => window.open(project.sourceCode, '_blank')}
-                          >
-                            <Github size={16} />
-                            <span>Source</span>
-                          </Button>
-                        )}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+               
                 </div>
 
                 <div className="p-6">
-                  <h2 className="text-xl font-semibold text-white mb-2 group-hover:text-gray-400 transition-colors">
+                  <h2 className="text-xl font-semibold text-black mb-3 group-hover:text-gray-400 transition-colors">
                     {project.title}
                   </h2>
-                  <p className="text-gray-400 mb-4 line-clamp-3">
+                  
+                  <div className="flex gap-2 mb-4">
+                    <Button
+                      size="sm"
+                      className={`flex items-center space-x-1 text-xs ${!project.liveDemo ? 'opacity-40 cursor-not-allowed' : ''}`}
+                      onClick={() => project.liveDemo && window.open(project.liveDemo, '_blank')}
+                      disabled={!project.liveDemo}
+                    >
+                      <ExternalLink size={14} />
+                      <span>Live Demo</span>
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className={`flex items-center space-x-1 text-xs  border-gray-900 text-black ${!project.githubLink ? 'opacity-40 cursor-not-allowed border-gray-700' : ''}`}
+                      onClick={() => project.githubLink && window.open(project.githubLink, '_blank')}
+                      disabled={!project.githubLink}
+                    >
+                      <Github size={14} />
+                      <span>Source</span>
+                    </Button>
+                  </div>
+
+                  <p className="text-gray-700 mb-4 line-clamp-3">
                     {project.description}
                   </p>
                   <div className="flex flex-wrap gap-2 mt-auto">
