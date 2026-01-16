@@ -16,12 +16,14 @@ const AnimatedDotted = () => {
           );
           color: transparent;
         }
+
         @media (prefers-reduced-motion: no-preference) {
           @property --animated-color {
             syntax: "<color>";
             initial-value: #2563eb;
             inherits: false;
           }
+
           @keyframes scrollBg {
             50% {
               --animated-color: #1d4ed8;
@@ -30,18 +32,19 @@ const AnimatedDotted = () => {
               background-position: -32px 4px;
             }
           }
+
           .dotted {
             animation: scrollBg 10s linear infinite forwards;
           }
         }
       `}</style>
-
-      <div className="py-12  bg-white">
+      
+      <div className="py-12 bg-white">
         <h1 className="text-center px-8 font-semibold leading-none">
           <span className="block text-4xl sm:text-3xl md:text-3xl lg:text-5xl text-blue-700">
             My focus
           </span>
-          <span className="dotted block text-8xl sm:text-9xl md:text-[10rem] lg:text-[12rem] xl:text-[14rem] text-blue-00">
+          <span className="dotted block text-8xl sm:text-9xl md:text-[10rem] lg:text-[12rem] xl:text-[14rem]">
             Build things that scale.
           </span>
         </h1>

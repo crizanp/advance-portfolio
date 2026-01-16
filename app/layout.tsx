@@ -1,7 +1,7 @@
 import './globals.css'
 import Script from 'next/script'
 import LayoutWrapper from './components/LayoutWrapper'
-import { constructMetadata, siteStructuredData } from '../lib/metadata'
+import { constructMetadata, siteStructuredData } from './lib/metadata'
 
 export const metadata = constructMetadata()
 

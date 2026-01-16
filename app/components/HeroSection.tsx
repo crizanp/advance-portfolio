@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Download } from 'lucide-react';
+import styles from './HeroSection.module.css';
 
 const HeroSection = () => {
   const titles = [
@@ -39,38 +40,6 @@ const HeroSection = () => {
 
   return (
     <>
-       <style>{`
-        .dotted {
-          background-position: 0px 4px;
-          background-size: 8px 8px;
-          background-clip: text;
-          -webkit-background-clip: text;
-          background-image: radial-gradient(
-            circle at 2px 2px,
-            var(--animated-color) 2px,
-            transparent 0
-          );
-          color: transparent;
-        }
-        @media (prefers-reduced-motion: no-preference) {
-          @property --animated-color {
-            syntax: "<color>";
-            initial-value: #2563eb;
-            inherits: false;
-          }
-          @keyframes scrollBg {
-            50% {
-              --animated-color: #1d4ed8;
-            }
-            100% {
-              background-position: -32px 4px;
-            }
-          }
-          .dotted {
-            animation: scrollBg 10s linear infinite forwards;
-          }
-        }
-      `}</style>
       
       <div className="bg-white flex items-center justify-center px-4 sm:px-6 lg:px-8 min-h-screen">
         <div className="max-w-7xl w-full mx-auto">

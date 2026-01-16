@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Script from 'next/script'
-import { articleStructuredData } from '../../../../lib/metadata'
+import { articleStructuredData } from '../../lib/metadata'
 import { useRouter, notFound } from "next/navigation";
 import { motion } from "framer-motion";
 import parse, { domToReact } from "html-react-parser";
