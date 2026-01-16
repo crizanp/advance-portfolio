@@ -69,16 +69,16 @@ export default function HomePage() {
   <motion.h1
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
-    className="text-4xl text-gray-700 sm:text-5xl md:text-6xl font-bold mb-6 leading-tight"
+    className="text-4xl text-gray-900 sm:text-4xl md:text-5xl mb-6 "
   >
     Conquer the GRE <br />
-    <span className="text-gray-600 ">Smart Preparation System</span>
+    <span className="text-gray-900 mt-3">Smart Preparation System</span>
   </motion.h1>
   <p className="text-xs sm:text-sm md:text-base text-gray-700 max-w-2xl mx-auto mb-8">
     Join over 250,000 students who boosted their GRE scores with our advanced platform. Challenge yourself with timed exercises and get instant feedback to track your progress across all sections.
   </p>
 
-  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-12">
+  {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-12">
     <div className="bg-white p-6 rounded-xl shadow-md border border-gray-100">
       <h3 className="text-xl sm:text-2xl font-bold mb-3 text-gray-900">325+ Average Score</h3>
       <p className="text-sm sm:text-base text-gray-600">Top 5% of test takers</p>
@@ -91,7 +91,7 @@ export default function HomePage() {
       <h3 className="text-xl sm:text-2xl font-bold mb-3 text-gray-900">Adaptive Learning</h3>
       <p className="text-sm sm:text-base text-gray-600">Personalized difficulty adjustment</p>
     </div>
-  </div>
+  </div> */}
 </div>
 
         </section>

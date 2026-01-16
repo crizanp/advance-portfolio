@@ -68,7 +68,7 @@ const quickLinks = [
     title: "GRE Practice",
     description: "Prepare for your GRE exam with curated resources",
     icon: AcademicCapIcon,
-    link: "/gre-practice",
+    link: "/gre-exam",
     color: "from-blue-100 to-cyan-200"
   },
   {
