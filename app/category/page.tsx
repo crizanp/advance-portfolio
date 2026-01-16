@@ -3,65 +3,79 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { FiBook, FiCode, FiCloud, FiDatabase, FiLayers, FiRss, FiServer, FiTag, FiChevronDown, FiChevronUp } from "react-icons/fi";
+
 const Skeleton = () => {
   return (
     <div className="animate-pulse">
       <div className="grid md:grid-cols-2 gap-6">
         {[...Array(4)].map((_, i) => (
-          <div key={i} className="bg-gray-800 rounded-xl p-6 h-32"></div>
+          <div key={i} className="bg-gray-200 rounded-xl p-6 h-32"></div>
         ))}
       </div>
       <div className="mt-8">
-        <div className="bg-gray-800 h-10 w-48 rounded-lg mb-6"></div>
+        <div className="bg-gray-200 h-10 w-48 rounded-lg mb-6"></div>
         <div className="flex flex-wrap gap-3">
           {[...Array(8)].map((_, i) => (
-            <div key={i} className="bg-gray-800 h-10 w-20 rounded-full"></div>
+            <div key={i} className="bg-gray-200 h-10 w-20 rounded-full"></div>
           ))}
         </div>
       </div>
     </div>
   );
 };
-const CategoryCard = ({ href, icon: Icon, title, description }) => (
+
+const CategoryCard = ({ href, title, description, color }) => (
   <Link href={href}>
     <motion.div
-      className="group bg-gray-800 p-5 rounded-xl border border-gray-700 hover:border-gray-600 transition-all relative overflow-hidden h-32"
-      whileHover={{ y: -4 }}
+      whileHover={{ scale: 1.05 }}
+      className={`${color} p-8  transition-all cursor-pointer`}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-gray-600/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-      <div className="flex items-start space-x-4">
-        <div className="w-12 h-12 bg-gray-700 rounded-lg flex items-center justify-center group-hover:bg-gray-900/30 transition-colors">
-          <Icon className="w-5 h-5 text-gray-400" />
-        </div>
-        <div className="flex-1">
-          <h3 className="text-lg font-bold text-gray-200 group-hover:text-gray-400 transition-colors">
-            {title}
-          </h3>
-          {description && (
-            <p className="text-sm text-gray-400 mt-1 line-clamp-2">{description}</p>
-          )}
-        </div>
-      </div>
+      <h3 className="text-xl text-gray-900 mb-2">{title}</h3>
+      <p className="text-gray-600 mb-4">{description}</p>
+      {/* <div className="text-gray-600 hover:text-gray-800 font-medium flex items-center gap-2">
+        Explore
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-4 w-4"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+        </svg>
+      </div> */}
     </motion.div>
   </Link>
 );
+
 const TagPill = ({ tag }) => (
   <Link href={`/tags/${tag.toLowerCase().replace(/\s+/g, "-")}`}>
     <motion.span
-      className="px-3 py-1.5 bg-gray-800 text-gray-400 rounded-full text-sm hover:bg-gray-700 transition-all cursor-pointer border border-gray-700 hover:border-gray-500"
+      className="px-3 py-1.5 bg-white text-gray-700 rounded-full text-sm hover:bg-gray-50 transition-all cursor-pointer border border-gray-200 hover:border-gray-300"
       whileHover={{ scale: 1.05 }}
     >
       #{tag}
     </motion.span>
   </Link>
 );
+
 export default function CategoriesPage() {
   const [categories, setCategories] = useState([]);
   const [tags, setTags] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAllTags, setShowAllTags] = useState(false);
+  
   const tagsToShowInitially = 10;
+
+  const colorClasses = [
+    "bg-blue-100",
+    "bg-pink-100", 
+    "bg-gray-100",
+    "bg-green-100",
+    "bg-purple-100",
+    "bg-yellow-100"
+  ];
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -79,68 +93,67 @@ export default function CategoriesPage() {
     };
     fetchData();
   }, []);
-  const maxTagsHeight = categories.length * 66; 
+
   const visibleTags = showAllTags ? tags : tags.slice(0, tagsToShowInitially);
+
   return (
-    <main className="min-h-screen bg-gray-900 text-gray-300">
-      {}
-      <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-gray-600 to-transparent"></div>
-      {}
-      <div className="relative bg-gradient-to-r from-gray-900 to-gray-800 py-16 px-4 border-b border-gray-800">
-        <div className="absolute inset-0 bg-gray-900 opacity-5 pointer-events-none"></div>
-        <div className="max-w-5xl mx-auto text-center">
+    <main className="min-h-screen bg-gradient-to-br from-white to-gray-50">
+      {/* Hero Section */}
+      <section className="py-16 px-4 bg-gradient-to-r from-gray-50 to-blue-50 text-gray-800">
+        <div className="max-w-7xl mx-auto text-center px-4 sm:px-6 lg:px-8">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-3xl md:text-4xl font-bold mb-4 text-gray-200"
+            className="text-4xl sm:text-4xl md:text-5xl mb-6 text-gray-900"
           >
-            Find Your Tech Topic!
+            Find Your Tech Topic
           </motion.h1>
-          <p className="text-lg text-gray-400 max-w-2xl mx-auto">
-            Explore coding, software, and tech with simple and clear explanations.
+          <p className="text-sm md:text-base text-gray-700 max-w-2xl mx-auto mb-8">
+            Explore coding, software, and tech with simple and clear explanations. Dive into comprehensive resources across various technology domains.
           </p>
         </div>
-      </div>
-      {}
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
+      </section>
+
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
         {loading ? (
           <Skeleton />
         ) : (
           <div className="grid lg:grid-cols-4 gap-8">
+            {/* Categories Section */}
             <div className="lg:col-span-3">
-              <h2 className="text-2xl font-bold text-gray-200 mb-6 flex items-center">
-                <FiBook className="mr-2" />
+              <h2 className="text-3xl text-gray-900 mb-8">
                 Featured Categories
               </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {categories.map((category, index) => (
                   <CategoryCard
                     key={index}
                     href={`/category/${category.name.toLowerCase().replace(/\s+/g, "-")}`}
-                    icon={getCategoryIcon(category.name)}
                     title={category.name}
                     description={category.description}
+                    color={colorClasses[index % colorClasses.length]}
                   />
                 ))}
                 <CategoryCard
                   href="/notes"
-                  icon={FiBook}
                   title="Engineering Resources"
                   description="Semester-wise notes and study materials"
+                  color="bg-indigo-100"
                 />
               </div>
             </div>
-            {}
+
+            {/* Tags Sidebar */}
             <div className="lg:col-span-1">
-              <div className="sticky top-24 bg-gray-800 p-5 rounded-xl border border-gray-700">
-                <h3 className="text-lg font-bold text-gray-200 mb-4 flex items-center">
-                  <FiTag className="mr-2" />
+              <div className="sticky top-24 bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
+                <h3 className="text-xl font-bold text-gray-900 mb-4">
                   Trending Topics
                 </h3>
                 <div 
                   className="flex flex-wrap gap-2" 
                   style={{ 
-                    maxHeight: showAllTags ? `${maxTagsHeight}px` : '250px', 
+                    maxHeight: showAllTags ? '500px' : '250px', 
                     overflowY: showAllTags ? 'auto' : 'hidden',
                     transition: 'max-height 0.3s ease'
                   }}
@@ -151,16 +164,22 @@ export default function CategoriesPage() {
                 </div>
                 {tags.length > tagsToShowInitially && (
                   <button 
-                    className="mt-4 w-full py-2 flex items-center justify-center text-gray-400 hover:text-gray-300 bg-gray-700 rounded-lg border border-gray-600 transition-colors"
+                    className="mt-4 w-full py-2 flex items-center justify-center text-gray-700 hover:text-gray-900 bg-gray-50 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors font-medium"
                     onClick={() => setShowAllTags(!showAllTags)}
                   >
                     {showAllTags ? (
                       <>
-                        <FiChevronUp className="mr-1" /> Show Less
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                        </svg>
+                        Show Less
                       </>
                     ) : (
                       <>
-                        <FiChevronDown className="mr-1" /> Show More
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                        </svg>
+                        Show More
                       </>
                     )}
                   </button>
@@ -173,14 +192,3 @@ export default function CategoriesPage() {
     </main>
   );
 }
-const getCategoryIcon = (categoryName) => {
-  const icons = {
-    'Web Development': FiCode,
-    'Cloud Computing': FiCloud,
-    'Database': FiDatabase,
-    'System Design': FiLayers,
-    'API Development': FiRss,
-    'DevOps': FiServer,
-  };
-  return icons[categoryName] || FiBook;
-};

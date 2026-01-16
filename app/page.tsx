@@ -82,7 +82,7 @@ const quickLinks = [
     title: "Browse Categories",
     description: "Explore all content categories",
     icon: RectangleGroupIcon,
-    link: "/categories",
+    link: "/category",
     color: "from-green-100 to-emerald-100"
   },
   {
