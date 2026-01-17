@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, notFound } from "next/navigation";
 import parse, { domToReact } from "html-react-parser";
 import Prism from "prismjs";
-import "prismjs/themes/prism-okaidia.css"; // Dark theme Prism color scheme
+import "prismjs/themes/prism-okaidia.css";
 import "prismjs/components/prism-javascript";
 import "prismjs/components/prism-css";
 import "prismjs/components/prism-markup";
@@ -16,42 +16,7 @@ import {
   faCheckCircle,
   faChevronRight 
 } from "@fortawesome/free-solid-svg-icons";
-import PuffLoader from "react-spinners/PuffLoader";
 import Link from "next/link";
-
-const FloatingBubbles = () => {
-  const colors = ["#6D28D9", "#9333EA", "#4338CA"];
-  return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {colors.map((color, index) => (
-        <motion.div
-          key={index}
-          initial={{ opacity: 0, scale: 0.5 }}
-          animate={{ 
-            opacity: [0.1, 0.3, 0.1], 
-            scale: [0.5, 1, 0.5],
-            x: [0, 50, -50, 0],
-            y: [0, -30, 30, 0]
-          }}
-          transition={{ 
-            duration: 5, 
-            repeat: Infinity, 
-            ease: "easeInOut",
-            delay: index * 1 
-          }}
-          className="absolute rounded-full blur-xl opacity-10"
-          style={{
-            width: `${Math.random() * 200 + 100}px`,
-            height: `${Math.random() * 200 + 100}px`,
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            backgroundColor: color
-          }}
-        />
-      ))}
-    </div>
-  );
-};
 
 const getRawTextFromDomNode = (node) => {
   if (typeof node === "string") return node.trim();
@@ -79,7 +44,7 @@ export default function NotesDetailPage() {
     
     return {
       replace: (domNode) => {
-        // Custom Heading Parsing (existing code)
+        // Custom Heading Parsing
         if (["h1", "h2", "h3"].includes(domNode.name)) {
           const headingText = getRawTextFromDomNode(domToReact(domNode.children));
           
@@ -88,9 +53,9 @@ export default function NotesDetailPage() {
           const headingId = headingText.toLowerCase().replace(/\s+/g, "-");
 
           const headingStyles = {
-            h1: "text-3xl sm:text-4xl font-black text-gray-100  pb-2 mb-4 tracking-tight",
-            h2: "text-2xl sm:text-3xl font-extrabold text-gray-200  pb-1 mb-3 tracking-tight",
-            h3: "text-xl sm:text-2xl font-bold text-gray-300 border-l-4 border-gray-500 pl-3 mb-2 tracking-tight"
+            h1: "text-3xl sm:text-4xl font-black text-gray-900 border-b-2 border-gray-300 pb-2 mb-4 tracking-tight",
+            h2: "text-2xl sm:text-3xl font-extrabold text-gray-800 border-b border-gray-200 pb-1 mb-3 tracking-tight",
+            h3: "text-xl sm:text-2xl font-bold text-gray-700 border-l-4 border-blue-400 pl-3 mb-2 tracking-tight"
           };
 
           headings.push({ text: headingText, id: headingId, level: domNode.name });
@@ -111,7 +76,7 @@ export default function NotesDetailPage() {
                   {domToReact(domNode.children)}
                   <a 
                     href={`#${headingId}`} 
-                    className="absolute right-0 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-400 hover:text-gray-400"
+                    className="absolute right-0 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-400 hover:text-gray-600"
                   >
                     <FontAwesomeIcon icon={faLink} className="ml-2" />
                   </a>
@@ -145,7 +110,7 @@ export default function NotesDetailPage() {
               transition={{ duration: 0.3 }}
               className={`
                 group relative pl-6 py-1 rounded-lg transition-all duration-300 
-                ${completedListItems.has(itemId) ? 'bg-gray-900/30 line-through text-gray-400' : 'hover:bg-gray-900/20'}
+                ${completedListItems.has(itemId) ? 'bg-gray-100 line-through text-gray-500' : 'hover:bg-gray-50'}
                 flex items-center space-x-2
               `}
             >
@@ -158,12 +123,12 @@ export default function NotesDetailPage() {
                 {completedListItems.has(itemId) ? (
                   <FontAwesomeIcon 
                     icon={faCheckCircle} 
-                    className="text-gray-400 group-hover:text-gray-500" 
+                    className="text-green-500 group-hover:text-green-600" 
                   />
                 ) : (
                   <FontAwesomeIcon 
                     icon={faChevronRight} 
-                    className="text-gray-500 group-hover:text-gray-600" 
+                    className="text-gray-400 group-hover:text-gray-600" 
                   />
                 )}
               </motion.button>
@@ -224,69 +189,74 @@ export default function NotesDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-900">
-        <PuffLoader color="#6D28D9" size={120} />
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-white to-gray-50">
+        <div className="animate-pulse">
+          <div className="w-16 h-16 border-4 border-gray-300 border-t-gray-900 rounded-full animate-spin"></div>
+        </div>
       </div>
     );
   }
 
-  if (error) return <p className="text-red-400 text-center">Error: {error}</p>;
+  if (error) return <p className="text-red-600 text-center">Error: {error}</p>;
   if (!post) return notFound();
 
   return (
-    <div className="relative min-h-screen bg-gray-900 text-gray-100 p-3 sm:p-4 lg:p-6 overflow-hidden">
-      <FloatingBubbles />
+    <div className="relative min-h-screen bg-gradient-to-br from-white to-gray-50 text-gray-900 p-3 sm:p-4 lg:p-6">
+      {/* Hero Section */}
+      <section className="py-8 px-4 bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl mb-8">
+        <div className="max-w-4xl mx-auto">
+          <nav className="mb-6">
+            <ul className="flex flex-wrap text-gray-600 text-xs space-x-1 bg-white/70 backdrop-blur-sm rounded-full px-4 py-2 shadow-sm border border-gray-200">
+              {breadcrumbItems.map((item, index) => (
+                <li key={index} className="flex items-center">
+                  <Link 
+                    href={item.href} 
+                    className="hover:text-gray-900 transition-colors duration-300"
+                  >
+                    {item.name.replace(/%20/g, " ")}
+                  </Link>
+                  {index < breadcrumbItems.length - 1 && (
+                    <span className="mx-1 text-gray-400">/</span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </nav>
 
-      <nav className="mb-6 relative z-10">
-        <ul className="flex flex-wrap text-gray-300 text-xs space-x-1 bg-gray-800/50 backdrop-blur-sm rounded-full px-4 py-2 shadow-md">
-          {breadcrumbItems.map((item, index) => (
-            <li key={index} className="flex items-center">
-              <Link 
-                href={item.href} 
-                className="hover:text-gray-400 transition-colors duration-300"
-              >
-                {item.name.replace(/%20/g, " ")}
-              </Link>
-              {index < breadcrumbItems.length - 1 && (
-                <span className="mx-1 text-gray-600">/</span>
-              )}
-            </li>
-          ))}
-        </ul>
-      </nav>
+          <motion.h1 
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6 text-center text-gray-900"
+          >
+            {post.title}
+          </motion.h1>
 
-      <motion.h1 
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-gray-500 to-blue-500"
-      >
-        {post.title}
-      </motion.h1>
+          <p className="text-gray-600 mb-2 text-center flex items-center justify-center space-x-2">
+            <FontAwesomeIcon icon={faCalendarAlt} className="text-gray-500" />
+            <span className="font-medium text-sm">
+              {new Date(post.createdAt).toLocaleDateString('en-US', {
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric'
+              })}
+            </span>
+          </p>
+        </div>
+      </section>
 
-      <main className="max-w-3xl mx-auto">
-        <p className="text-gray-400 mb-6 text-center flex items-center justify-center space-x-2">
-          <FontAwesomeIcon icon={faCalendarAlt} className="text-gray-500" />
-          <span className="font-medium text-sm">
-            {new Date(post.createdAt).toLocaleDateString('en-US', {
-              year: 'numeric', 
-              month: 'long', 
-              day: 'numeric'
-            })}
-          </span>
-        </p>
-
+      <main className="max-w-4xl mx-auto">
         {tableOfContents.length > 0 && (
           <motion.div 
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
-            className="mb-8 bg-gray-800 p-4 rounded-xl shadow-lg border-l-4 border-gray-600"
+            className="mb-8 bg-white p-6 rounded-xl shadow-md border border-gray-200"
           >
-            <h2 className="text-xl font-bold text-gray-100 mb-3 border-b-2 border-gray-700 pb-1">
+            <h2 className="text-xl font-bold text-gray-900 mb-4 border-b-2 border-gray-200 pb-2">
               Table of Contents
             </h2>
-            <ul className="space-y-1 pl-2">
+            <ul className="space-y-2 pl-2">
               {tableOfContents.map((heading, index) => (
                 <motion.li 
                   key={index} 
@@ -297,7 +267,7 @@ export default function NotesDetailPage() {
                 >
                   <FontAwesomeIcon 
                     icon={faDotCircle} 
-                    className={`text-gray-400 ${
+                    className={`text-blue-500 ${
                       heading.level === 'h1' ? 'text-base' :
                       heading.level === 'h2' ? 'text-sm' :
                       'text-xs'
@@ -305,7 +275,7 @@ export default function NotesDetailPage() {
                   />
                   <a 
                     href={`#${heading.id}`} 
-                    className={`text-blue-300 hover:text-gray-400 transition-colors duration-300 font-medium ${
+                    className={`text-blue-600 hover:text-blue-800 transition-colors duration-300 font-medium ${
                       heading.level === 'h1' ? 'text-base' :
                       heading.level === 'h2' ? 'text-sm' :
                       'text-xs pl-3'
@@ -319,7 +289,7 @@ export default function NotesDetailPage() {
           </motion.div>
         )}
 
-        <article className="prose prose-invert lg:prose-xl mx-auto text-gray-200 leading-relaxed">
+        <article className="prose prose-lg max-w-none mx-auto text-gray-800 leading-relaxed bg-white p-6 sm:p-8 rounded-xl shadow-md border border-gray-200">
           {parse(post.content, customParseOptions())}
         </article>
       </main>

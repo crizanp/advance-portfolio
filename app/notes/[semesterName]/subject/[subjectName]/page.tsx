@@ -30,10 +30,19 @@ export default function NotesDetailPage() {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortBy, setSortBy] = useState("newest");
+  const [sortBy, setSortBy] = useState("oldest");
 
   const subjectNameStr = safeParamToString(subjectName);
   const semesterNameStr = safeParamToString(semesterName);
+
+  const colorClasses = [
+    "bg-blue-100",
+    "bg-pink-100", 
+    "bg-gray-100",
+    "bg-green-100",
+    "bg-purple-100",
+    "bg-yellow-100"
+  ];
 
   useEffect(() => {
     if (!subjectNameStr || !semesterNameStr) return;
@@ -114,23 +123,20 @@ export default function NotesDetailPage() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 to-gray-950">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-white to-gray-50">
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ duration: 0.5 }}
           className="relative"
         >
-          <div className="w-16 h-16 border-4 border-gray-300 border-t-transparent rounded-full animate-spin"></div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-10 h-10 bg-gray-600 rounded-lg"></div>
-          </div>
+          <div className="w-16 h-16 border-4 border-gray-300 border-t-gray-900 rounded-full animate-spin"></div>
         </motion.div>
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="mt-6 text-gray-300 font-medium"
+          className="mt-6 text-gray-700 font-medium"
         >
           Loading {subjectNameStr} notes...
         </motion.p>
@@ -139,30 +145,27 @@ export default function NotesDetailPage() {
   }
 
   return (
-    <main className="bg-gradient-to-br from-gray-900 via-gray-900 to-gray-950 text-gray-100 min-h-screen">
+    <main className="bg-gradient-to-br from-white to-gray-50 text-gray-900 min-h-screen">
       {/* Hero section */}
-      <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gray-900 opacity-10 z-0">
-          <div className="absolute inset-0 bg-[url('/pattern.svg')] bg-repeat opacity-5"></div>
-        </div>
-        <div className="container mx-auto px-4 py-8 sm:py-12 relative z-10">
+      <section className="py-12 px-4 bg-gradient-to-r from-gray-50 to-blue-50">
+        <div className="max-w-7xl mx-auto">
           <motion.nav
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="mb-4 sm:mb-6"
+            className="mb-6 px-4"
           >
-            <ul className="flex flex-wrap text-gray-300 text-xs sm:text-sm">
+            <ul className="flex flex-wrap text-gray-600 text-xs sm:text-sm">
               {breadcrumbItems.map((item, index) => (
                 <li key={index} className="flex items-center">
                   <Link
                     href={item.href}
-                    className="hover:text-gray-200 transition-colors duration-300"
+                    className="hover:text-gray-900 transition-colors duration-300"
                   >
                     {item.name.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
                   </Link>
                   {index < breadcrumbItems.length - 1 && (
-                    <FiChevronRight className="mx-2 text-gray-600" />
+                    <FiChevronRight className="mx-2 text-gray-400" />
                   )}
                 </li>
               ))}
@@ -173,36 +176,36 @@ export default function NotesDetailPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.2 }}
+            className="text-center"
           >
-            <h1 className="text-3xl py-2 sm:text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-100 to-gray-200 text-center mb-4">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
               {subjectNameStr.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ')}
             </h1>
-            <p className="text-center text-gray-200 opacity-90 max-w-2xl mx-auto mb-6">
+            <p className="text-sm md:text-base text-gray-700 max-w-2xl mx-auto">
               Comprehensive study materials, lecture notes, and resources for {subjectNameStr} in {semesterNameStr}.
             </p>
           </motion.div>
         </div>
-      </div>
+      </section>
 
       {/* Search and filter controls */}
-      <div className="container mx-auto px-4 py-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
-          className=""
         >
           <div className="flex flex-col sm:flex-row gap-4 items-center">
-            <div className="relative flex-grow">
+            <div className="relative flex-grow w-full">
               <input
                 type="text"
                 placeholder="Search notes..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full bg-gray-900/80 text-gray-100 border border-gray-700 rounded-lg px-4 py-2 pl-10 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all duration-200"
+                className="w-full bg-white text-gray-900 border border-gray-300 rounded-lg px-4 py-2.5 pl-10 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent transition-all duration-200 shadow-sm"
               />
               <svg
-                className="absolute left-3 top-2.5 h-5 w-5 text-gray-500"
+                className="absolute left-3 top-3 h-5 w-5 text-gray-400"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 20 20"
                 fill="currentColor"
@@ -214,31 +217,31 @@ export default function NotesDetailPage() {
                 />
               </svg>
             </div>
-            <div className="flex gap-2 items-center">
-              <label className="text-sm text-gray-300">Sort by:</label>
+            {/* <div className="flex gap-2 items-center w-full sm:w-auto">
+              <label className="text-sm text-gray-700 font-medium">Sort by:</label>
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="bg-gray-900 text-gray-100 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-500 transition-all duration-200"
+                className="bg-white text-gray-900 border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-gray-400 focus:border-transparent transition-all duration-200 shadow-sm"
               >
                 <option value="newest">Newest First</option>
                 <option value="oldest">Oldest First</option>
                 <option value="alphabetical">Alphabetical</option>
               </select>
-            </div>
+            </div> */}
           </div>
         </motion.div>
       </div>
 
       {/* Notes grid */}
-      <div className="container mx-auto px-4 pb-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pb-16">
         <AnimatePresence>
           {filteredPosts.length > 0 ? (
             <motion.div
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
             >
               {filteredPosts.map((post, index) => (
                 <motion.div
@@ -255,30 +258,30 @@ export default function NotesDetailPage() {
                       whileHover={{ y: -5, scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
                       transition={{ type: "spring", stiffness: 400, damping: 17 }}
-                      className="bg-gradient-to-br from-gray-800 to-gray-800/80 p-5 sm:p-6 rounded-xl shadow-lg border border-gray-700 hover:border-gray-500/50 cursor-pointer transition-all duration-300 h-full backdrop-blur-sm group"
+                      className={`${colorClasses[index % colorClasses.length]} p-6 rounded-xl cursor-pointer transition-all duration-300 h-full group border border-gray-200 hover:border-gray-300 shadow-sm hover:shadow-md`}
                     >
                       <div className="flex flex-col justify-between h-full">
                         <div>
                           <div className="flex items-center mb-4">
-                            <div className="bg-gray-500/20 p-2 rounded-lg mr-3">
-                              <FiBookOpen className="text-gray-400 text-lg" />
+                            <div className="bg-white/70 p-2 rounded-lg mr-3 shadow-sm">
+                              <FiBookOpen className="text-gray-700 text-lg" />
                             </div>
-                            <h3 className="text-xl font-bold text-gray-200 group-hover:text-white transition-colors duration-300">
+                            <h3 className="text-xl font-bold text-gray-900 group-hover:text-gray-800 transition-colors duration-300">
                               {post.title}
                             </h3>
                           </div>
-                          <div className="mb-4 bg-gray-900/50 p-3 rounded-lg border-l-2 border-gray-500/30">
-                            <p className="text-sm text-gray-300 leading-relaxed">
+                          {/* <div className="mb-4 bg-white/60 p-3 rounded-lg border-l-2 border-gray-400">
+                            <p className="text-sm text-gray-700 leading-relaxed">
                               {stripHtml(post.excerpt || post.content)}
                             </p>
-                          </div>
+                          </div> */}
                         </div>
-                        <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-700/50">
-                          <div className="flex items-center text-xs text-gray-400">
+                        <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-300">
+                          <div className="flex items-center text-xs text-gray-600">
                             <FiClock className="mr-1" />
                             <span>{post.createdAt ? new Date(post.createdAt).toLocaleDateString() : 'No date'}</span>
                           </div>
-                          <span className="text-sm font-medium text-gray-400 group-hover:text-gray-300 flex items-center gap-1 transition-all duration-300">
+                          <span className="text-sm font-medium text-gray-700 group-hover:text-gray-900 flex items-center gap-1 transition-all duration-300">
                             Read More
                             <FiArrowRight className="group-hover:translate-x-1 transition-transform duration-300" />
                           </span>
@@ -295,9 +298,9 @@ export default function NotesDetailPage() {
               animate={{ opacity: 1, y: 0 }}
               className="flex flex-col items-center justify-center py-12 px-4"
             >
-              <div className="bg-gray-900/20 p-6 rounded-full mb-4">
+              <div className="bg-gray-100 p-6 rounded-full mb-4">
                 <svg
-                  className="w-16 h-16 text-gray-300"
+                  className="w-16 h-16 text-gray-400"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -310,8 +313,8 @@ export default function NotesDetailPage() {
                   />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-gray-300 mb-2">No Notes Found</h3>
-              <p className="text-center text-gray-400 max-w-md">
+              <h3 className="text-xl font-bold text-gray-700 mb-2">No Notes Found</h3>
+              <p className="text-center text-gray-600 max-w-md">
                 {searchTerm
                   ? `No notes matching "${searchTerm}" were found. Try a different search term.`
                   : `No notes are available for ${subjectNameStr} at this time. Check back later.`}

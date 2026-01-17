@@ -75,7 +75,7 @@ const quickLinks = [
     title: "Computer ER Notes",
     description: "Engineering notes and study materials",
     icon: DocumentTextIcon,
-    link: "/computer-er-notes",
+    link: "/notes",
     color: "from-purple-100 to-pink-100"
   },
   {
@@ -96,14 +96,14 @@ const quickLinks = [
     title: "ER License Preparation",
     description: "Resources for engineering license exam",
     icon: SparklesIcon,
-    link: "/er-license",
+    link: "/engineering-license",
     color: "from-indigo-100 to-purple-100"
   },
   {
     title: "My Reads",
     description: "Books I've read and recommend",
     icon: BookOpenIcon,
-    link: "/my-reads",
+    link: "/category/reading",
     color: "from-pink-100 to-rose-100"
   }
 ];
