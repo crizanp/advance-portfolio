@@ -5,128 +5,174 @@ import Link from "next/link";
 import Cookies from "js-cookie";
 
 export default function AdminDashboard() {
-  const [categories, setCategories] = useState([]);
-  const [posts, setPosts] = useState([]);
-  const [categoriesError, setCategoriesError] = useState(null);
-  const [postsError, setPostsError] = useState(null);
+  const [stats, setStats] = useState({
+    categories: 0,
+    posts: 0,
+    quizzes: 0,
+    semesters: 0,
+  });
+  const [loading, setLoading] = useState(true);
+  const [hasLoaded, setHasLoaded] = useState(false);
 
   // Retrieve the token from cookies
   const token = Cookies.get("token");
 
   useEffect(() => {
-    async function fetchCategories() {
+    if (hasLoaded) return; // Prevent refetching if already loaded
+
+    async function fetchStats() {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-        if (!res.ok) {
-          throw new Error('Failed to fetch categories');
-        }
-        const data = await res.json();
-        setCategories(Array.isArray(data) ? data : []);
+        const [categoriesRes, postsRes, quizzesRes, semestersRes] = await Promise.all([
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
+            headers: { 'Authorization': `Bearer ${token}` },
+          }),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`, {
+            headers: { 'Authorization': `Bearer ${token}` },
+          }),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/quizzes`, {
+            headers: { 'Authorization': `Bearer ${token}` },
+          }),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL}/semesters`),
+        ]);
+
+        const categories = categoriesRes.ok ? (await categoriesRes.json()).length : 0;
+        const posts = postsRes.ok ? (await postsRes.json()).length : 0;
+        const quizzes = quizzesRes.ok ? (await quizzesRes.json()).length : 0;
+        const semesters = semestersRes.ok ? (await semestersRes.json()).length : 0;
+
+        setStats({ categories, posts, quizzes, semesters });
+        setHasLoaded(true);
       } catch (error) {
-        setCategoriesError(error.message);
+        console.error('Error fetching stats:', error);
+      } finally {
+        setLoading(false);
       }
     }
 
-    async function fetchPosts() {
-      try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/posts`, {
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        });
-        if (!res.ok) {
-          throw new Error('');
-        }
-        const data = await res.json();
-        setPosts(Array.isArray(data) ? data : []);
-      } catch (error) {
-        setPostsError(error.message);
-      }
-    }
+    fetchStats();
+  }, [token, hasLoaded]);
 
-    fetchCategories();
-    fetchPosts();
-  }, [token]);
+  const dashboardItems = [
+    {
+      title: "Posts",
+      description: "Manage blog posts",
+      count: stats.posts,
+      links: [
+        { href: "/admin/add-post", label: "Add New Post" },
+        { href: "/admin/posts", label: "View All Posts" },
+      ],
+      icon: "📝",
+    },
+    {
+      title: "Categories",
+      description: "Organize content categories",
+      count: stats.categories,
+      links: [
+        { href: "/admin/add-category", label: "Add New Category" },
+        { href: "/admin/category", label: "View All Categories" },
+      ],
+      icon: "📂",
+    },
+    {
+      title: "Quizzes",
+      description: "Create and manage quizzes",
+      count: stats.quizzes,
+      links: [
+        { href: "/admin/quiz", label: "Add New Quiz" },
+        { href: "/admin/quiz/ViewAllQuizzes", label: "View All Quizzes" },
+      ],
+      icon: "🧠",
+    },
+    {
+      title: "BCT Quizzes",
+      description: "Specialized BCT quizzes",
+      count: null,
+      links: [
+        { href: "/admin/BCTQuiz", label: "Add BCT Quiz" },
+        { href: "/admin/BCTQuiz/ViewAllQuizzes", label: "View BCT Quizzes" },
+      ],
+      icon: "🎓",
+    },
+    {
+      title: "Engineering Notes",
+      description: "Manage semesters and subjects",
+      count: stats.semesters,
+      links: [
+        { href: "/admin/engineering-notes", label: "Manage Notes" },
+      ],
+      icon: "📚",
+    },
+  ];
 
   return (
-      <div className="container mx-auto mt-10 px-6">
-        <h1 className="text-4xl font-bold text-center text-gray-800 mb-12">Admin Dashboard</h1>
+    <div className="min-h-screen">
+      <div className="container mx-auto px-6 py-12">
+       
 
-        {/* Categories Section */}
-        <div className="mb-12">
-          <h2 className="text-2xl font-semibold mb-6 text-gray-700">Categories</h2>
-          {categoriesError ? (
-            <p className="text-red-500">Error: {categoriesError}</p>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {categories.length > 0 ? (
-                categories.map((category) => (
-                  <div key={category._id} className="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300">
-                    <h3 className="text-lg font-medium text-gray-800">{category.name}</h3>
-                    <Link
-                      href={`/admin/edit-category/${category._id}`}
-                      className="text-blue-600 hover:underline mt-2 block"
-                    >
-                      Edit
-                    </Link>
-                  </div>
-                ))
-              ) : (
-                <p className="text-gray-500">No categories available.</p>
-              )}
-            </div>
-          )}
-          <div className="flex justify-center mt-8">
-            <Link
-              href="/admin/add-category"
-              className="inline-block bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 shadow-md hover:shadow-lg transition-all"
-            >
-              Add New Category
-            </Link>
+        {loading ? (
+          <div className="flex justify-center items-center h-64">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
           </div>
-        </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            {dashboardItems.map((item, index) => (
+              <div key={index} className="bg-blue-50 border border-blue-300  transition-shadow duration-300 overflow-hidden">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{item.title}</h3>
 
-        {/* Posts Section */}
-        <div>
-          <h2 className="text-2xl font-semibold mb-6 text-gray-700">Posts</h2>
-          {postsError ? (
-            <p className="text-red-500">Error: {postsError}</p>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {posts.length > 0 ? (
-                posts.map((post) => (
-                  <div key={post._id} className="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300">
-                    <h3 className="text-lg font-medium text-gray-800">{post.title}</h3>
-                    <Link
-                      href={`/admin/edit-post/${post._id}`}
-                      className="text-blue-600 hover:underline mt-2 block"
-                    >
-                      Edit
-                    </Link>
+                    {item.count !== null && (
+                      <div className="text-3xl font-bold text-blue-600">{item.count}</div>
+                    )}
                   </div>
-                ))
-              ) : (
-                <p className="text-gray-500">No posts available.</p>
-              )}
-            </div>
-          )}
-          <div className="flex justify-center mt-8">
+                  <p className="text-gray-600 mb-4">{item.description}</p>
+                  <div className="space-y-2">
+                    {item.links.map((link, linkIndex) => (
+                      <Link
+                        key={linkIndex}
+                        href={link.href}
+                        className="block w-full text-center bg-blue-300 text-black py-2 px-4 rounded-lg hover:bg-blue-700 hover:text-white transition-colors duration-200"
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Quick Actions */}
+        <div className="bg-blue-50  border border-blue-300 p-6">
+          <h2 className="text-3xl text-gray-900 mb-6">Quick Actions</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             <Link
               href="/admin/add-post"
-              className="inline-block bg-blue-600 text-white py-2 px-6 rounded-lg hover:bg-blue-700 shadow-md hover:shadow-lg transition-all"
+              className="flex items-center justify-center bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors duration-200"
             >
-              Add New Post
+              <span className="mr-2">➕</span> New Post
+            </Link>
+            <Link
+              href="/admin/add-category"
+              className="flex items-center justify-center bg-purple-600 text-white py-3 px-6 rounded-lg hover:bg-purple-700 transition-colors duration-200"
+            >
+              <span className="mr-2">📁</span> New Category
+            </Link>
+            <Link
+              href="/admin/quiz"
+              className="flex items-center justify-center bg-orange-600 text-white py-3 px-6 rounded-lg hover:bg-orange-700 transition-colors duration-200"
+            >
+              <span className="mr-2">❓</span> New Quiz
+            </Link>
+            <Link
+              href="/admin/BCTQuiz"
+              className="flex items-center justify-center bg-red-600 text-white py-3 px-6 rounded-lg hover:bg-red-700 transition-colors duration-200"
+            >
+              <span className="mr-2">🎯</span> New BCT Quiz
             </Link>
           </div>
         </div>
       </div>
+    </div>
   );
 }

@@ -118,8 +118,8 @@ const scrollToHash = (hash: string) => {
 export default function HomePage() {
   const [latestPosts, setLatestPosts] = useState([]);
   const [showCV, setShowCV] = useState(false);
-  const pageTitle = "Crijan Pokhrel - Developer, Blockchain Enthusiast & Tech Blogger";
-  const pageDescription = "Explore my portfolio, projects, and technical blogs. I specialize in blockchain development, software engineering, and Web3 technologies.";
+  const pageTitle = "Srijan Pokhrel - React/Next.js Dev, Data Analysis & Tech Blogger";
+  const pageDescription = "Its me Srijan Pokharel - A passionate React/Next.js developer, data analysis enthusiast, and tech blogger. Explore my projects, blogs, and more.";
   const canonicalUrl = "https://srijanpokhrel.com.np";
   const ogImageUrl = "https://srijanpokhrel.com.np/images/image.png";
 

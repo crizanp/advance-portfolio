@@ -14,7 +14,7 @@ const DynamicHead = ({
   title,
   description,
   canonicalUrl,
-  ogImageUrl = "https://srijanpokhrel.com.np/images/image.png",
+  ogImageUrl = "https://srijanpokhrel.com.np/images/logo.png",
   ogType = "website",
   twitterCard = "summary_large_image",
   schemaMarkup,
