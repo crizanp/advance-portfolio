@@ -126,9 +126,9 @@ export default function HomePage() {
   const schemaMarkup = {
     "@context": "https://schema.org",
     "@type": "Person",
-    name: "Crijan Pokhrel",
+    name: "Srijan Pokhrel",
     url: canonicalUrl,
-    jobTitle: "Developer, Blockchain Enthusiast, Tech Blogger",
+    jobTitle: "Developer, Tech Blogger",
     sameAs: [
       "https://linkedin.com/in/srijanpokhrel",
       "https://github.com/crizanp",

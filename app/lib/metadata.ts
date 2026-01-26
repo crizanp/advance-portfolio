@@ -11,7 +11,7 @@ interface SeoProps {
 }
 
 export function constructMetadata({
-  title = "Crijan Pokhrel - Developer, Blockchain Enthusiast & Tech Blogger",
+  title = "Srijan Pokhrel - Developer, Tech Blogger",
   description = "Explore my portfolio, projects, and technical blogs. I specialize in blockchain development, software engineering, and Web3 technologies.",
   canonicalUrl = "https://srijanpokhrel.com.np",
   ogImage = "https://srijanpokhrel.com.np/images/image.png",

@@ -24,12 +24,58 @@ function DeleteConfirmationModal({ subjectName, onDelete, onClose }) {
     </div>
   );
 }
+
+function EditSubjectModal({ subjectName, onEdit, onClose }) {
+  const [newSubjectName, setNewSubjectName] = useState(subjectName);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onEdit(subjectName, newSubjectName);
+  };
+
+  return (
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+      <div className="bg-white rounded-lg p-6 w-1/3">
+        <h2 className="text-xl font-bold mb-4">Edit Subject</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="block text-lg font-medium text-gray-700 mb-2">Subject Name</label>
+            <input
+              type="text"
+              value={newSubjectName}
+              onChange={(e) => setNewSubjectName(e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              required
+            />
+          </div>
+          <div className="flex justify-between">
+            <button
+              type="submit"
+              className="bg-blue-600 text-white px-4 py-2 rounded"
+            >
+              Update
+            </button>
+            <button
+              type="button"
+              className="bg-gray-300 px-4 py-2 rounded"
+              onClick={onClose}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
 export default function ViewSubjects() {
   const [semesters, setSemesters] = useState([]); 
   const [selectedSemester, setSelectedSemester] = useState(""); 
   const [subjects, setSubjects] = useState([]); 
   const [showDeleteModal, setShowDeleteModal] = useState(false); 
   const [subjectToDelete, setSubjectToDelete] = useState(null); 
+  const [showEditModal, setShowEditModal] = useState(false); 
+  const [subjectToEdit, setSubjectToEdit] = useState(null); 
   useEffect(() => {
     async function fetchSemesters() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/semesters`);
@@ -41,16 +87,16 @@ export default function ViewSubjects() {
   useEffect(() => {
     async function fetchSubjects() {
       if (selectedSemester) {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/semesters/${selectedSemester}/subjects`);
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/semesters/${encodeURIComponent(selectedSemester)}/subjects`);
         const data = await res.json();
-        setSubjects(data);
+        setSubjects(data.subjects || []);
       }
     }
     fetchSubjects();
   }, [selectedSemester]);
   const handleDelete = async (subjectName) => {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/semesters/${selectedSemester}/subject/${subjectName}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/semesters/${encodeURIComponent(selectedSemester)}/subject/${encodeURIComponent(subjectName)}`,
       {
         method: "DELETE",
         headers: {
@@ -64,6 +110,28 @@ export default function ViewSubjects() {
       setShowDeleteModal(false); 
     } else {
       alert("Failed to delete subject");
+    }
+  };
+
+  const handleEdit = async (oldSubjectName, newSubjectName) => {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/semesters/${encodeURIComponent(selectedSemester)}/subject/${encodeURIComponent(oldSubjectName)}`,
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ newSubjectName: newSubjectName }), // Change this line
+    }
+  );
+    if (res.ok) {
+      alert("Subject updated successfully!");
+      setSubjects(subjects.map((sub) => 
+        sub.name === oldSubjectName ? { ...sub, name: newSubjectName } : sub
+      ));
+      setShowEditModal(false);
+    } else {
+      alert("Failed to update subject");
     }
   };
   return (
@@ -102,7 +170,10 @@ export default function ViewSubjects() {
                 <td className="py-2 px-4 border-b text-center">
                   <button
                     className="text-blue-600 hover:underline mr-4"
-                    onClick={() => alert("Edit subject functionality here")}
+                    onClick={() => {
+                      setSubjectToEdit(subject.name);
+                      setShowEditModal(true);
+                    }}
                   >
                     Edit
                   </button>
@@ -129,6 +200,13 @@ export default function ViewSubjects() {
           subjectName={subjectToDelete}
           onDelete={handleDelete}
           onClose={() => setShowDeleteModal(false)} 
+        />
+      )}
+      {showEditModal && (
+        <EditSubjectModal
+          subjectName={subjectToEdit}
+          onEdit={handleEdit}
+          onClose={() => setShowEditModal(false)}
         />
       )}
     </div>

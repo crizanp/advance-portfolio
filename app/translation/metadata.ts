@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     title: 'Nepali Unicode Converter | Free Online Tool',
     description: 'Convert Romanized Nepali text to Unicode Devanagari instantly. Perfect for digital content creation and communication.',
     url: 'https://srijanpokhrel.com.np/translate',
-    siteName: 'Crijan Pokhrel',
+    siteName: 'Srijan Pokhrel',
     locale: 'en_US',
     type: 'website',
     images: [
