@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 export default function AddSemester() {
   const [semesterName, setSemesterName] = useState("");
   const [semesters, setSemesters] = useState([]); 
@@ -49,6 +50,41 @@ export default function AddSemester() {
   };
   return (
     <div className="container mx-auto p-6 text-black">
+      <div className="mb-8">
+        <h2 className="text-2xl font-bold mb-4">Admin Actions</h2>
+        <div className="flex flex-wrap gap-4">
+          <Link href="/admin/engineering-notes/semester/add">
+            <button className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+              Add Semester
+            </button>
+          </Link>
+          <Link href="/admin/engineering-notes/semester/view">
+            <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+              View Semesters
+            </button>
+          </Link>
+          <Link href="/admin/engineering-notes/subject/add">
+            <button className="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
+              Add Subject
+            </button>
+          </Link>
+          <Link href="/admin/engineering-notes/subject/view">
+            <button className="px-4 py-2 bg-purple-500 text-white rounded-lg hover:bg-purple-600">
+              View/Edit Subjects
+            </button>
+          </Link>
+          <Link href="/admin/engineering-notes/post/view">
+            <button className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600">
+              Manage Posts
+            </button>
+          </Link>
+          <Link href="/admin/engineering-notes/post/add">
+            <button className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
+              Add Post
+            </button>
+          </Link>
+        </div>
+      </div>
       <div className="bg-white shadow-md rounded-lg p-6 mb-8">
         <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">Add New Semester</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
