@@ -9,7 +9,7 @@ export default function Navbar() {
   <div className="absolute inset-x-0 h-px bg-gradient-to-r from-transparent via-gray-600 to-transparent"></div>
 
   return (
-<nav className="relative bg-white shadow-lg sticky top-0 backdrop-blur-sm z-50">
+<nav className="relative bg-white shadow-lg  top-0 backdrop-blur-sm z-50">
 <div className="absolute inset-x-0 -bottom-px h-[2px] bg-gradient-to-r from-transparent via-gray-600 to-transparent animate-[pulse_2s_infinite]"></div>
       <div className="max-w-7xl mx-auto px-4 text-gray-900">
         <div className="flex justify-between h-16">
