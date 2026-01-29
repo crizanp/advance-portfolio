@@ -93,12 +93,12 @@ export default function Footer() {
                   Category
                 </Link>
               </li>
-              <li className="flex items-center">
+              {/* <li className="flex items-center">
                 <FaCode className="h-3 w-3 text-gray-500 mr-2" />
                 <Link href="/codecleaner" className="text-gray-500 hover:text-gray-400 transition-colors duration-300 text-sm">
                   Code Cleaner
                 </Link>
-              </li>
+              </li> */}
               <li className="flex items-center">
                 <FaFileAlt className="h-3 w-3 text-gray-500 mr-2" />
                 <Link href="/projects" className="text-gray-500 hover:text-gray-400 transition-colors duration-300 text-sm">
