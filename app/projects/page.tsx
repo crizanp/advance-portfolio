@@ -210,11 +210,11 @@ export default function PortfolioShowcase() {
           },
           {
             id: 10,
-            title: "Tuition Management System",
-            mockup: "/images/project/tuitionmarketplace.png",
-            description: "Comprehensive tuition center management with student tracking, attendance, and fee management.",
+            title: "Tuition marketplace",
+            mockup: "/images/project/tutionmarketplace.png",
+            description: "Comprehensive tuition marketplace connecting students with qualified tutors across various subjects.",
             category: "Full Stack",
-            githubLink: "https://github.com/crizanp/tuition-management",
+            githubLink: "https://github.com/crizanp/tuition-marketplace",
             featured: false,
             details: [
               { text: "PHP" },
