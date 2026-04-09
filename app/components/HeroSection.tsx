@@ -40,6 +40,19 @@ const HeroSection = () => {
 
   return (
     <>
+      {/* NPM Package Announcement Banner */}
+      <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white py-3 px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto flex items-center justify-center gap-2 flex-wrap text-center">
+          <span className="text-sm sm:text-base font-medium">🎉 New Release:</span>
+          <a 
+            href="https://www.npmjs.com/package/@srijanpokhrel/image-shrink"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sm sm:text-base font-semibold underline hover:opacity-90 transition-opacity"
+          >
+            The new NPM package for image shrinking and conversion is now live!</a>
+        </div>
+      </div>
       
       <div className="bg-white flex items-center justify-center px-4 sm:px-6 lg:px-8 min-h-screen">
         <div className="max-w-7xl w-full mx-auto">

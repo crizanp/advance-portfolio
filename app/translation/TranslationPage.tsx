@@ -17,8 +17,8 @@ import { FaTwitter, FaLink, FaKeyboard } from 'react-icons/fa';
 import NepaliKeyboard from "../components/NepaliKeyboard";
 
 // Constants for chunked loading
-const CHUNK_SIZE = 10000;
-const LOADING_INTERVAL = 20000; // 20 seconds
+const CHUNK_SIZE = 15000;
+const LOADING_INTERVAL = 2000; // 2 seconds for much faster loading
 
 interface NepaliWordsData {
   nepaliWords: string[];
@@ -594,6 +594,155 @@ const [showAboutPopup, setShowAboutPopup] = useState(false);
           </motion.div>
         )}
       </div>
+
+      {/* SEO Content Section */}
+      <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl p-8 border border-gray-200"
+        >
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">What is Nepali Unicode?</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="space-y-4">
+              <p className="text-gray-700 leading-relaxed">
+                Nepali Unicode is the international standard encoding for representing Nepali text (Devanagari script) in digital formats. This powerful converter tool makes it easy to transform romanized Nepali (Roman script) into properly formatted Unicode Devanagari characters.
+              </p>
+              <p className="text-gray-700 leading-relaxed">
+                Whether you're typing Nepali text for social media, content creation, emails, or business documents, this Nepali Unicode converter provides instant, accurate conversion with a comprehensive dictionary of 10,000+ Nepali words.
+              </p>
+            </div>
+            <div className="space-y-4">
+              <h3 className="text-xl font-semibold text-gray-900">Key Features:</h3>
+              <ul className="space-y-2">
+                {[
+                  'Real-time conversion from Roman to Devanagari',
+                  'Smart word suggestions for accurate typing',
+                  'Support for mixed text and special characters',
+                  'Comprehensive 10,000+ word Nepali dictionary',
+                  'One-click copy to clipboard',
+                  'Easy sharing functionality',
+                  'Keyboard input support',
+                  'Fast and responsive interface'
+                ].map((feature, idx) => (
+                  <li key={idx} className="flex items-start gap-3">
+                    <svg className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    <span className="text-gray-700">{feature}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="mt-12 bg-blue-50 rounded-2xl p-8 border border-blue-200"
+        >
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">Why Use Our Nepali Unicode Converter?</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <div className="bg-white rounded-lg p-6 border border-blue-100">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Free & Always Available</h3>
+              <p className="text-gray-700 text-sm">
+                No registration required. Use our Nepali converter anytime, anywhere on any device with internet access.
+              </p>
+            </div>
+            <div className="bg-white rounded-lg p-6 border border-blue-100">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Accurate Dictionary</h3>
+              <p className="text-gray-700 text-sm">
+                With over 10,000+ Nepali words in our database, enjoy accurate suggestions and conversions for better typing experience.
+              </p>
+            </div>
+            <div className="bg-white rounded-lg p-6 border border-blue-100">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">Lightning Fast</h3>
+              <p className="text-gray-700 text-sm">
+                Our optimized algorithm provides instant real-time conversion with zero latency for seamless typing experience.
+              </p>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="mt-12"
+        >
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">How to Use the Nepali Unicode Converter?</h2>
+          <div className="bg-white rounded-2xl p-8 border border-gray-200 space-y-4">
+            <div className="flex gap-4">
+              <div className="flex-shrink-0">
+                <div className="flex items-center justify-center h-10 w-10 rounded-full bg-blue-600 text-white font-bold">1</div>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Select Input Mode</h3>
+                <p className="text-gray-700 mt-1">Choose between Romanized input mode (default) or direct Nepali keyboard input mode</p>
+              </div>
+            </div>
+            <div className="flex gap-4">
+              <div className="flex-shrink-0">
+                <div className="flex items-center justify-center h-10 w-10 rounded-full bg-blue-600 text-white font-bold">2</div>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Type Your Text</h3>
+                <p className="text-gray-700 mt-1">Start typing in Romanized Nepali (e.g., "namaste" for नमस्ते) in the input field</p>
+              </div>
+            </div>
+            <div className="flex gap-4">
+              <div className="flex-shrink-0">
+                <div className="flex items-center justify-center h-10 w-10 rounded-full bg-blue-600 text-white font-bold">3</div>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">See Instant Conversion</h3>
+                <p className="text-gray-700 mt-1">Your text instantly converts to Nepali Unicode Devanagari script in real-time</p>
+              </div>
+            </div>
+            <div className="flex gap-4">
+              <div className="flex-shrink-0">
+                <div className="flex items-center justify-center h-10 w-10 rounded-full bg-blue-600 text-white font-bold">4</div>
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">Copy or Share</h3>
+                <p className="text-gray-700 mt-1">Copy your converted text to clipboard or share it directly on social media platforms</p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="mt-12 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl p-8 border border-green-200"
+        >
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-6">Common Use Cases</h2>
+          <ul className="grid md:grid-cols-2 gap-4">
+            {[
+              { title: 'Social Media Posts', desc: 'Create engaging Nepali content for Facebook, Twitter, Instagram' },
+              { title: 'Email Communication', desc: 'Write professional emails and messages in proper Nepali Unicode' },
+              { title: 'Content Creation', desc: 'Write Nepali blog posts, articles, and documentation easily' },
+              { title: 'Business Documents', desc: 'Create professional documents and forms in Nepali language' },
+              { title: 'Educational Content', desc: 'Support Nepali language learning and teaching materials' },
+              { title: 'Digital Communication', desc: 'Type Nepali text for chats, forums, and online platforms' }
+            ].map((item, idx) => (
+              <li key={idx} className="bg-white rounded-lg p-4 border border-green-200">
+                <h3 className="font-semibold text-gray-900 mb-1">{item.title}</h3>
+                <p className="text-sm text-gray-700">{item.desc}</p>
+              </li>
+            ))}
+          </ul>
+        </motion.div>
+      </section>
+
       {showShare && <ShareButton />}
     </div>
   );
