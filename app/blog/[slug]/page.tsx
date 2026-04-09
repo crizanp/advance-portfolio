@@ -12,6 +12,7 @@ import "prismjs/components/prism-css";
 import Link from "next/link";
 import PuffLoader from "react-spinners/PuffLoader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faLink, faTimes, faQuoteLeft } from "@fortawesome/free-solid-svg-icons";
 import QuoteCardModal from "../../components/QuoteCardModal";
 import { FaFacebook, FaTwitter, FaLinkedin, FaLink } from "react-icons/fa";
@@ -35,7 +36,7 @@ const CopyableQuote = ({ quoteContent, children, handleGenerateCard }) => {
   return (
     <div className="relative bg-gray-50 rounded-lg my-5 shadow-md border border-gray-200">
       <FontAwesomeIcon
-        icon={faQuoteLeft}
+        icon={faQuoteLeft as unknown as IconProp}
         className="text-blue-500 text-2xl absolute -top-3 left-3 bg-white p-1 rounded-full"
       />
       <blockquote className="text-lg italic text-gray-800 pl-10 pr-5 py-4">
@@ -369,7 +370,7 @@ export default function BlogDetail({ params }) {
             <ul className="space-y-2">
               {tableOfContents.map((heading, index) => (
                 <li key={index} className="flex items-center">
-                  <FontAwesomeIcon icon={faLink} className="text-blue-500 mr-2 text-sm" />
+                  <FontAwesomeIcon icon={faLink as unknown as IconProp} className="text-blue-500 mr-2 text-sm" />
                   <a
                     href={`#${heading.id}`}
                     className="text-gray-700 hover:text-blue-600 text-sm sm:text-base"
@@ -400,7 +401,7 @@ export default function BlogDetail({ params }) {
                 className="absolute top-4 right-4 text-black hover:text-gray-200"
                 onClick={() => setSelectedImage("")}
               >
-                <FontAwesomeIcon icon={faTimes} size="2x" />
+                <FontAwesomeIcon icon={faTimes as unknown as IconProp} size="2x" />
               </button>
             </div>
           </div>

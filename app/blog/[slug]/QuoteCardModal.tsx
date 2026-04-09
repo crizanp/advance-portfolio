@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { toPng } from "html-to-image";
 import { saveAs } from "file-saver";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
 const predefinedImages = [
@@ -126,7 +127,7 @@ export default function QuoteCardModal({ quote = "", author = "Cizan", isOpen, o
           className="absolute top-3 right-3 text-gray-500 hover:text-gray-700"
           onClick={onClose}
         >
-          <FontAwesomeIcon icon={faTimes} size="2x" />
+          <FontAwesomeIcon icon={faTimes as unknown as IconProp} size="2x" />
         </button>
         <h2 className="text-2xl font-bold mb-4 text-black text-center">Customize Your Quote Card</h2>
 

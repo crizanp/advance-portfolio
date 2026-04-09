@@ -12,6 +12,7 @@ import "prismjs/components/prism-markup";
 import Link from "next/link";
 import PuffLoader from "react-spinners/PuffLoader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faLink, faTimes, faQuoteLeft, faCopy } from "@fortawesome/free-solid-svg-icons";
 import QuoteCardModal from "./QuoteCardModal";
 import React from "react";
@@ -36,7 +37,7 @@ const CopyableQuote = ({ quoteContent, children, handleGenerateCard }) => {
   return (
     <div className="relative bg-gray-50 z-[700] rounded-lg my-5 shadow-md border border-gray-200">
       <FontAwesomeIcon
-        icon={faQuoteLeft}
+        icon={faQuoteLeft as unknown as IconProp}
         className="text-blue-500 text-2xl absolute -top-3 left-3 bg-white p-1 rounded-full"
       />
       <blockquote className="text-lg italic text-gray-800 pl-10 pr-5 py-4">
@@ -327,7 +328,7 @@ export default function PostModal({ slug, isOpen, onClose }) {
                       {tableOfContents.map((heading, index) => (
                         <li key={index} className="flex items-center">
                           <FontAwesomeIcon
-                            icon={faLink}
+                            icon={faLink as unknown as IconProp}
                             className="text-blue-500 mr-2 text-sm"
                           />
                           <a
@@ -363,7 +364,7 @@ export default function PostModal({ slug, isOpen, onClose }) {
                   className="absolute top-4 right-4 text-black hover:text-gray-200"
                   onClick={() => setIsImageModalOpen(false)}
                 >
-                  <FontAwesomeIcon icon={faTimes} size="2x" />
+                  <FontAwesomeIcon icon={faTimes as unknown as IconProp} size="2x" />
                 </button>
               </div>
             </div>

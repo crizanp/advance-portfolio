@@ -9,6 +9,7 @@ import "prismjs/components/prism-css";
 import "prismjs/components/prism-markup";
 import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { 
   faLink, 
   faCalendarAlt, 
@@ -78,7 +79,7 @@ export default function NotesDetailPage() {
                     href={`#${headingId}`} 
                     className="absolute right-0 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-gray-400 hover:text-gray-600"
                   >
-                    <FontAwesomeIcon icon={faLink} className="ml-2" />
+                    <FontAwesomeIcon icon={faLink as unknown as IconProp} className="ml-2" />
                   </a>
                 </>
               )}
@@ -122,12 +123,12 @@ export default function NotesDetailPage() {
               >
                 {completedListItems.has(itemId) ? (
                   <FontAwesomeIcon 
-                    icon={faCheckCircle} 
+                    icon={faCheckCircle as unknown as IconProp} 
                     className="text-green-500 group-hover:text-green-600" 
                   />
                 ) : (
                   <FontAwesomeIcon 
-                    icon={faChevronRight} 
+                    icon={faChevronRight as unknown as IconProp} 
                     className="text-gray-400 group-hover:text-gray-600" 
                   />
                 )}
@@ -233,7 +234,7 @@ export default function NotesDetailPage() {
           </motion.h1>
 
           <p className="text-gray-600 mb-2 text-center flex items-center justify-center space-x-2">
-            <FontAwesomeIcon icon={faCalendarAlt} className="text-gray-500" />
+            <FontAwesomeIcon icon={faCalendarAlt as unknown as IconProp} className="text-gray-500" />
             <span className="font-medium text-sm">
               {new Date(post.createdAt).toLocaleDateString('en-US', {
                 year: 'numeric', 
@@ -266,7 +267,7 @@ export default function NotesDetailPage() {
                   className="flex items-center space-x-2"
                 >
                   <FontAwesomeIcon 
-                    icon={faDotCircle} 
+                    icon={faDotCircle as unknown as IconProp} 
                     className={`text-blue-500 ${
                       heading.level === 'h1' ? 'text-base' :
                       heading.level === 'h2' ? 'text-sm' :
