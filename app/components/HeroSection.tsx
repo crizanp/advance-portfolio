@@ -63,7 +63,7 @@ const HeroSection = () => {
                 <h1 className="text-6xl sm:text-7xl lg:text-8xl font-bold text-gray-900 leading-tight">
                   Hi!
                   <br />
-                  I'm <span className="text-blue-700">Srijan</span>
+                  I'm <span className="text-blue-700">Srijan Pokhrel</span>
                 </h1>
               </div>
               <div className="h-10 sm:h-12">
@@ -84,7 +84,7 @@ const HeroSection = () => {
                 <div className="relative flex items-end justify-center">
                   {/* Profile image */}
                   <img 
-                    src="/images/sideimg.jpg" 
+                    src="/images/sideimg_sri.png" 
                     alt="Srijan - Software QA Engineer"
                     className="w-full h-auto object-contain object-bottom"
                   />
