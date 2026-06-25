@@ -103,8 +103,47 @@ export default function ContactPage() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        Let's Discuss Something Cool!
+        Get In Touch!
       </motion.h1>
+
+      {/* Contact Information Cards */}
+      <motion.div 
+        className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 mb-12"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.1 }}
+      >
+        <div className="bg-gray-800 rounded-lg p-6 border border-gray-700 text-center">
+          <div className="text-4xl mb-3">📧</div>
+          <h3 className="text-lg font-semibold text-gray-300 mb-2">Email</h3>
+          <a href="mailto:srijanpokhrel1@gmail.com" className="text-blue-400 hover:text-blue-300 break-all">
+            srijanpokhrel1@gmail.com
+          </a>
+        </div>
+
+        <div className="bg-gray-800 rounded-lg p-6 border border-gray-700 text-center">
+          <div className="text-4xl mb-3">📱</div>
+          <h3 className="text-lg font-semibold text-gray-300 mb-2">Phone</h3>
+          <a href="tel:+977-981-057-0014" className="text-blue-400 hover:text-blue-300">
+            +977 981 057 0014
+          </a>
+        </div>
+
+        <div className="bg-gray-800 rounded-lg p-6 border border-gray-700 text-center">
+          <div className="text-4xl mb-3">📍</div>
+          <h3 className="text-lg font-semibold text-gray-300 mb-2">Location</h3>
+          <p className="text-gray-400">Kathmandu, Nepal</p>
+        </div>
+      </motion.div>
+
+      <motion.h2 
+        className="text-2xl font-bold text-center mb-8 text-gray-400"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        Send Me a Message
+      </motion.h2>
 
       <motion.div 
         className="max-w-3xl mx-auto bg-gray-800 rounded-lg shadow-xl p-8 border border-gray-700 relative overflow-hidden"
