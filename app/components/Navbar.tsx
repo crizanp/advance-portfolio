@@ -61,7 +61,7 @@ export default function Navbar() {
             <span className="text-3xl font-black leading-none tracking-tight text-violet-700 transition-transform duration-300 group-hover:-translate-y-0.5 sm:text-4xl">
               C
             </span>
-            <span className="bg-gradient-to-r from-gray-900 via-violet-700 to-gray-900 bg-clip-text text-2xl font-bold tracking-[0.18em] text-transparent sm:text-3xl">
+            <span className="bg-gradient-to-r from-gray-900 via-violet-700 to-gray-900 bg-clip-text text-2xl font-bold tracking-[0.10em] text-transparent sm:text-3xl">
               RIZA
             </span>
             <span className="text-3xl font-black leading-none tracking-tight text-fuchsia-600 transition-transform duration-300 group-hover:-translate-y-0.5 sm:text-4xl">
