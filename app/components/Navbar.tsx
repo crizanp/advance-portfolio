@@ -10,7 +10,7 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  { href: "/engineering-license", label: "Computer License" },
+  // { href: "/engineering-license", label: "Computer License" },
   { href: "/translation", label: "Nepali Unicode" },
   { href: "/category/reading", label: "Readings" },
   { href: "/about", label: "About" },
